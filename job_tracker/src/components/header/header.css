@@ -1,0 +1,47 @@
+.header{
+    /* container alignment */
+    width: 100vw;
+    height: clamp(4.3rem, 10vh, 6rem);
+    position: fixed;
+    top: 0;
+    z-index: 999;
+    /* styles */
+    background: white;
+    box-shadow: 0 0 var(--shadow_blur) var(--shadow_radius) var(--shadow_color);
+}
+
+.header_content{
+        /* container alignment */
+        height: 100%;
+        display: flex;
+        justify-content: left;
+        align-items: center;
+
+    & .title{
+        /* container alignment */
+        flex-grow: 1;
+        padding: clamp(1rem,2.5vw,2rem);
+        /* text */
+        text-align: left;
+        font-size: 1.7rem;
+        /* color: var(--default_color); */
+    }
+    & .header_nav{
+        /* container alignment */
+        text-align: center;
+        padding: clamp(1rem,2.5vw,2rem);
+        /* styles */
+    }
+    & .new_entry{
+        font-size: 1.5rem;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+}
+
+@media (max-width : 425px){
+    .header_content .jobs{
+        display: none;
+    }
+}

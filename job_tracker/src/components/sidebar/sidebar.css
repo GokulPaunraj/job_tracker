@@ -1,0 +1,32 @@
+.sidebar{
+    /* container alignment */
+    height:90vh ;
+    width: clamp(12rem,25vw,16rem);
+    z-index:0;
+    position: fixed;
+    top: clamp(4.3rem, 10vh, 6rem);
+    /* styles */
+    border-right: 0.01px rgba(0, 0, 0, 0.100) solid;
+    background-color: rgb(4, 4, 76);
+    color: white;
+}
+
+.sidebar_content{
+    height: 100%;
+    display: flex;
+    flex-flow: column;
+    padding: clamp(0.5rem,1.5vw,1rem);
+
+    & nav{
+        padding: clamp(0.5rem,1.5vw,1rem);
+        border-bottom: 0.01px rgba(255, 255, 255, 0.250) solid;
+        opacity: 0.5;
+        font-size: .9rem;
+    }
+}
+
+@media (max-width:426px){
+    .sidebar{
+        display: none;
+    }
+}

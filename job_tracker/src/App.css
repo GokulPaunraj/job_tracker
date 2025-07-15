@@ -1,0 +1,47 @@
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,400;0,700;1,400&display=swap');
+
+:root{
+  --default_color : #4380f8 ;
+  --shadow_blur : 3rem;
+  --shadow_radius : 0.1rem;
+  --shadow_color : rgba(0, 0, 0, 0.100);
+}
+
+.App {
+  text-align: center;
+  height: 100%;
+  /* applying google font */
+  font-family: "Montserrat", sans-serif;
+  font-optical-sizing: auto;
+  font-weight: 450;
+  font-style: normal;
+}
+
+nav{
+  cursor: pointer;
+}
+
+button{
+  width: 6rem;
+  height: 2rem;
+  color: whitesmoke;
+  background-color: var(--default_color);
+  border-radius: 0.5em;
+  border: none;
+}
+
+.newEntry_popup{
+  /* alignment */
+  height: 60vh;
+  width: 40vw;
+  position: absolute;
+  top: 7rem;
+  left: 30vw;
+  z-index: 1000;
+
+  & .newEntry_content{
+    height: 100%;
+    width: 100%;
+  }
+}

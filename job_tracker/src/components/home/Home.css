@@ -1,0 +1,116 @@
+.main_content{
+  /* container alignment */
+  height: 90vh;
+  width: clamp(45rem,80vw,63rem);
+  position: relative;
+  top: clamp(4.3rem, 10vh, 6rem);
+  left: clamp(12rem,25vw,16rem);
+  /* styles */
+  background-color: rgb(239, 238, 238);
+
+  & .card_container{
+    /* border: 1px black solid; */
+    /* alignment */
+    height: 80vh;
+    width: clamp(8rem,25vw,12rem);
+    /* styles */
+    display: flex;
+    flex-direction: column;
+    gap: clamp(1rem,2.5vw,2rem);
+    align-items: center;
+    justify-content: top;
+    padding: 3% clamp(2rem,5vw,4rem);
+  }
+
+  & .bottom_container{
+    /* border: 1px black solid; */
+    /* alignment */
+    height: 33vh;
+    width: clamp(16rem,60vw,43rem);
+    position: absolute;
+    top: clamp(12rem,75vw,20rem);
+    left: clamp(13rem,25vw, 40rem);
+    display: flex;
+    gap: 5%;
+
+    & .ctc_card{
+      width: 25%;
+      height: 25vh;
+      font-size: 20%;
+      border-radius: 3em;
+
+      & p{
+         font-size: 0.8rem;
+      }
+      & h2{
+        font-size: 1.3rem;
+        margin: 0.8rem;
+      }
+
+    }
+    
+    & .upcoming_interviews{
+      height: 30vh;
+      width: 30% ;
+      cursor: pointer;
+
+      & p{
+        font-size: 0.8rem;
+        text-align: center;
+      }
+      & .upcoming_company{
+        text-align: center;
+        position: relative;
+        left: 1rem;
+        width: 75%;
+        padding: clamp(0.2rem,1vw,0.5rem);
+        border-bottom: 0.01px rgba(0, 0, 0, 0.200) solid;
+        font-size: .8rem;
+      }
+    }
+
+    .upcoming_interviews::-webkit-scrollbar{
+        display: none;
+      }
+
+    & .news_container{
+      height: 30vh;
+      width: 30% ;
+      cursor: pointer;
+
+      & p{
+        font-size: 0.8rem;
+        text-align: center;
+      }
+      & .news{
+        text-align: center;
+        position: relative;
+        left: 1rem;
+        width: 75%;
+        padding: clamp(0.2rem,1vw,0.5rem);
+        border-bottom: 0.01px rgba(0, 0, 0, 0.200) solid;
+        font-size: .6rem;
+      }
+    }
+
+    .news_container::-webkit-scrollbar{
+        display: none;
+      }
+  }
+
+  & .chart_container{
+    /* border: 1px black solid; */
+    /* alignment */
+    height: 48vh;
+    width: clamp(16rem,60vw,42rem);
+    position: absolute;
+    top: 1rem;
+    left: clamp(13rem,25vw, 40rem);
+
+    & .chart{
+      height: 90%;
+      width: 95%;
+      padding: 1em;
+    }
+  }
+}
