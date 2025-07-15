@@ -43,9 +43,9 @@ const createUserData = async (req,res)=>{
 }
 
 const updateJobsList = async (req,res)=>{
-    const {username, new_entry, status} = req.body
+    const {username, new_list, status} = req.body
     try{
-        await userModel.updateOne({username:username},{$set:{jobs_list:[new_entry]}})
+        await userModel.updateOne({username:username},{$set:{jobs_list:new_list}})
         res.json("success")
     }
     catch(err){

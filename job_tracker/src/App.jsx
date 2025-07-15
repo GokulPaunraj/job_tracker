@@ -1,12 +1,13 @@
 import "./App.css";
 
 import { useEffect, useRef, useState } from "react";
+import axios from 'axios'
 
 import Home from "./components/home/Home";
 import ListingPage from "./components/listing_page/listing_page";
 
 //importing packages
-import { Routes, Route } from "react-router-dom";
+import { Routes, Route, useNavigate } from "react-router-dom";
 import Signin from "./components/signin/signin";
 import Signup from "./components/signup/signup";
 import NewEntry from "./components/newEntry/newEntry";
@@ -21,9 +22,38 @@ function App() {
   const signupRef = useRef();
   const newEntryRef = useRef();
 
-  const [userName, setuserName] = useState();
+  const [userName, setuserName] = useState(localStorage.getItem('userName'));
   const [password, setpassword] = useState(0);
   const [email, setemail] = useState("");
+
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    const fetch = async () => {
+      try {
+        await axios
+          .post("http://localhost:5000/", { userName })
+          .then((res) => {
+            if (res.data !== "User not found!") {
+              setdata(res.data.data);
+            } else {
+              alert("User not found - home");
+              setis_signup(true)
+            }
+          })
+          .catch((err) => {
+            alert(err);
+          });
+      } catch (err) {
+        alert(err);
+      }
+    };
+    if (userName && !data) {
+      fetch();
+    } else if (!localStorage.getItem("userName")) {
+      setis_signin(true);
+    }
+  }, [userName, navigate, data, setdata]);
 
   useEffect(() => {
     const handleClick = (e) => {
@@ -75,7 +105,37 @@ function App() {
   return (
     <div className="App">
       {/* {POP UP} */}
-
+      {newEntry && 
+          <NewEntry data={data} newEntryRef={newEntryRef} setnewEntry={setnewEntry} />
+      }
+      {
+        is_signin && 
+          <Signin
+              setdata={setdata}
+              userName = {userName}
+              password = {password}
+              setuserName = {setuserName}
+              setpassword = {setpassword}
+              signinRef = {signinRef}
+              setis_signin={setis_signin}
+              setis_signup={setis_signup}
+            />
+      }
+      {
+        is_signup &&
+          <Signup
+              signupRef={signupRef}
+              setis_signin={setis_signin}
+              setis_signup={setis_signup}
+              data = {data}
+              userName = {userName}
+              password = {password}
+              email= {email}
+              setuserName = {setuserName}
+              setpassword = {setpassword}
+              setemail={setemail}
+            />
+      }
       {/* Creating Routes */}
       <Routes>
         <Route
@@ -90,36 +150,8 @@ function App() {
             />
           }
         />
-        <Route
-          path="/new_user/signup"
-          element={
-            <Signup
-              signupRef={signupRef}
-              setis_signin={setis_signin}
-              setis_signup={setis_signup}
-              data = {data}
-              userName = {userName}
-              password = {password}
-              email= {email}
-              setuserName = {setuserName}
-              setpassword = {setpassword}
-              setemail={setemail}
-            />
-          }
-        />
-        <Route
-          path="/user/signin"
-          element={
-            <Signin
-              setdata={setdata}
-              userName = {userName}
-              password = {password}
-              setuserName = {setuserName}
-              setpassword = {setpassword}
-            />
-          }
-        />
-        <Route path="/update/jobs_list" element={<NewEntry data={data} newEntryRef={newEntryRef} setnewEntry={setnewEntry} />} />
+
+        {/* <Route path="/update/jobs_list" element={<NewEntry data={data} newEntryRef={newEntryRef} setnewEntry={setnewEntry} />} /> */}
         <Route
           path="/jobs"
           element={

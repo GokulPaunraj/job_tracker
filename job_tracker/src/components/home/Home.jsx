@@ -5,12 +5,9 @@ import Header from "../header/header";
 import Sidebar from "../sidebar/sidebar";
 import Card from "../card/card";
 
-import { useNavigate } from "react-router-dom";
-
 import { defaults } from "chart.js/auto";
 import { Line } from "react-chartjs-2";
-import { useEffect } from "react";
-import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
 defaults.maintainAspectRatio = false;
 defaults.responsive = true;
@@ -20,7 +17,7 @@ defaults.plugins.title.font.size = 20;
 defaults.plugins.title.align = "start";
 defaults.plugins.title.color = "black";
 
-const Home = ({ data, setdata, userName, setis_signin, setnewEntry }) => {
+const Home = ({ data, userName, setis_signin, setnewEntry }) => {
   // placeholder data
 
   const jobs_applied_data = [
@@ -65,35 +62,7 @@ const Home = ({ data, setdata, userName, setis_signin, setnewEntry }) => {
     "Zoho",
   ];
 
-  const navigate = useNavigate();
-
-  useEffect(() => {
-    const fetch = async () => {
-      try {
-        await axios
-          .post("http://localhost:5000/", { userName })
-          .then((res) => {
-            if (res.data !== "User not found!") {
-              alert("Welcome");
-              setdata(res.data.data);
-            } else {
-              alert("User not found - home");
-              navigate("/user/signup");
-            }
-          })
-          .catch((err) => {
-            alert(err);
-          });
-      } catch (err) {
-        alert(err);
-      }
-    };
-    if (userName && window.location.pathname === "/" && !data) {
-      fetch();
-    } else if (!localStorage.getItem("userName")) {
-      navigate("/user/signin");
-    }
-  }, [userName, navigate, data, setdata]);
+  const navigate = useNavigate()
 
   let jobs_applied = (data ? data["jobs_list"].length : 0)
     ? data["jobs_list"].filter((datum) => datum["status"] === "jobs_applied")

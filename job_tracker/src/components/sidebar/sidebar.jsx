@@ -25,13 +25,11 @@ const Sidebar = () => {
   return (
     <div className="sidebar">
       <section className="sidebar_content">
-        {path.pathname !== "/" && <nav onClick={navHome}>Home</nav>}
         <nav onClick={jobs_applied}>Jobs Applied</nav>
         <nav onClick={jobs_interviewing}>Interviewing</nav>
         <nav onClick={jobs_offered}>Offered</nav>
-        <nav style={{ border: "none" }} onClick={jobs_rejected}>
-          Rejected
-        </nav>
+        <nav style={{ border: "none" }} onClick={jobs_rejected}>Rejected</nav>
+        {path.pathname !== "/" && <nav onClick={navHome}>Home</nav>}
       </section>
     </div>
   );

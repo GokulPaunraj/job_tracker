@@ -6,9 +6,9 @@ import { useNavigate } from "react-router-dom";
 const Header = ({setis_signin,setnewEntry}) => {
   const navigate = useNavigate()
 
-  const new_entry = () => {navigate("/update/jobs_list")}
+  const new_entry = () => {setnewEntry(true)}
   const jobs = () => {navigate('/jobs')}
-  const signin = () => {navigate('/user/signin')}
+  const signin = () => {setis_signin(true)}
 
   return (
     <header className="header">

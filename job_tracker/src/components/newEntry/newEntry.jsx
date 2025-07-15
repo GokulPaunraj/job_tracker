@@ -1,6 +1,7 @@
 import { useState } from "react";
 import "./newEntry.css";
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
 const NewEntry = ({ data, newEntryRef, setnewEntry }) => {
   const [companyName, setcompanyName] = useState("");
@@ -9,28 +10,32 @@ const NewEntry = ({ data, newEntryRef, setnewEntry }) => {
   const [date, setdate] = useState("");
   const [status, setstatus] = useState("");
 
+  const navigate = useNavigate()
+
   function handleSubmit(e) {
     e.preventDefault();
 
     try {
-        let username = data ? data["username"] : localStorage.getItem("userName");
-        let new_entry = {
-          id: data.jobs_applied ? data.jobs_applied.length : 0,
-          companyName: companyName,
-          role: role,
-          ctc: ctc,
-          date: date,
-          status:status
-        };
-        // let new_data = data.
+      
+      let username = data ? data["username"] : localStorage.getItem("userName");
+      let new_entry = {
+        id: (data ? data["jobs_list"].length : 0),
+        companyName: companyName,
+        role: role,
+        ctc: ctc,
+        date: date,
+        status:status
+      };
+      let new_list = data ? [...data["jobs_list"],new_entry] : [new_entry]
+
         axios
           .post("http://localhost:5000/update/jobs_list", {
             username,
-            new_entry,
+            new_list,
           })
           .then((res) => {
             if (res.data === "success") {
-              console.log(res);
+              console.log(res.data);
             } else {
               console.log("failed");
             }
@@ -42,15 +47,11 @@ const NewEntry = ({ data, newEntryRef, setnewEntry }) => {
       console.log(err);
     }
 
-    // setcompanyName("");
-    // setrole("");
-    // setctc("");
-    // setdate("");
-    // setstatus("");
-    setnewEntry(false);
+    navigate('/')
+
   }
   return (
-    <section className="newEntry_popup">
+    <section className="newEntry_popup" ref={newEntryRef}>
       <div className="newEntry_content card">
         <h1>Create New</h1>
         <form

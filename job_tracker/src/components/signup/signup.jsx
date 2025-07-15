@@ -1,10 +1,7 @@
 import "./signup.css";
 import axios from "axios";
-import { useNavigate } from "react-router-dom";
 
-const Signup = ({data,userName, password, setuserName, setpassword, email, setemail }) => {
-
-  const navigate = useNavigate()
+const Signup = ({userName, password, setuserName, setpassword, email, setemail, setis_signin, signupRef, setis_signup}) => {
 
   async function handleSubmit(e) {
     e.preventDefault();
@@ -17,7 +14,7 @@ const Signup = ({data,userName, password, setuserName, setpassword, email, setem
                     if(res.data === "success"){
                       alert("Hurray! You have successfully signed up")
                       localStorage.setItem("userName",userName)
-                      navigate("/user/signin")
+                      setis_signin(true)
                     }
                     else if (res.data === "exist"){
                       alert("Username exist. Try a different one")
@@ -35,7 +32,7 @@ const Signup = ({data,userName, password, setuserName, setpassword, email, setem
     
   }
   return (
-    <section className="signup_popup" >
+    <section className="signup_popup" ref={signupRef}>
       <div className="signup_content card">
         <h1>SignUp</h1>
         <p>Job Tracker</p>
@@ -58,6 +55,7 @@ const Signup = ({data,userName, password, setuserName, setpassword, email, setem
               id="password"
               type="password"
               placeholder="eg : Wifi-87654321"
+              autoComplete="current-password"
               value={password}
               onChange={(e) => {
                 setpassword(e.target.value);
@@ -88,7 +86,8 @@ const Signup = ({data,userName, password, setuserName, setpassword, email, setem
           <span
             style={{ color: "var(--default_color)", cursor: "pointer" }}
             onClick={() => {
-              navigate("/user/signin")
+              setis_signin(true);
+              setis_signup(false)
             }}
           >
             Sign In

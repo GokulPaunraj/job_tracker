@@ -1,10 +1,7 @@
   import { useState } from "react";
 import "./signin.css";
-import { useNavigate } from "react-router-dom";
 
-const Signin = ({ data,  userName, password, setuserName, setpassword }) => {
-
-  const navigate = useNavigate();
+const Signin = ({ password, setuserName, setpassword, signinRef, setis_signin, setis_signup }) => {
 
   const [usernameInput,setusernameInput] = useState("")
 
@@ -12,11 +9,11 @@ const Signin = ({ data,  userName, password, setuserName, setpassword }) => {
     e.preventDefault();
     setuserName(usernameInput)
     localStorage.setItem("userName",usernameInput)
-    navigate("/")
+    setis_signin(false)
   } 
 
   return (
-    <section className="signin_popup" >
+    <section className="signin_popup" ref={signinRef}>
       <div className="signin_content card">
         <h1>SignIn</h1>
         <p>Job Tracker</p>
@@ -39,6 +36,7 @@ const Signin = ({ data,  userName, password, setuserName, setpassword }) => {
               id="password"
               type="password"
               placeholder="eg : 3333333"
+              autoComplete="current-password"
               value={password}
               onChange={(e) => {
                 setpassword(e.target.value);
@@ -56,7 +54,8 @@ const Signin = ({ data,  userName, password, setuserName, setpassword }) => {
           <span
             style={{ color: "var(--default_color)", cursor: "pointer" }}
             onClick={() => {
-              navigate("/new_user/signup");
+              setis_signup(true);
+              setis_signin(false)
             }}
           >
             Sign Up
