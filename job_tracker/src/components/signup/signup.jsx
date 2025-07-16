@@ -6,10 +6,10 @@ const Signup = ({userName, password, setuserName, setpassword, email, setemail, 
   async function handleSubmit(e) {
     e.preventDefault();
 
-    let jobs_applied, jobs_interviewing, jobs_offered, jobs_rejected = [{}]
+    let jobs_list = [{}]
 
     try {
-      await axios.post("http://localhost:5000/new_user/signup/",{ userName, password, email, jobs_applied,jobs_interviewing,jobs_offered,jobs_rejected})
+      await axios.post("http://localhost:5000/new_user/signup/",{ userName, password, email, jobs_list})
                  .then((res)=>{
                     if(res.data === "success"){
                       alert("Hurray! You have successfully signed up")

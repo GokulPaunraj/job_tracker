@@ -55,6 +55,23 @@ function App() {
     }
   }, [userName, navigate, data, setdata]);
 
+  let [news_articles,setnews_articles] = useState([])
+
+  async function get_news(){
+    try{
+        const news_temp = await axios.get("https://newsapi.org/v2/everything?q=job market in india&searchIn=title,content&from=2025-07-15&to=2025-07-15&sortBy=popularity&apiKey=b72b9a2bd3994c5093e902b0e70a6ff2")
+        setnews_articles(news_temp.data.articles)
+    }
+    catch(err){
+      console.log(err)
+    }
+  }
+  let attempt = 0
+  if(!news_articles.length && attempt < 5){
+    get_news()
+    attempt += 1
+  }
+
   useEffect(() => {
     const handleClick = (e) => {
       if (!signinRef.current.contains(e.target)) {
@@ -147,6 +164,7 @@ function App() {
               userName = {userName}
               setis_signin={setis_signin}
               setnewEntry={setnewEntry}
+              news_articles={news_articles}
             />
           }
         />
@@ -226,6 +244,7 @@ function App() {
               setdata = {setdata}
               setis_signin={setis_signin}
               setnewEntry={setnewEntry}
+              news_articles={news_articles}
             />
           }
         />

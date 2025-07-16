@@ -17,15 +17,12 @@ const getUserData = async (req,res)=>{
 }
 
 const createUserData = async (req,res)=>{
-    const {userName, password, email, jobs_applied,jobs_interviewing,jobs_offered,jobs_rejected} = req.body
+    const {userName, password, email, jobs_list} = req.body
     const data = {
         username:userName,
         password:password,
         email:email,
-        jobs_applied:jobs_applied,
-        jobs_interviewing:jobs_interviewing,
-        jobs_offered:jobs_offered,
-        jobs_rejected:jobs_rejected
+        jobs_list:jobs_list,
     }
     try{
         const checkerFlag = await userModel.findOne({username:userName})

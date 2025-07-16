@@ -17,50 +17,9 @@ defaults.plugins.title.font.size = 20;
 defaults.plugins.title.align = "start";
 defaults.plugins.title.color = "black";
 
-const Home = ({ data, userName, setis_signin, setnewEntry }) => {
-  // placeholder data
+const Home = ({ data, userName, setis_signin, setnewEntry, news_articles }) => {
 
-  const jobs_applied_data = [
-    { day: "1", count: 2 },
-    { day: "2", count: 8 },
-    { day: "3", count: 16 },
-    { day: "4", count: 18 },
-    { day: "5", count: 5 },
-    { day: "6", count: 9 },
-    { day: "7", count: 4 },
-    { day: "8", count: 6 },
-    { day: "9", count: 6 },
-    { day: "10", count: 18 },
-    { day: "11", count: 9 },
-    { day: "12", count: 18 },
-    { day: "13", count: 21 },
-    { day: "14", count: 3 },
-    { day: "15", count: 12 },
-    { day: "16", count: 0 },
-    { day: "17", count: 2 },
-    { day: "18", count: 2 },
-    { day: "19", count: 2 },
-    { day: "20", count: 14 },
-    { day: "21", count: 4 },
-    { day: "22", count: 8 },
-    { day: "23", count: 11 },
-    { day: "24", count: 22 },
-    { day: "25", count: 5 },
-    { day: "26", count: 7 },
-    { day: "27", count: 9 },
-    { day: "28", count: 0 },
-    { day: "29", count: 2 },
-    { day: "30", count: 4 },
-  ];
-
-  const upcoming_interviews = [
-    "TCS",
-    "Deloitte",
-    "Zoho",
-    "TCS",
-    "Deloitte",
-    "Zoho",
-  ];
+  let graph_data ={"1":0,"2":0,"3":0,"4":0,"5":0,"6":0,"7":0,"8":0,"9":0,"10":0,"11":0,"12":0,"13":0,"14":0,"15":0,"16":0,"17":0,"18":0,"19":0,"20":0,"21":0,"22":0,"23":0,"24":0,"25":0,"26":0,"27":0,"28":0,"29":0,"30":0 }
 
   const navigate = useNavigate()
 
@@ -79,8 +38,24 @@ const Home = ({ data, userName, setis_signin, setnewEntry }) => {
     ? data["jobs_list"].filter((datum) => datum["status"] === "jobs_rejected")
     : [];
 
-  let ctc_list = data ? data.jobs_list.map((job)=>{return job.ctc}) : []
+  let ctc_list = data ? data.jobs_list.map((job)=>(job.ctc)) : []
+  let upcoming_interviews_list = (data ? data.jobs_list : 0) ? data.jobs_list.filter((job)=>(job.status === "jobs_interviewing")) : []
+
+  let jobs_applied_list = (data ? data.jobs_list : 0) ? data.jobs_list.filter((job)=>(job.status === "jobs_applied")) : []
+  let applied_dates = jobs_applied_list ? jobs_applied_list.map((job)=>(job.date)) : []
+
+  let dates = applied_dates.filter((date)=>(
+          date.split("-")[1] === new Date().toISOString().split("T")[0].split('-')[1]
+  ))
   
+  dates.map((date)=>(
+    graph_data[date.split("-")[2]] += 1
+  ))
+
+  // b72b9a2bd3994c5093e902b0e70a6ff2
+  // GET https://newsapi.org/v2/everything?q=jobs+in+india&searchIn=title,content&from=2025-07-15&to=2025-07-15&sortBy=popularity&apiKey=b72b9a2bd3994c5093e902b0e70a6ff2
+  // GET https://newsapi.org/v2/everything?q=apple&from=2025-07-15&to=2025-07-15&sortBy=popularity&apiKey=b72b9a2bd3994c5093e902b0e70a6ff2
+
   function find_low_ctc(){
     let min = ctc_list[0]
     for (let i=1; i < ctc_list.length;i++){
@@ -139,11 +114,11 @@ const Home = ({ data, userName, setis_signin, setnewEntry }) => {
           <div className="card chart">
             <Line
               data={{
-                labels: jobs_applied_data.map((datum) => datum.day),
+                labels: Object.keys(graph_data),
                 datasets: [
                   {
                     label: "Number of jobs applied",
-                    data: jobs_applied_data.map((datum) => datum.count),
+                    data: Object.values(graph_data),
                     backgroundColor: "#4380f8",
                     borderColor: "#4380f8",
                   },
@@ -151,7 +126,7 @@ const Home = ({ data, userName, setis_signin, setnewEntry }) => {
               }}
               options={{
                 elements: { line: { tension: 0.3 } },
-                plugins: { title: { text: "Jobs Applied" } },
+                plugins: { title: { text: `Jobs Applied (${new Date().toDateString().split(" ")[1]})` } },
               }}
             />
           </div>
@@ -171,15 +146,15 @@ const Home = ({ data, userName, setis_signin, setnewEntry }) => {
             onClick={Upcoming_interviews}
           >
             <p>Upcoming Interviews</p>
-            {upcoming_interviews.map((company) => (
-              <p className="upcoming_company">{company}</p>
+            {upcoming_interviews_list && upcoming_interviews_list.map((datum) => (
+              <p className="upcoming_company">{datum.companyName}</p>
             ))}
           </section>
 
           <section className="news_container card" onClick={news}>
             <p>News</p>
-            {upcoming_interviews.map((company) => (
-              <p className="news">{company}</p>
+            {news_articles && news_articles.map((article) => (
+              <p className="news">{article.title}</p>
             ))}
           </section>
         </section>

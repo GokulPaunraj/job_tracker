@@ -26,7 +26,7 @@ const Sidebar = () => {
     <div className="sidebar">
       <section className="sidebar_content">
         <nav onClick={jobs_applied}>Jobs Applied</nav>
-        <nav onClick={jobs_interviewing}>Interviewing</nav>
+        <nav onClick={jobs_interviewing}>Upcoming Interviews</nav>
         <nav onClick={jobs_offered}>Offered</nav>
         <nav onClick={jobs_rejected}>Rejected</nav>
         {path.pathname !== "/" && <nav onClick={navHome}>Home</nav>}

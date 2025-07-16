@@ -5,6 +5,7 @@ const userModel = new mongoose.Schema({
     password:{type:Number,required:true},
     email:{type:String,required:true},
     jobs_list:{type:[{id:Number,companyName:String,role:String,ctc:Number,date:String,status:String}],required:true},
+    graph_data:{type:Array,required:true},
 })
 
 module.exports = mongoose.model("allData",userModel)

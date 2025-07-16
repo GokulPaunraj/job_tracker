@@ -12,7 +12,7 @@ import { LiaTimesCircleSolid } from "react-icons/lia";
 import { useEffect, useRef, useState } from "react";
 import { useLocation } from "react-router-dom";
 
-const Listing_page = ({ data, setdata,setis_signin, setnewEntry }) => {
+const Listing_page = ({ data, setdata,setis_signin, setnewEntry, news_articles }) => {
   let [page, setpage] = useState("");
   let [search, setsearch] = useState("");
   let [edit_entry,setedit_entry] = useState([])
@@ -107,10 +107,11 @@ const Listing_page = ({ data, setdata,setis_signin, setnewEntry }) => {
           )}
         </div>
         <div className="container">
-          <div className="news_container2">
+          <div className="news_container">
             {page === "news" &&
-              required_data &&
-              required_data.map((datum) => <p>{datum.news}</p>)}
+              news_articles &&
+              news_articles.map((news) => <a href={news.url}>{news.title.slice(0,100)}...</a>)
+            }
           </div>
           <div className="list_container">
             {page !== "news" &&
