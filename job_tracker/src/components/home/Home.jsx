@@ -79,6 +79,30 @@ const Home = ({ data, userName, setis_signin, setnewEntry }) => {
     ? data["jobs_list"].filter((datum) => datum["status"] === "jobs_rejected")
     : [];
 
+  let ctc_list = data ? data.jobs_list.map((job)=>{return job.ctc}) : []
+  
+  function find_low_ctc(){
+    let min = ctc_list[0]
+    for (let i=1; i < ctc_list.length;i++){
+      if(min > ctc_list[i]){
+        min = ctc_list[i]
+      }
+    }
+    return min
+  }
+  function find_high_ctc(){
+    let max = ctc_list[0]
+    for (let i=1; i < ctc_list.length;i++){
+      if(max < ctc_list[i]){
+        max = ctc_list[i]
+      }
+    }
+    return max
+  }
+
+  let low_ctc = find_low_ctc()
+  let high_ctc = find_high_ctc()
+
   const card_data = [
     { count: jobs_applied.length, status: "jobs applied" },
     { count: jobs_interviewing.length, status: "interviewing" },
@@ -137,9 +161,9 @@ const Home = ({ data, userName, setis_signin, setnewEntry }) => {
         <section className="bottom_container">
           <section className="card ctc_card">
             <p>Lowest CTC:</p>
-            <h2>2,40,000</h2>
+            <h2>{low_ctc}</h2>
             <p>Highest CTC:</p>
-            <h2>6,00,000</h2>
+            <h2>{high_ctc}</h2>
           </section>
 
           <section

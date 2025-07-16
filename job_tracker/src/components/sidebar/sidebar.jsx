@@ -28,7 +28,7 @@ const Sidebar = () => {
         <nav onClick={jobs_applied}>Jobs Applied</nav>
         <nav onClick={jobs_interviewing}>Interviewing</nav>
         <nav onClick={jobs_offered}>Offered</nav>
-        <nav style={{ border: "none" }} onClick={jobs_rejected}>Rejected</nav>
+        <nav onClick={jobs_rejected}>Rejected</nav>
         {path.pathname !== "/" && <nav onClick={navHome}>Home</nav>}
       </section>
     </div>

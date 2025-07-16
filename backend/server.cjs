@@ -20,4 +20,4 @@ mongoose.connect(process.env.MONGOOSE_URL)
 
 app.use("/", router)
 app.use("/new_user", router)
-app.use("/update",router)
+app.use("/update", router)

@@ -1,57 +1,69 @@
-import { useState } from "react";
-import "./newEntry.css";
+import { useEffect, useState } from "react";
 import axios from "axios";
 
-const NewEntry = ({ data, newEntryRef, setnewEntry }) => {
-  const [companyName, setcompanyName] = useState("");
+const EditEntry = ({data,setdata, edit_entry,editRef,setediting}) => {
+ const [companyName, setcompanyName] = useState("");
   const [role, setrole] = useState("");
   const [ctc, setctc] = useState("");
   const [date, setdate] = useState("");
   const [status, setstatus] = useState("");
 
+  useEffect(() => {
+    if (edit_entry ) {
+        setcompanyName(edit_entry[0].companyName);
+        setrole(edit_entry[0].role);
+        setctc(edit_entry[0].ctc);
+        setdate(edit_entry[0].date);
+        setstatus(edit_entry[0].status);
+    }
+  }, [edit_entry]);
+
   function handleSubmit(e) {
     e.preventDefault();
 
     try {
-      
-      let username = data ? data["username"] : localStorage.getItem("userName");
-      let new_entry = {
-        id: (data ? data["jobs_list"].length : 0),
-        companyName: companyName,
-        role: role,
-        ctc: ctc,
-        date: date,
-        status:status
-      };
-      let new_list = data ? [...data["jobs_list"],new_entry] : [new_entry]
+      if (data){
 
-        axios
-          .post("http://localhost:5000/update/jobs_list", {
-            username,
-            new_list,
-          })
-          .then((res) => {
-            if (res.data === "success") {
-              console.log(res.data);
-            } else {
-              console.log("failed");
-            }
-          })
-          .catch((err) => {
-            console.log(err);
-          });
+          let username = data["username"];
+          let new_entry = {
+            id: edit_entry[0].id,
+            companyName: companyName,
+            role: role,
+            ctc: ctc,
+            date: date,
+            status:status
+          };
+          let other_entries = (data["jobs_list"].length) ? data["jobs_list"].filter((datum)=>(datum["id"] !== edit_entry[0].id)):[]
+    
+          let new_list = [...other_entries,new_entry]
+
+            axios
+              .post("http://localhost:5000/update/jobs_list", {
+                username,
+                new_list,
+              })
+              .then((res) => {
+                if (res.data === "success") {
+                  console.log(res.data);
+                } else {
+                  console.log("failed");
+                }
+              })
+              .catch((err) => {
+                console.log(err);
+              });
+      }
     } catch (err) {
       console.log(err);
     }
-
-    setdate(null)
+    setdata(null)
     window.location.reload()
-
   }
+  
   return (
-    <section className="newEntry_popup" ref={newEntryRef}>
+    <section className="newEntry_popup" ref={editRef}>
       <div className="newEntry_content card">
-        <h1>Create New</h1>
+        <h1>Edit</h1>
         <form
           className="newEntryForm"
           onSubmit={(e) => {
@@ -126,7 +138,7 @@ const NewEntry = ({ data, newEntryRef, setnewEntry }) => {
             </select>
           </span>
           <span style={{ display: "flex", justifyContent: "center" }}>
-            <button type="submit">Create</button>
+            <button type="submit">Edit</button>
           </span>
         </form>
       </div>
@@ -134,4 +146,4 @@ const NewEntry = ({ data, newEntryRef, setnewEntry }) => {
   );
 };
 
-export default NewEntry;
+export default EditEntry

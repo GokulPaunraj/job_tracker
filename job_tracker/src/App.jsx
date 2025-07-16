@@ -157,6 +157,7 @@ function App() {
           element={
             <ListingPage
               data={data}
+              setdata = {setdata}
               setis_signin={setis_signin}
               setnewEntry={setnewEntry}
             />
@@ -167,6 +168,7 @@ function App() {
           element={
             <ListingPage
               data={data}
+              setdata = {setdata}
               setis_signin={setis_signin}
               setnewEntry={setnewEntry}
             />
@@ -177,6 +179,7 @@ function App() {
           element={
             <ListingPage
               data={data}
+              setdata = {setdata}
               setis_signin={setis_signin}
               setnewEntry={setnewEntry}
             />
@@ -187,6 +190,7 @@ function App() {
           element={
             <ListingPage
               data={data}
+              setdata = {setdata}
               setis_signin={setis_signin}
               setnewEntry={setnewEntry}
             />
@@ -197,6 +201,7 @@ function App() {
           element={
             <ListingPage
               data={data}
+              setdata = {setdata}
               setis_signin={setis_signin}
               setnewEntry={setnewEntry}
             />
@@ -207,6 +212,7 @@ function App() {
           element={
             <ListingPage
               data={data}
+              setdata = {setdata}
               setis_signin={setis_signin}
               setnewEntry={setnewEntry}
             />
@@ -217,6 +223,7 @@ function App() {
           element={
             <ListingPage
               data={data}
+              setdata = {setdata}
               setis_signin={setis_signin}
               setnewEntry={setnewEntry}
             />
