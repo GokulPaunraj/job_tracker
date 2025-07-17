@@ -17,12 +17,13 @@ const getUserData = async (req,res)=>{
 }
 
 const createUserData = async (req,res)=>{
-    const {userName, password, email, jobs_list} = req.body
+    const {userName, password, email, jobs_list, jobs_history} = req.body
     const data = {
         username:userName,
         password:password,
         email:email,
         jobs_list:jobs_list,
+        jobs_history : jobs_history
     }
     try{
         const checkerFlag = await userModel.findOne({username:userName})
@@ -40,7 +41,7 @@ const createUserData = async (req,res)=>{
 }
 
 const updateJobsList = async (req,res)=>{
-    const {username, new_list, status} = req.body
+    const {username, new_list} = req.body
     try{
         await userModel.updateOne({username:username},{$set:{jobs_list:new_list}})
         res.json("success")
@@ -49,5 +50,15 @@ const updateJobsList = async (req,res)=>{
         res.json(err)
     }
 }
+const updateJobsHistory = async (req,res)=>{
+    const {username, new_history_list} = req.body
+    try{
+        await userModel.updateOne({username:username},{$set:{jobs_history:new_history_list}})
+        res.json("success")
+    }
+    catch(err){
+        res.json(err)
+    }
+}
 
-module.exports = {getUserData, createUserData, updateJobsList}
+module.exports = {getUserData, createUserData, updateJobsList, updateJobsHistory}

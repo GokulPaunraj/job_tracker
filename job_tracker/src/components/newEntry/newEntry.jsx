@@ -9,7 +9,7 @@ const NewEntry = ({ data, newEntryRef, setnewEntry }) => {
   const [date, setdate] = useState("");
   const [status, setstatus] = useState("");
 
-  function handleSubmit(e) {
+  async function handleSubmit(e) {
     e.preventDefault();
 
     try {
@@ -24,15 +24,32 @@ const NewEntry = ({ data, newEntryRef, setnewEntry }) => {
         status:status
       };
       let new_list = data ? [...data["jobs_list"],new_entry] : [new_entry]
+      let new_history_list = data ? [...data["jobs_history"],new_entry] : [new_entry]
 
-        axios
+      await  axios
           .post("http://localhost:5000/update/jobs_list", {
             username,
             new_list,
           })
           .then((res) => {
             if (res.data === "success") {
-              console.log(res.data);
+              console.log("success");
+            } else {
+              console.log("failed");
+            }
+          })
+          .catch((err) => {
+            console.log(err);
+          });
+
+      await axios
+          .post("http://localhost:5000/update/jobs_history", {
+            username,
+            new_history_list,
+          })
+          .then((res) => {
+            if (res.data === "success") {
+              console.log("success--history");
             } else {
               console.log("failed");
             }

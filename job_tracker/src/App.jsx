@@ -1,7 +1,7 @@
 import "./App.css";
 
 import { useEffect, useRef, useState } from "react";
-import axios from 'axios'
+import axios from "axios";
 
 import Home from "./components/home/Home";
 import ListingPage from "./components/listing_page/listing_page";
@@ -22,7 +22,7 @@ function App() {
   const signupRef = useRef();
   const newEntryRef = useRef();
 
-  const [userName, setuserName] = useState(localStorage.getItem('userName'));
+  const [userName, setuserName] = useState(localStorage.getItem("userName"));
   const [password, setpassword] = useState(0);
   const [email, setemail] = useState("");
 
@@ -38,7 +38,8 @@ function App() {
               setdata(res.data.data);
             } else {
               alert("User not found - home");
-              setis_signup(true)
+              localStorage.removeItem("userName");
+              setis_signup(true);
             }
           })
           .catch((err) => {
@@ -55,23 +56,6 @@ function App() {
     }
   }, [userName, navigate, data, setdata]);
 
-  let [news_articles,setnews_articles] = useState([])
-
-  async function get_news(){
-    try{
-        const news_temp = await axios.get("https://newsapi.org/v2/everything?q=job market in india&searchIn=title,content&from=2025-07-15&to=2025-07-15&sortBy=popularity&apiKey=b72b9a2bd3994c5093e902b0e70a6ff2")
-        setnews_articles(news_temp.data.articles)
-    }
-    catch(err){
-      console.log(err)
-    }
-  }
-  let attempt = 0
-  if(!news_articles.length && attempt < 5){
-    get_news()
-    attempt += 1
-  }
-
   useEffect(() => {
     const handleClick = (e) => {
       if (!signinRef.current.contains(e.target)) {
@@ -82,7 +66,7 @@ function App() {
       document.addEventListener("mousedown", handleClick);
     }
 
-    setuserName(localStorage.getItem("userName"))
+    setuserName(localStorage.getItem("userName"));
 
     return () => {
       document.removeEventListener("mousedown", handleClick);
@@ -122,37 +106,39 @@ function App() {
   return (
     <div className="App">
       {/* {POP UP} */}
-      {newEntry && 
-          <NewEntry data={data} newEntryRef={newEntryRef} setnewEntry={setnewEntry} />
-      }
-      {
-        is_signin && 
-          <Signin
-              setdata={setdata}
-              userName = {userName}
-              password = {password}
-              setuserName = {setuserName}
-              setpassword = {setpassword}
-              signinRef = {signinRef}
-              setis_signin={setis_signin}
-              setis_signup={setis_signup}
-            />
-      }
-      {
-        is_signup &&
-          <Signup
-              signupRef={signupRef}
-              setis_signin={setis_signin}
-              setis_signup={setis_signup}
-              data = {data}
-              userName = {userName}
-              password = {password}
-              email= {email}
-              setuserName = {setuserName}
-              setpassword = {setpassword}
-              setemail={setemail}
-            />
-      }
+      {newEntry && (
+        <NewEntry
+          data={data}
+          newEntryRef={newEntryRef}
+          setnewEntry={setnewEntry}
+        />
+      )}
+      {is_signin && (
+        <Signin
+          setdata={setdata}
+          userName={userName}
+          password={password}
+          setuserName={setuserName}
+          setpassword={setpassword}
+          signinRef={signinRef}
+          setis_signin={setis_signin}
+          setis_signup={setis_signup}
+        />
+      )}
+      {is_signup && (
+        <Signup
+          signupRef={signupRef}
+          setis_signin={setis_signin}
+          setis_signup={setis_signup}
+          data={data}
+          userName={userName}
+          password={password}
+          email={email}
+          setuserName={setuserName}
+          setpassword={setpassword}
+          setemail={setemail}
+        />
+      )}
       {/* Creating Routes */}
       <Routes>
         <Route
@@ -161,21 +147,18 @@ function App() {
             <Home
               data={data}
               setdata={setdata}
-              userName = {userName}
+              userName={userName}
               setis_signin={setis_signin}
               setnewEntry={setnewEntry}
-              news_articles={news_articles}
             />
           }
         />
-
-        {/* <Route path="/update/jobs_list" element={<NewEntry data={data} newEntryRef={newEntryRef} setnewEntry={setnewEntry} />} /> */}
         <Route
           path="/jobs"
           element={
             <ListingPage
               data={data}
-              setdata = {setdata}
+              setdata={setdata}
               setis_signin={setis_signin}
               setnewEntry={setnewEntry}
             />
@@ -186,7 +169,7 @@ function App() {
           element={
             <ListingPage
               data={data}
-              setdata = {setdata}
+              setdata={setdata}
               setis_signin={setis_signin}
               setnewEntry={setnewEntry}
             />
@@ -197,7 +180,7 @@ function App() {
           element={
             <ListingPage
               data={data}
-              setdata = {setdata}
+              setdata={setdata}
               setis_signin={setis_signin}
               setnewEntry={setnewEntry}
             />
@@ -208,7 +191,7 @@ function App() {
           element={
             <ListingPage
               data={data}
-              setdata = {setdata}
+              setdata={setdata}
               setis_signin={setis_signin}
               setnewEntry={setnewEntry}
             />
@@ -219,32 +202,20 @@ function App() {
           element={
             <ListingPage
               data={data}
-              setdata = {setdata}
+              setdata={setdata}
               setis_signin={setis_signin}
               setnewEntry={setnewEntry}
             />
           }
         />
         <Route
-          path="/upcoming_interviews"
+          path="/interviews_this_month"
           element={
             <ListingPage
               data={data}
-              setdata = {setdata}
+              setdata={setdata}
               setis_signin={setis_signin}
               setnewEntry={setnewEntry}
-            />
-          }
-        />
-        <Route
-          path="/news"
-          element={
-            <ListingPage
-              data={data}
-              setdata = {setdata}
-              setis_signin={setis_signin}
-              setnewEntry={setnewEntry}
-              news_articles={news_articles}
             />
           }
         />

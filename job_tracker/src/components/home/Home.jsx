@@ -17,11 +17,41 @@ defaults.plugins.title.font.size = 20;
 defaults.plugins.title.align = "start";
 defaults.plugins.title.color = "black";
 
-const Home = ({ data, userName, setis_signin, setnewEntry, news_articles }) => {
+const Home = ({ data, setdata, setis_signin, setnewEntry }) => {
+  let graph_data = {
+    1: 0,
+    2: 0,
+    3: 0,
+    4: 0,
+    5: 0,
+    6: 0,
+    7: 0,
+    8: 0,
+    9: 0,
+    10: 0,
+    11: 0,
+    12: 0,
+    13: 0,
+    14: 0,
+    15: 0,
+    16: 0,
+    17: 0,
+    18: 0,
+    19: 0,
+    20: 0,
+    21: 0,
+    22: 0,
+    23: 0,
+    24: 0,
+    25: 0,
+    26: 0,
+    27: 0,
+    28: 0,
+    29: 0,
+    30: 0,
+  };
 
-  let graph_data ={"1":0,"2":0,"3":0,"4":0,"5":0,"6":0,"7":0,"8":0,"9":0,"10":0,"11":0,"12":0,"13":0,"14":0,"15":0,"16":0,"17":0,"18":0,"19":0,"20":0,"21":0,"22":0,"23":0,"24":0,"25":0,"26":0,"27":0,"28":0,"29":0,"30":0 }
-
-  const navigate = useNavigate()
+  const navigate = useNavigate();
 
   let jobs_applied = (data ? data["jobs_list"].length : 0)
     ? data["jobs_list"].filter((datum) => datum["status"] === "jobs_applied")
@@ -38,45 +68,53 @@ const Home = ({ data, userName, setis_signin, setnewEntry, news_articles }) => {
     ? data["jobs_list"].filter((datum) => datum["status"] === "jobs_rejected")
     : [];
 
-  let ctc_list = data ? data.jobs_list.map((job)=>(job.ctc)) : []
-  let upcoming_interviews_list = (data ? data.jobs_list : 0) ? data.jobs_list.filter((job)=>(job.status === "jobs_interviewing")) : []
+  let ctc_list = data ? data.jobs_list.map((job) => job.ctc) : [];
 
-  let jobs_applied_list = (data ? data.jobs_list : 0) ? data.jobs_list.filter((job)=>(job.status === "jobs_applied")) : []
-  let applied_dates = jobs_applied_list ? jobs_applied_list.map((job)=>(job.date)) : []
+  let applied_dates = jobs_applied ? jobs_applied.map((job) => job.date) : [];
 
-  let dates = applied_dates.filter((date)=>(
-          date.split("-")[1] === new Date().toISOString().split("T")[0].split('-')[1]
-  ))
-  
-  dates.map((date)=>(
-    graph_data[date.split("-")[2]] += 1
-  ))
+  let dates = applied_dates.filter(
+    (date) =>
+      date.split("-")[1] ===
+      new Date().toISOString().split("T")[0].split("-")[1]
+  );
 
-  // b72b9a2bd3994c5093e902b0e70a6ff2
-  // GET https://newsapi.org/v2/everything?q=jobs+in+india&searchIn=title,content&from=2025-07-15&to=2025-07-15&sortBy=popularity&apiKey=b72b9a2bd3994c5093e902b0e70a6ff2
-  // GET https://newsapi.org/v2/everything?q=apple&from=2025-07-15&to=2025-07-15&sortBy=popularity&apiKey=b72b9a2bd3994c5093e902b0e70a6ff2
+  let interviews_this_month = jobs_interviewing.filter(
+    (datum) =>
+      datum.date.split("-")[1] ===
+      new Date().toISOString().split("T")[0].split("-")[1]
+  );
 
-  function find_low_ctc(){
-    let min = ctc_list[0]
-    for (let i=1; i < ctc_list.length;i++){
-      if(min > ctc_list[i]){
-        min = ctc_list[i]
+  let jobs_this_month = 0;
+  dates.map((date) => {
+    jobs_this_month += 1;
+    return (graph_data[
+      date.split("-")[2].split("")[0] === "0"
+        ? date.split("-")[2].split("")[1]
+        : date.split("-")[2]
+    ] += 1);
+  });
+
+  function find_low_ctc() {
+    let min = ctc_list[0];
+    for (let i = 1; i < ctc_list.length; i++) {
+      if (min > ctc_list[i]) {
+        min = ctc_list[i];
       }
     }
-    return min
+    return min;
   }
-  function find_high_ctc(){
-    let max = ctc_list[0]
-    for (let i=1; i < ctc_list.length;i++){
-      if(max < ctc_list[i]){
-        max = ctc_list[i]
+  function find_high_ctc() {
+    let max = ctc_list[0];
+    for (let i = 1; i < ctc_list.length; i++) {
+      if (max < ctc_list[i]) {
+        max = ctc_list[i];
       }
     }
-    return max
+    return max;
   }
 
-  let low_ctc = find_low_ctc()
-  let high_ctc = find_high_ctc()
+  let low_ctc = find_low_ctc();
+  let high_ctc = find_high_ctc();
 
   const card_data = [
     { count: jobs_applied.length, status: "jobs applied" },
@@ -85,18 +123,17 @@ const Home = ({ data, userName, setis_signin, setnewEntry, news_articles }) => {
     { count: jobs_rejected.length, status: "jobs rejected" },
   ];
 
-  const news = () => {
-    navigate("/news");
+  const interviews_this_month_nav = () => {
+    navigate("/interviews_this_month");
   };
-  const Upcoming_interviews = () => {
-    navigate("/upcoming_interviews");
-  };
+
+  let jobs_history_list = data ? data.jobs_history : [];
 
   return (
     <div>
       {/* <p>"This is gonna be beautiful :)" </p> */}
       <Header setis_signin={setis_signin} setnewEntry={setnewEntry} />
-      <Sidebar />
+      <Sidebar setdata={setdata} />
       <div className="main_content">
         {/* Cards section */}
         <section className="card_container">
@@ -126,7 +163,13 @@ const Home = ({ data, userName, setis_signin, setnewEntry, news_articles }) => {
               }}
               options={{
                 elements: { line: { tension: 0.3 } },
-                plugins: { title: { text: `Jobs Applied (${new Date().toDateString().split(" ")[1]})` } },
+                plugins: {
+                  title: {
+                    text: `Jobs Applied (${
+                      new Date().toDateString().split(" ")[1]
+                    })`,
+                  },
+                },
               }}
             />
           </div>
@@ -143,19 +186,24 @@ const Home = ({ data, userName, setis_signin, setnewEntry, news_articles }) => {
 
           <section
             className="upcoming_interviews card"
-            onClick={Upcoming_interviews}
+            onClick={interviews_this_month_nav}
           >
-            <p>Upcoming Interviews</p>
-            {upcoming_interviews_list && upcoming_interviews_list.map((datum) => (
-              <p className="upcoming_company">{datum.companyName}</p>
-            ))}
+            <p>Interviews this month:</p>
+            {interviews_this_month.length
+              ? interviews_this_month.map((datum) => (
+                  <p className="upcoming_company">
+                    {datum.companyName} -{" "}
+                    {datum.date.split("-").reverse().join("/")}
+                  </p>
+                ))
+              : "Nothing to show"}
           </section>
 
-          <section className="news_container card" onClick={news}>
-            <p>News</p>
-            {news_articles && news_articles.map((article) => (
-              <p className="news">{article.title}</p>
-            ))}
+          <section className="card ctc_card">
+            <p>Total jobs (lifetime):</p>
+            <h2>{jobs_history_list.length}</h2>
+            <p>Jobs applied(this month):</p>
+            <h2>{jobs_this_month}</h2>
           </section>
         </section>
       </div>

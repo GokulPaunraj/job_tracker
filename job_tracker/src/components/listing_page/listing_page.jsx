@@ -12,7 +12,7 @@ import { LiaTimesCircleSolid } from "react-icons/lia";
 import { useEffect, useRef, useState } from "react";
 import { useLocation } from "react-router-dom";
 
-const Listing_page = ({ data, setdata,setis_signin, setnewEntry, news_articles }) => {
+const Listing_page = ({ data, setdata,setis_signin, setnewEntry }) => {
   let [page, setpage] = useState("");
   let [search, setsearch] = useState("");
   let [edit_entry,setedit_entry] = useState([])
@@ -28,7 +28,10 @@ const Listing_page = ({ data, setdata,setis_signin, setnewEntry, news_articles }
 
   }, [data, path.pathname]);
 
-  let required_data = ((data ? data["jobs_list"].length : 0) ? data["jobs_list"].filter((datum)=>(datum["status"]===page)) : [] );
+  let jobs_interviewing = data ? data["jobs_list"].length : 0 ? data["jobs_list"].filter((datum) => datum["status"] === "jobs_interviewing") : [];
+  let interviews_this_month = jobs_interviewing.length ? jobs_interviewing.filter((datum)=>(datum.date.split("-")[1] === new Date().toISOString().split("T")[0].split('-')[1])) : []
+
+  let required_data = (page === "interviews_this_month") ? interviews_this_month : ((data ? data["jobs_list"].length : 0) ? data["jobs_list"].filter((datum)=>(datum["status"]===page)) : [] );
 
   const handleEdit = (id)=>{
     setedit_entry((data ? data["jobs_list"].length : 0) ? data["jobs_list"].filter((datum)=>(datum["id"]=== id)) : [] );
@@ -88,14 +91,13 @@ const Listing_page = ({ data, setdata,setis_signin, setnewEntry, news_articles }
       {/* <p>"This is gonna be beautiful :)" </p> */}
 
       <Header setis_signin={setis_signin} setnewEntry={setnewEntry} />
-      <Sidebar />
+      <Sidebar setdata={setdata} />
       <div className="main_content">
         {/* Cards section */}
         <div className="list_header">
           <h1 className="page_title">
             {page.split("_").join(" ").toUpperCase()}
           </h1>
-          {page !== "news" && (
             <div className="searchbar">
               <input
                 id="searchbar"
@@ -104,18 +106,10 @@ const Listing_page = ({ data, setdata,setis_signin, setnewEntry, news_articles }
                 onChange={(e) => setsearch(e.target.value)}
               />
             </div>
-          )}
         </div>
         <div className="container">
-          <div className="news_container">
-            {page === "news" &&
-              news_articles &&
-              news_articles.map((news) => <a href={news.url}>{news.title.slice(0,100)}...</a>)
-            }
-          </div>
           <div className="list_container">
-            {page !== "news" &&
-              required_data &&
+            {required_data &&
               required_data.map((datum) => (
                 <section className="list">
                   <div className="list_content card">

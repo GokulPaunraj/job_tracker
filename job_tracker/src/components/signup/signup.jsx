@@ -6,15 +6,16 @@ const Signup = ({userName, password, setuserName, setpassword, email, setemail, 
   async function handleSubmit(e) {
     e.preventDefault();
 
-    let jobs_list = [{}]
+    let jobs_list = []
+    let jobs_history = []
 
     try {
-      await axios.post("http://localhost:5000/new_user/signup/",{ userName, password, email, jobs_list})
+      await axios.post("http://localhost:5000/new_user/signup/",{ userName, password, email, jobs_list,jobs_history})
                  .then((res)=>{
                     if(res.data === "success"){
                       alert("Hurray! You have successfully signed up")
                       localStorage.setItem("userName",userName)
-                      setis_signin(true)
+                      setis_signup(false)
                     }
                     else if (res.data === "exist"){
                       alert("Username exist. Try a different one")

@@ -1,9 +1,8 @@
-import React from "react";
 import "./sidebar.css";
 import { useLocation, useNavigate } from "react-router-dom";
 
-const Sidebar = () => {
-  const path = useLocation()
+const Sidebar = ({ setdata }) => {
+  const path = useLocation();
   const navigate = useNavigate();
 
   const navHome = () => {
@@ -22,6 +21,12 @@ const Sidebar = () => {
     navigate("/jobs_rejected");
   };
 
+  const handleLogout = () => {
+    setdata(null);
+    localStorage.removeItem("userName");
+    window.location.reload();
+  };
+
   return (
     <div className="sidebar">
       <section className="sidebar_content">
@@ -30,6 +35,17 @@ const Sidebar = () => {
         <nav onClick={jobs_offered}>Offered</nav>
         <nav onClick={jobs_rejected}>Rejected</nav>
         {path.pathname !== "/" && <nav onClick={navHome}>Home</nav>}
+        <nav
+          style={{
+            flexGrow: "1",
+            position: "absolute",
+            bottom: "1rem",
+            width: "70%",
+          }}
+          onClick={handleLogout}
+        >
+          Log out
+        </nav>
       </section>
     </div>
   );
