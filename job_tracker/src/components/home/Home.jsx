@@ -8,6 +8,7 @@ import Card from "../card/card";
 import { defaults } from "chart.js/auto";
 import { Line } from "react-chartjs-2";
 import { useNavigate } from "react-router-dom";
+import { useState } from "react";
 
 defaults.maintainAspectRatio = false;
 defaults.responsive = true;
@@ -17,39 +18,8 @@ defaults.plugins.title.font.size = 20;
 defaults.plugins.title.align = "start";
 defaults.plugins.title.color = "black";
 
-const Home = ({ data, setdata, setis_signin, setnewEntry }) => {
-  let graph_data = {
-    1: 0,
-    2: 0,
-    3: 0,
-    4: 0,
-    5: 0,
-    6: 0,
-    7: 0,
-    8: 0,
-    9: 0,
-    10: 0,
-    11: 0,
-    12: 0,
-    13: 0,
-    14: 0,
-    15: 0,
-    16: 0,
-    17: 0,
-    18: 0,
-    19: 0,
-    20: 0,
-    21: 0,
-    22: 0,
-    23: 0,
-    24: 0,
-    25: 0,
-    26: 0,
-    27: 0,
-    28: 0,
-    29: 0,
-    30: 0,
-  };
+const Home = ({ data, setdata, setis_signin, setnewEntry, sidebar, setsidebar }) => {
+  let graph_data = {1: 0,2: 0,3: 0,4: 0,5: 0,6: 0,7: 0,8: 0,9: 0,10: 0,11: 0,12: 0,13: 0,14: 0,15: 0,16: 0,17: 0,18: 0,19: 0,20: 0,21: 0,22: 0,23: 0,24: 0,25: 0,26: 0,27: 0,28: 0,29: 0,30: 0,};
 
   const navigate = useNavigate();
 
@@ -131,9 +101,9 @@ const Home = ({ data, setdata, setis_signin, setnewEntry }) => {
 
   return (
     <div>
-      {/* <p>"This is gonna be beautiful :)" </p> */}
-      <Header setis_signin={setis_signin} setnewEntry={setnewEntry} />
-      <Sidebar setdata={setdata} />
+      <Header setis_signin={setis_signin} setnewEntry={setnewEntry} sidebar={sidebar} setsidebar={setsidebar} />
+      <p>"This is gonna be beautiful :)" </p>
+      <Sidebar setdata={setdata} sidebar={sidebar} />
       <div className="main_content">
         {/* Cards section */}
         <section className="card_container">
@@ -175,13 +145,20 @@ const Home = ({ data, setdata, setis_signin, setnewEntry }) => {
           </div>
         </section>
 
-        {/* bottom section */}
+        {/* bottom section  */}
         <section className="bottom_container">
-          <section className="card ctc_card">
-            <p>Lowest CTC:</p>
+          <section className="card ctc_card1">
             <h2>{low_ctc}</h2>
-            <p>Highest CTC:</p>
+            <p>Lowest CTC:</p>
             <h2>{high_ctc}</h2>
+            <p>Highest CTC:</p>
+          </section>
+
+          <section className="card ctc_card2">
+            <h2>{jobs_history_list.length}</h2>
+            <p>Total jobs (lifetime):</p>
+            <h2>{jobs_this_month}</h2>
+            <p>Jobs applied(this month):</p>
           </section>
 
           <section
@@ -199,12 +176,6 @@ const Home = ({ data, setdata, setis_signin, setnewEntry }) => {
               : "Nothing to show"}
           </section>
 
-          <section className="card ctc_card">
-            <p>Total jobs (lifetime):</p>
-            <h2>{jobs_history_list.length}</h2>
-            <p>Jobs applied(this month):</p>
-            <h2>{jobs_this_month}</h2>
-          </section>
         </section>
       </div>
     </div>

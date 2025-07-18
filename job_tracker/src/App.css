@@ -11,6 +11,7 @@
 .App {
   text-align: center;
   height: 100%;
+  background-color: rgb(239, 238, 238);
   /* applying google font */
   font-family: "Montserrat", sans-serif;
   font-optical-sizing: auto;
@@ -31,17 +32,10 @@ button{
   border: none;
 }
 
-.newEntry_popup{
-  /* alignment */
-  height: 60vh;
-  width: 40vw;
-  position: absolute;
-  top: 7rem;
-  left: 30vw;
-  z-index: 1000;
-
-  & .newEntry_content{
-    height: 100%;
-    width: 100%;
+@media (max-widht:425px){
+  button{
+    width: 16rem;
+    height: 4rem;
+    border-radius: 0.5em;
   }
 }

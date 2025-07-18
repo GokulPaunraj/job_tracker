@@ -79,6 +79,7 @@ const NewEntry = ({ data, newEntryRef, setnewEntry }) => {
             <label htmlFor="companyName">Company Name</label>
             <input
               id="companyName"
+              type="text"
               placeholder="eg : TCS"
               value={companyName}
               onChange={(e) => {
@@ -143,7 +144,7 @@ const NewEntry = ({ data, newEntryRef, setnewEntry }) => {
             </select>
           </span>
           <span style={{ display: "flex", justifyContent: "center" }}>
-            <button type="submit">Create</button>
+            <button type="submit" className="btn">Create</button>
           </span>
         </form>
       </div>

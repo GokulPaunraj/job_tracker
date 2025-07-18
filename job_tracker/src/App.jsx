@@ -16,6 +16,7 @@ function App() {
   const [is_signin, setis_signin] = useState(false);
   const [is_signup, setis_signup] = useState(false);
   const [newEntry, setnewEntry] = useState(false);
+  let [sidebar,setsidebar] = useState(false)
   const [data, setdata] = useState(null);
 
   const signinRef = useRef();
@@ -150,17 +151,8 @@ function App() {
               userName={userName}
               setis_signin={setis_signin}
               setnewEntry={setnewEntry}
-            />
-          }
-        />
-        <Route
-          path="/jobs"
-          element={
-            <ListingPage
-              data={data}
-              setdata={setdata}
-              setis_signin={setis_signin}
-              setnewEntry={setnewEntry}
+              sidebar={sidebar}
+              setsidebar={setsidebar}
             />
           }
         />
@@ -172,6 +164,8 @@ function App() {
               setdata={setdata}
               setis_signin={setis_signin}
               setnewEntry={setnewEntry}
+              sidebar={sidebar}
+              setsidebar={setsidebar}
             />
           }
         />
@@ -183,6 +177,8 @@ function App() {
               setdata={setdata}
               setis_signin={setis_signin}
               setnewEntry={setnewEntry}
+              sidebar={sidebar}
+              setsidebar={setsidebar}
             />
           }
         />
@@ -194,6 +190,8 @@ function App() {
               setdata={setdata}
               setis_signin={setis_signin}
               setnewEntry={setnewEntry}
+              sidebar={sidebar}
+              setsidebar={setsidebar}
             />
           }
         />
@@ -205,6 +203,8 @@ function App() {
               setdata={setdata}
               setis_signin={setis_signin}
               setnewEntry={setnewEntry}
+              sidebar={sidebar}
+              setsidebar={setsidebar}
             />
           }
         />
@@ -216,6 +216,8 @@ function App() {
               setdata={setdata}
               setis_signin={setis_signin}
               setnewEntry={setnewEntry}
+              sidebar={sidebar}
+              setsidebar={setsidebar}
             />
           }
         />

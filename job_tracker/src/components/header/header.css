@@ -39,9 +39,17 @@
         align-items: center;
     }
 }
+.hamburger_icon{
+        display:none
+    }
 
 @media (max-width : 425px){
-    .header_content .jobs{
-        display: none;
+    .hamburger_icon{
+        display:block
+    }
+}
+@media (min-width:425px) and (max-width:1180px){
+    .hamburger_icon{
+        display:block
     }
 }

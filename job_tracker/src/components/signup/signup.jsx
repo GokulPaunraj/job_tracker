@@ -78,9 +78,10 @@ const Signup = ({userName, password, setuserName, setpassword, email, setemail, 
             />
           </span>
           <span style={{ display: "flex", justifyContent: "center" }}>
-            <button type="submit">SignUp</button>
+            <button className="btn" type="submit">SignUp</button>
           </span>
         </form>
+        <span className="bottom">
         <div>Continue with Google</div>
         <div style={{ fontSize: "0.7em", margin: "1em" }}>
           Already have an account?{" "}
@@ -94,6 +95,7 @@ const Signup = ({userName, password, setuserName, setpassword, email, setemail, 
             Sign In
           </span>
         </div>
+        </span>
       </div>
     </section>
   );

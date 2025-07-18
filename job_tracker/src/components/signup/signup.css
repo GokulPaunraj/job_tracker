@@ -55,3 +55,74 @@
         font-size: 1.1rem;
     }
 }
+
+@media (max-width:425px){
+    .signup_popup{
+        /* alignment */
+        height: 50%;
+        width: 70%;
+        position: absolute;
+        top: 6rem;
+        left: 3.7rem;
+
+        & .signup_content{
+            height: clamp(50vh,55vh,70vh);
+            & form{
+                position: relative;
+                left: 3.5rem;
+            }
+        }
+        }
+
+        .signupForm{
+            &.btn{
+                height: 2.5rem;
+                font-size: 1rem;
+            }
+        
+            &.formField{
+            
+                & input,label{
+                    font-size: 1.2em;
+                }
+            }
+    }
+        .bottom{
+            font-size: 1rem;
+        }
+
+}
+@media (min-width:425px) and (max-width:1180px){
+    .signup_popup{
+        /* alignment */
+        height: 50%;
+        width: 70%;
+        position: absolute;
+        top: 6rem;
+        left: 8rem;
+
+        & .signup_content{
+            height: clamp(55vh,72vh,75vh);
+            & form{
+                position: relative;
+                left: 7rem;
+            }
+        }
+        }
+
+        .signupForm {
+            & .btn{
+                height: 3.5rem;
+                font-size: 1.5rem;
+            }
+            & .formField{
+                
+                & input,label{
+                    font-size: 2em;
+                }
+            }
+        }
+        .bottom{
+            font-size: 2rem;
+        }
+}

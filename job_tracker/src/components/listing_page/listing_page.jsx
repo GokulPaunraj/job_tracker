@@ -12,7 +12,7 @@ import { LiaTimesCircleSolid } from "react-icons/lia";
 import { useEffect, useRef, useState } from "react";
 import { useLocation } from "react-router-dom";
 
-const Listing_page = ({ data, setdata,setis_signin, setnewEntry }) => {
+const Listing_page = ({ data, setdata,setis_signin, setnewEntry, sidebar, setsidebar }) => {
   let [page, setpage] = useState("");
   let [search, setsearch] = useState("");
   let [edit_entry,setedit_entry] = useState([])
@@ -32,6 +32,9 @@ const Listing_page = ({ data, setdata,setis_signin, setnewEntry }) => {
   let interviews_this_month = jobs_interviewing.length ? jobs_interviewing.filter((datum)=>(datum.date.split("-")[1] === new Date().toISOString().split("T")[0].split('-')[1])) : []
 
   let required_data = (page === "interviews_this_month") ? interviews_this_month : ((data ? data["jobs_list"].length : 0) ? data["jobs_list"].filter((datum)=>(datum["status"]===page)) : [] );
+  let search_term = search.toUpperCase()
+  required_data = search ? required_data.filter((datum)=>((datum.companyName.toUpperCase().includes(search_term) || datum.role.toUpperCase().includes(search_term) || datum.ctc.toString().toUpperCase().includes(search_term) || datum.date.toUpperCase().includes(search_term)))) 
+                         : required_data;
 
   const handleEdit = (id)=>{
     setedit_entry((data ? data["jobs_list"].length : 0) ? data["jobs_list"].filter((datum)=>(datum["id"]=== id)) : [] );
@@ -88,10 +91,8 @@ const Listing_page = ({ data, setdata,setis_signin, setnewEntry }) => {
 
   return (
     <div>
-      {/* <p>"This is gonna be beautiful :)" </p> */}
-
-      <Header setis_signin={setis_signin} setnewEntry={setnewEntry} />
-      <Sidebar setdata={setdata} />
+      <Header setis_signin={setis_signin} setnewEntry={setnewEntry} sidebar={sidebar} setsidebar={setsidebar} />
+      <Sidebar setdata={setdata} sidebar={sidebar} />
       <div className="main_content">
         {/* Cards section */}
         <div className="list_header">
@@ -112,6 +113,10 @@ const Listing_page = ({ data, setdata,setis_signin, setnewEntry }) => {
             {required_data &&
               required_data.map((datum) => (
                 <section className="list">
+                  <div className="list_buttons">
+                      <span onClick={()=>{handleEdit(datum.id);setediting(true)}}><LiaPencilAltSolid /></span>
+                      <span onClick={(e)=>{handleDelete(e,datum.id)}}><LiaTimesCircleSolid /></span>
+                  </div>
                   <div className="list_content card">
                       <p>
                         <span style={{ fontWeight: "700" }}>Company : </span>
@@ -129,10 +134,6 @@ const Listing_page = ({ data, setdata,setis_signin, setnewEntry }) => {
                         <span style={{ fontWeight: "700" }}>Date : </span>
                         {datum.date}
                       </p>
-                  </div>
-                  <div className="list_buttons">
-                      <span onClick={()=>{handleEdit(datum.id);setediting(true)}}><LiaPencilAltSolid /></span>
-                      <span onClick={(e)=>{handleDelete(e,datum.id)}}><LiaTimesCircleSolid /></span>
                   </div>
                 </section>
               ))}

@@ -45,9 +45,10 @@ const Signin = ({ password, setuserName, setpassword, signinRef, setis_signin, s
             />
           </span>
           <span style={{ display: "flex", justifyContent: "center" }}>
-            <button type="submit">SignIn</button>
+            <button className="btn" type="submit">SignIn</button>
           </span>
         </form>
+        <span className="bottom">
         <div>Continue with Google</div>
         <div style={{ fontSize: "0.7em", margin: "1em" }}>
           Don't have an account?{" "}
@@ -61,6 +62,7 @@ const Signin = ({ password, setuserName, setpassword, signinRef, setis_signin, s
             Sign Up
           </span>
         </div>
+        </span>
       </div>
     </section>
   );

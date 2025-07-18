@@ -1,7 +1,7 @@
 import "./sidebar.css";
 import { useLocation, useNavigate } from "react-router-dom";
 
-const Sidebar = ({ setdata }) => {
+const Sidebar = ({ setdata, sidebar }) => {
   const path = useLocation();
   const navigate = useNavigate();
 
@@ -28,7 +28,7 @@ const Sidebar = ({ setdata }) => {
   };
 
   return (
-    <div className="sidebar">
+    <div className={`sidebar ${sidebar ? "active" :""}`}>
       <section className="sidebar_content">
         <nav onClick={jobs_applied}>Jobs Applied</nav>
         <nav onClick={jobs_interviewing}>Upcoming Interviews</nav>
