@@ -22,6 +22,7 @@ function App() {
   const signinRef = useRef();
   const signupRef = useRef();
   const newEntryRef = useRef();
+  const siderbarRef = useRef();
 
   const [userName, setuserName] = useState(localStorage.getItem("userName"));
   const [password, setpassword] = useState(0);
@@ -104,6 +105,21 @@ function App() {
     };
   }, [newEntry]);
 
+  useEffect(() => {
+    const handleClick = (e) => {
+      if (!siderbarRef.current.contains(e.target)) {
+        setsidebar(false);
+      }
+    };
+    if (sidebar) {
+      document.addEventListener("mousedown", handleClick);
+    }
+
+    return () => {
+      document.removeEventListener("mousedown", handleClick);
+    };
+  }, [sidebar]);
+
   return (
     <div className="App">
       {/* {POP UP} */}
@@ -153,6 +169,7 @@ function App() {
               setnewEntry={setnewEntry}
               sidebar={sidebar}
               setsidebar={setsidebar}
+              siderbarRef = {siderbarRef}
             />
           }
         />
@@ -166,6 +183,7 @@ function App() {
               setnewEntry={setnewEntry}
               sidebar={sidebar}
               setsidebar={setsidebar}
+              siderbarRef = {siderbarRef}
             />
           }
         />
@@ -179,6 +197,7 @@ function App() {
               setnewEntry={setnewEntry}
               sidebar={sidebar}
               setsidebar={setsidebar}
+              siderbarRef = {siderbarRef}
             />
           }
         />
@@ -192,6 +211,7 @@ function App() {
               setnewEntry={setnewEntry}
               sidebar={sidebar}
               setsidebar={setsidebar}
+              siderbarRef = {siderbarRef}
             />
           }
         />
@@ -205,6 +225,7 @@ function App() {
               setnewEntry={setnewEntry}
               sidebar={sidebar}
               setsidebar={setsidebar}
+              siderbarRef = {siderbarRef}
             />
           }
         />
@@ -218,6 +239,7 @@ function App() {
               setnewEntry={setnewEntry}
               sidebar={sidebar}
               setsidebar={setsidebar}
+              siderbarRef = {siderbarRef}
             />
           }
         />

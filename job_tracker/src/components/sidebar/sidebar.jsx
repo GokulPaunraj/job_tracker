@@ -1,24 +1,29 @@
 import "./sidebar.css";
 import { useLocation, useNavigate } from "react-router-dom";
 
-const Sidebar = ({ setdata, sidebar }) => {
+const Sidebar = ({ setdata, sidebar, setsidebar, siderbarRef }) => {
   const path = useLocation();
   const navigate = useNavigate();
 
   const navHome = () => {
     navigate("/");
+    setsidebar(false)
   };
   const jobs_applied = () => {
     navigate("/jobs_applied");
+    setsidebar(false)
   };
   const jobs_interviewing = () => {
     navigate("/jobs_interviewing");
+    setsidebar(false)
   };
   const jobs_offered = () => {
     navigate("/jobs_offered");
+    setsidebar(false)
   };
   const jobs_rejected = () => {
     navigate("/jobs_rejected");
+    setsidebar(false)
   };
 
   const handleLogout = () => {
@@ -28,7 +33,7 @@ const Sidebar = ({ setdata, sidebar }) => {
   };
 
   return (
-    <div className={`sidebar ${sidebar ? "active" :""}`}>
+    <div className={`sidebar ${sidebar ? "active" :""}`} ref={siderbarRef}>
       <section className="sidebar_content">
         <nav onClick={jobs_applied}>Jobs Applied</nav>
         <nav onClick={jobs_interviewing}>Upcoming Interviews</nav>

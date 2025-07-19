@@ -7,12 +7,13 @@ import axios from "axios"
 
 import { LiaPencilAltSolid } from "react-icons/lia";
 import { LiaTimesCircleSolid } from "react-icons/lia";
+import {gsap} from "gsap"
 
 
 import { useEffect, useRef, useState } from "react";
 import { useLocation } from "react-router-dom";
 
-const Listing_page = ({ data, setdata,setis_signin, setnewEntry, sidebar, setsidebar }) => {
+const Listing_page = ({ data, setdata,setis_signin, setnewEntry, sidebar, setsidebar, siderbarRef }) => {
   let [page, setpage] = useState("");
   let [search, setsearch] = useState("");
   let [edit_entry,setedit_entry] = useState([])
@@ -89,10 +90,21 @@ const Listing_page = ({ data, setdata,setis_signin, setnewEntry, sidebar, setsid
     window.location.reload()
   }
 
+  useEffect(()=>{
+        requestAnimationFrame(()=>{
+          //list
+          let lists = document.querySelectorAll('.list')
+          lists.forEach((list)=>{
+            let ltl = gsap.timeline()
+            ltl.fromTo(list,{scale:0},{scale:1,duration:0.7},0.2)
+          })
+        })
+  },[path.pathname])
+
   return (
     <div>
       <Header setis_signin={setis_signin} setnewEntry={setnewEntry} sidebar={sidebar} setsidebar={setsidebar} />
-      <Sidebar setdata={setdata} sidebar={sidebar} />
+      <Sidebar setdata={setdata} sidebar={sidebar} setsidebar={setsidebar} siderbarRef = {siderbarRef} />
       <div className="main_content">
         {/* Cards section */}
         <div className="list_header">

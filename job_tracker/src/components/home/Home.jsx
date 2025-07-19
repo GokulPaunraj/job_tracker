@@ -8,7 +8,8 @@ import Card from "../card/card";
 import { defaults } from "chart.js/auto";
 import { Line } from "react-chartjs-2";
 import { useNavigate } from "react-router-dom";
-import { useState } from "react";
+import { useEffect } from "react";
+import {gsap} from "gsap"
 
 defaults.maintainAspectRatio = false;
 defaults.responsive = true;
@@ -18,7 +19,7 @@ defaults.plugins.title.font.size = 20;
 defaults.plugins.title.align = "start";
 defaults.plugins.title.color = "black";
 
-const Home = ({ data, setdata, setis_signin, setnewEntry, sidebar, setsidebar }) => {
+const Home = ({ data, setdata, setis_signin, setnewEntry, sidebar, setsidebar, siderbarRef }) => {
   let graph_data = {1: 0,2: 0,3: 0,4: 0,5: 0,6: 0,7: 0,8: 0,9: 0,10: 0,11: 0,12: 0,13: 0,14: 0,15: 0,16: 0,17: 0,18: 0,19: 0,20: 0,21: 0,22: 0,23: 0,24: 0,25: 0,26: 0,27: 0,28: 0,29: 0,30: 0,};
 
   const navigate = useNavigate();
@@ -99,11 +100,40 @@ const Home = ({ data, setdata, setis_signin, setnewEntry, sidebar, setsidebar })
 
   let jobs_history_list = data ? data.jobs_history : [];
 
+  useEffect(()=>{
+      //sidebar
+      let sidebar = document.querySelector('.sidebar')
+      let sbtl = gsap.timeline()
+      sbtl.fromTo(sidebar,{x:-200},{x:0,duration:1},0)
+  
+      //card container
+      let cards = document.querySelectorAll('.cardAnim')
+      cards.forEach((card)=>{
+        let ctl = gsap.timeline()
+        ctl.fromTo(card,{scale:0},{scale:1,duration:0.7},0)
+      })
+  
+      //chart
+      let chart_container = document.querySelector('.chart_container')
+      let chtl = gsap.timeline()
+      chtl.fromTo(chart_container,{x:200},{x:0,duration:1},0)
+  
+      // bottom section
+      let card1 = document.querySelector(".ctc_card1")
+      let card2 = document.querySelector(".ctc_card2")
+      let card3 = document.querySelector(".ctc_card3")
+  
+      let btl = gsap.timeline()
+      btl.fromTo(card1,{y:100},{y:0,duration:0.7},0)
+         .fromTo(card2,{y:100},{y:0,duration:0.7},'-=0.6')
+         .fromTo(card3,{y:100},{y:0,duration:0.7},'-=0.6')
+    
+  },[navigate])
+
   return (
     <div>
       <Header setis_signin={setis_signin} setnewEntry={setnewEntry} sidebar={sidebar} setsidebar={setsidebar} />
-      <p>"This is gonna be beautiful :)" </p>
-      <Sidebar setdata={setdata} sidebar={sidebar} />
+      <Sidebar setdata={setdata} sidebar={sidebar} setsidebar={setsidebar} siderbarRef = {siderbarRef} />
       <div className="main_content">
         {/* Cards section */}
         <section className="card_container">
@@ -154,7 +184,7 @@ const Home = ({ data, setdata, setis_signin, setnewEntry, sidebar, setsidebar })
             <p>Highest CTC:</p>
           </section>
 
-          <section className="card ctc_card2">
+          <section className="card ctc_card2 ">
             <h2>{jobs_history_list.length}</h2>
             <p>Total jobs (lifetime):</p>
             <h2>{jobs_this_month}</h2>
@@ -162,7 +192,7 @@ const Home = ({ data, setdata, setis_signin, setnewEntry, sidebar, setsidebar })
           </section>
 
           <section
-            className="upcoming_interviews card"
+            className="upcoming_interviews card ctc_card3"
             onClick={interviews_this_month_nav}
           >
             <p>Interviews this month:</p>
