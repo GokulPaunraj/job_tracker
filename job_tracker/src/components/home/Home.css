@@ -1,324 +1,98 @@
 .main_content{
-  /* container alignment */
-  height: 90vh;
-  width: clamp(45rem,80vw,63rem);
-  position: relative;
-  top: clamp(4.3rem, 10vh, 6rem);
-  left: clamp(12rem,25vw,16rem);
-  /* styles */
-  background-color: rgb(239, 238, 238);
+    width: 100vw;
+    margin-top: 0;
+    margin-left: 0;
+    overflow-x: visible;
+}
+.card_container{
+    height: 100%;
+    margin: 5%;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: 1fr 1fr;
+}
 
-  & .card_container{
-    /* border: 1px black solid; */
-    /* alignment */
-    height: 80vh;
-    width: clamp(8rem,25vw,12rem);
-    /* styles */
-    display: flex;
-    flex-direction: column;
-    gap: clamp(1rem,2.5vw,2rem);
-    align-items: center;
-    justify-content: top;
-    padding: 3% clamp(2rem,5vw,4rem);
-  }
-
-  & .bottom_container{
-    height: 33vh;
-    width: clamp(16rem,60vw,43rem);
-    position: absolute;
-    top: clamp(12rem,20rem,25rem);
-    left: clamp(13rem,25vw, 40rem);
-    display: flex;
-    gap: 5%;
-
-    & .ctc_card1, .ctc_card2{
-      width: 27%;
-      height: 25vh;
-      font-size: 20%;
-      border-radius: 1rem;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-
-      & p{
-         font-size: 0.8rem;
-         margin: 0;
-      }
-      & h2{
-        font-size: 1.5rem;
-        margin: 0.5rem;
-      }
-
-    }
-    
-    & .upcoming_interviews{
-      height: 30vh;
-      width: 30% ;
-      cursor: pointer;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-
-      & p{
-        font-size: 0.8rem;
-        text-align: center;
-      }
-      & .upcoming_company{
-        text-align: center;
-        position: relative;
-        left: 0rem;
-        width: 75%;
-        padding: clamp(0.2rem,1vw,0.5rem);
-        border-bottom: 0.01px rgba(0, 0, 0, 0.200) solid;
-        font-size: .8rem;
-      }
-    }
-
-    .upcoming_interviews::-webkit-scrollbar{
-        display: none;
-      }
-  }
-
-  & .chart_container{
-    height: 48vh;
-    width: clamp(16rem,60vw,42rem);
-    position: absolute;
-    top: 1rem;
-    left: clamp(13rem,25vw, 40rem);
-
+.chart_container{
+    height: 45vh;
+    margin: 5%;
     & .chart{
-      height: 90%;
-      width: 95%;
-      padding: 1em;
+        height: 100%;
+        width: 100%;
+        background: white;
+        box-shadow: 0 0 0.5rem var(--shadow_radius) var(--shadow_color);
+        border-radius: 0.5em;
     }
-  }
+}
+.bottom_container{
+    height: 90%;
+    display: grid;
+    grid-template-areas: 'a b' 'c c';
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: 1fr 1fr;
+    align-items:center ;
+    justify-items: center;
+}
+.b_card1{grid-area: a;}
+.b_card2{grid-area: b;}
+.b_card3{grid-area: c;}
+.b_card1, .b_card2, .b_card3{
+    background: white;        
+    box-shadow: 0 0 0.5rem var(--shadow_radius) var(--shadow_color);
+    border-radius: 0.5em;
+    width: 80%;
+    height: 90%;
+    overflow: hidden;
+    margin: 3% 3%;
+    & h2{
+        font-size: 1.2rem;
+    }
+    &p{
+        font-size: 0.5rem;
+    }
 }
 
-@media (max-width:425px){
-  .main_content{
-    height: 100%;
-    width: 100vw;
-    position: relative;
-    top: -1rem;
-    left: 0rem;
-    /* styles */
-    background-color: rgb(239, 238, 238);
-    display: flex;
-    flex-direction: column;
-    gap: 2rem;
-    overflow:auto;
-
-    & .card_container{
-      height: 40vh;
-      width: 90%;
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      grid-template-rows: 1fr 1fr;
-      align-items: center;
-      justify-content: top;
-      padding: 10% 0 0 clamp(1.7rem,5vw,4rem);
+@media (min-width:769px){
+    .main_content{
+        min-height: calc(100vh-14vh);
+        max-width: calc(100vw - 240px);
+        margin-top: 12vh;
+        margin-left: 240px;
+        display: grid;
+        grid-template-rows: 2fr 1.3fr;
+        grid-template-columns: 1fr 2.5fr;
+        grid-template-areas: "a b" "a c";
     }
-
-    & .bottom_container{
-      height: 100%;
-      width: 90%;
-      position: relative;
-      top: 3rem;
-      left: 2rem;
-      display: grid;
-      grid-template-areas: "a b" "c c";
-      grid-template-columns: 1fr 1fr;
-      grid-template-rows:auto auto ;
-
-      & .ctc_card1{
-        width: 90%;
-        height: 23vh;
-        border-radius: 3em;
+    .card_container{
         grid-area: a;
+        height: 100%;
+        margin: 5%;
         display: flex;
         flex-direction: column;
         align-items: center;
         justify-content: center;
-        & p{
-          font-size: 0.9rem;
+    }
+    .card_container .card{
+            height: 20%;
         }
-        & h2{
-          font-size: 1.5rem;
-          margin: 0rem;
-        }
-      }
-      & .ctc_card2{
-        width: 90%;
-        height: 23vh;
-        border-radius: 3em;
+    .chart_container{
         grid-area: b;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        justify-content: center;
-
-        & p{
-          font-size: 0.9rem;
+        height: 45vh;
+        margin-top: 3%;
+        & .chart{
+            height: 100%;
+            width: 95%;
         }
-        & h2{
-          font-size: 1.5rem;
-          margin: 0rem;
-        }
-
-      }
-      
-      & .upcoming_interviews{
-        height: 25vh;
-        width: 95% ;
-        cursor: pointer;
+    }
+    .bottom_container{
         grid-area: c;
-        margin-bottom: 10%;
+        height: 90%;
         display: flex;
-        flex-direction: column;
-        align-items: center;
-        justify-content: center;
-
-        & p{
-          font-size: 1.3rem;
-          text-align: center;
-        }
-        & .upcoming_company{
-          text-align: center;
-          position: relative;
-          left: 0;
-          width: 75%;
-          padding: clamp(0.2rem,1vw,0.5rem);
-          border-bottom: 0.01px rgba(0, 0, 0, 0.200) solid;
-          font-size: 1rem;
-        }
-      }
+        gap: 1rem;
+        margin: 1%;
     }
-
-    & .chart_container{
-      /* alignment */
-      height: 30vh;
-      width: 80%;
-      position: relative;
-      left: 1.5rem;
-
-      & .chart{
-        height: 100%;
-        width: 100%;
-      }
+    .b_card1, .b_card2, .b_card3{
+            width: 30%;
+            height: 90%;
+            font-size: 1vw;
     }
-  }
-}
-@media (min-width:425px) and (max-width:1180px){
-  .main_content{
-    height: 100%;
-    width: 100vw;
-    position: relative;
-    top: 0rem;
-    left: 0;
-    /* styles */
-    background-color: rgb(239, 238, 238);
-    display: flex;
-    flex-direction: column;
-    gap: 2rem;
-    overflow:auto;
-
-    & .card_container{
-      height: 40vh;
-      width: 90%;
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      grid-template-rows: 1fr 1fr;
-      align-items: center;
-      justify-content: top;
-      padding: 10% 0 0 clamp(1.7rem,7vw,4rem);
-    }
-
-    & .bottom_container{
-      height: 100%;
-      width: 90%;
-      position: relative;
-      top: 3rem;
-      left: 4rem;
-      display: grid;
-      grid-template-areas: "a b" "c c";
-      grid-template-columns: 1fr 1fr;
-      grid-template-rows:auto auto ;
-
-      & .ctc_card1{
-        width: 90%;
-        height: 23vh;
-        border-radius: 3em;
-        grid-area: a;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        justify-content: center;
-        & p{
-          font-size: 1.5rem;
-        }
-        & h2{
-          font-size: 2.5rem;
-          margin: 0rem;
-        }
-      }
-      & .ctc_card2{
-          width: 90%;
-          height: 23vh;
-          border-radius: 3em;
-          grid-area: b;
-          display: flex;
-          flex-direction: column;
-          align-items: center;
-          justify-content: center;
-          & p{
-            font-size: 1.5rem;
-          }
-          & h2{
-            font-size: 2.5rem;
-            margin: 0rem;
-          }
-      }
-      
-      & .upcoming_interviews{
-        height: 25vh;
-        width: 95% ;
-        cursor: pointer;
-        grid-area: c;
-        margin-bottom: 10%;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        justify-content: center;
-
-        & p{
-          font-size: 2.5rem;
-          text-align: center;
-        }
-        & .upcoming_company{
-          text-align: center;
-          position: relative;
-          left: 0rem;
-          width: 75%;
-          padding: clamp(0.2rem,1vw,0.5rem);
-          border-bottom: 0.01px rgba(0, 0, 0, 0.200) solid;
-          font-size: 1.7rem;
-        }
-      }
-    }
-
-    & .chart_container{
-      /* alignment */
-      height: 40vh;
-      width: 90%;
-      position: relative;
-      left: 1.5rem;
-
-      & .chart{
-        height: 100%;
-        width: 100%;
-      }
-    }
-  }
 }

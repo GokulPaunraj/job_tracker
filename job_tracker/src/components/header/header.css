@@ -1,7 +1,7 @@
 .header{
     /* container alignment */
     width: 100vw;
-    height: clamp(4.3rem, 10vh, 6rem);
+    height: 12vh;
     position: fixed;
     top: 0;
     z-index: 999;

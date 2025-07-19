@@ -1,4 +1,4 @@
-import "./Home.css";
+import './Home.css'
 
 //importing sections of the page
 import Header from "../header/header";
@@ -16,7 +16,7 @@ defaults.responsive = true;
 
 defaults.plugins.title.display = true;
 defaults.plugins.title.font.size = 20;
-defaults.plugins.title.align = "start";
+defaults.plugins.title.align = "center";
 defaults.plugins.title.color = "black";
 
 const Home = ({ data, setdata, setis_signin, setnewEntry, sidebar, setsidebar, siderbarRef }) => {
@@ -119,9 +119,9 @@ const Home = ({ data, setdata, setis_signin, setnewEntry, sidebar, setsidebar, s
       chtl.fromTo(chart_container,{x:200},{x:0,duration:1},0)
   
       // bottom section
-      let card1 = document.querySelector(".ctc_card1")
-      let card2 = document.querySelector(".ctc_card2")
-      let card3 = document.querySelector(".ctc_card3")
+      let card1 = document.querySelector(".b_card1")
+      let card2 = document.querySelector(".b_card2")
+      let card3 = document.querySelector(".b_card3")
   
       let btl = gsap.timeline()
       btl.fromTo(card1,{y:100},{y:0,duration:0.7},0)
@@ -148,7 +148,7 @@ const Home = ({ data, setdata, setis_signin, setnewEntry, sidebar, setsidebar, s
 
         {/* Chart */}
         <section className="chart_container">
-          <div className="card chart">
+          <div className="chart">
             <Line
               data={{
                 labels: Object.keys(graph_data),
@@ -177,14 +177,14 @@ const Home = ({ data, setdata, setis_signin, setnewEntry, sidebar, setsidebar, s
 
         {/* bottom section  */}
         <section className="bottom_container">
-          <section className="card ctc_card1">
+          <section className="b_card1">
             <h2>{low_ctc}</h2>
-            <p>Lowest CTC:</p>
+            <p>Lowest CTC</p>
             <h2>{high_ctc}</h2>
-            <p>Highest CTC:</p>
+            <p>Highest CTC</p>
           </section>
 
-          <section className="card ctc_card2 ">
+          <section className="b_card2 ">
             <h2>{jobs_history_list.length}</h2>
             <p>Total jobs (lifetime):</p>
             <h2>{jobs_this_month}</h2>
@@ -192,7 +192,7 @@ const Home = ({ data, setdata, setis_signin, setnewEntry, sidebar, setsidebar, s
           </section>
 
           <section
-            className="upcoming_interviews card ctc_card3"
+            className="b_card3"
             onClick={interviews_this_month_nav}
           >
             <p>Interviews this month:</p>

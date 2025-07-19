@@ -7,23 +7,23 @@ const Sidebar = ({ setdata, sidebar, setsidebar, siderbarRef }) => {
 
   const navHome = () => {
     navigate("/");
-    setsidebar(false)
+    setsidebar(false);
   };
   const jobs_applied = () => {
     navigate("/jobs_applied");
-    setsidebar(false)
+    setsidebar(false);
   };
   const jobs_interviewing = () => {
     navigate("/jobs_interviewing");
-    setsidebar(false)
+    setsidebar(false);
   };
   const jobs_offered = () => {
     navigate("/jobs_offered");
-    setsidebar(false)
+    setsidebar(false);
   };
   const jobs_rejected = () => {
     navigate("/jobs_rejected");
-    setsidebar(false)
+    setsidebar(false);
   };
 
   const handleLogout = () => {
@@ -33,26 +33,16 @@ const Sidebar = ({ setdata, sidebar, setsidebar, siderbarRef }) => {
   };
 
   return (
-    <div className={`sidebar ${sidebar ? "active" :""}`} ref={siderbarRef}>
+    <aside className={`sidebar ${sidebar ? "active" : ""}`} ref={siderbarRef}>
       <section className="sidebar_content">
         <nav onClick={jobs_applied}>Jobs Applied</nav>
         <nav onClick={jobs_interviewing}>Upcoming Interviews</nav>
         <nav onClick={jobs_offered}>Offered</nav>
         <nav onClick={jobs_rejected}>Rejected</nav>
         {path.pathname !== "/" && <nav onClick={navHome}>Home</nav>}
-        <nav
-          style={{
-            flexGrow: "1",
-            position: "absolute",
-            bottom: "1rem",
-            width: "70%",
-          }}
-          onClick={handleLogout}
-        >
-          Log out
-        </nav>
+        <nav onClick={handleLogout}>Log out</nav>
       </section>
-    </div>
+    </aside>
   );
 };
 
