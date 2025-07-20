@@ -105,7 +105,7 @@ const Listing_page = ({ data, setdata,setis_signin, setnewEntry, sidebar, setsid
     <div>
       <Header setis_signin={setis_signin} setnewEntry={setnewEntry} sidebar={sidebar} setsidebar={setsidebar} />
       <Sidebar setdata={setdata} sidebar={sidebar} setsidebar={setsidebar} siderbarRef = {siderbarRef} />
-      <div className="main_content">
+      <div className="list_main_content">
         {/* Cards section */}
         <div className="list_header">
           <h1 className="page_title">
@@ -120,7 +120,6 @@ const Listing_page = ({ data, setdata,setis_signin, setnewEntry, sidebar, setsid
               />
             </div>
         </div>
-        <div className="container">
           <div className="list_container">
             {required_data &&
               required_data.map((datum) => (
@@ -150,7 +149,6 @@ const Listing_page = ({ data, setdata,setis_signin, setnewEntry, sidebar, setsid
                 </section>
               ))}
           </div>
-        </div>
       </div>
       {editing && <EditEentry data={data} setdata = {setdata} edit_entry={edit_entry} editRef={editRef} setediting={setediting}/>}
     </div>

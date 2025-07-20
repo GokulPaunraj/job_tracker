@@ -1,16 +1,11 @@
-.container{
-    background-color: rgb(239, 238, 238);
+.list_main_content{
+    margin: 0;
+    margin-top: 12vh;
 }
-
 .list_container{
-    /* border: 1px black solid; */
-    /* alignment */
     height: auto;
     display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    /* styles */
-    padding: clamp(1rem,2.5vw,2rem);
-    background-color: rgb(239, 238, 238);
+    grid-template-columns: repeat(2, 1fr);
 }
 .list_header{
     display: flex;
@@ -19,27 +14,24 @@
     gap: 2vw;
 
     & .page_title{
-        margin: 0;
+        margin: 5%;
+        margin-right: 0;
         font-weight: 350;
-        font-size: 1.7em;
-        padding: clamp(1rem,2.5vw,2rem);
-        padding-bottom: 0;
+        font-size: 1rem;
         text-align: left;
+        flex-grow: 1;
     }
 
     & .searchbar{
-        margin: 0;
+        margin: 5%;
         font-weight: 350;
-        font-size: 1.7em;
-        padding: clamp(1rem,2.5vw,2rem);
-        padding-bottom: 0;
+        font-size: 1rem;
         text-align: left;
-
+        width: 35%;
         & input {
-            text-align: left;
-            margin-bottom: 4%;
             width: 100%;
-            font-size: 1.1rem;
+            text-align: left;
+            font-size: 1rem;
             border-radius: 0.3em;
             border-color: rgba(0, 0, 0, 0.200);
             border-width: 0.1em;
@@ -48,32 +40,33 @@
 }
 
 .list{
-    position: relative;
-
+    height: 12rem;
+    width: 45vw;
+    margin: 0.5rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
     & .list_content{
-        height: 80%;
-        width: 20vw;
-        margin: clamp(1rem,2.5vw,2rem);
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        justify-content: center;
-
+        height: 100%;
+        width: 100%;
         & p{
-            width: 100%;
-            padding-left:clamp(6rem,10vw,8rem); ;
+            width: 90%;
             text-align: left;
+            font-size: 0.9rem;
+            margin: 10% 5%;
         }
     }
     & .list_buttons{
+        height: 5%;
+        width: 90%;
         display: flex;
-        gap: 15%;
-        position: absolute;
-        left: 70%;
-        top: 3%;
+        gap: 10%;
+        align-items: center;
+        justify-content: right;
         & span{
             margin: 1%;
-            font-size: 1.3rem;
+            font-size: 1.5rem;
             font-weight: 100;
             cursor: pointer;
         }
@@ -81,121 +74,45 @@
     }
 }
 
-@media (max-width:425px){
-    .main_content{
-        position: relative;
-        top: 4rem;
-        left: 0;
+@media (min-width:768px){
+    .list_main_content{
+        margin-left: 240px;
+        width: cal(100vw-240px);
+
     }
     .list_container{
-        height:100%;
+        margin: 0 1%;
         display: grid;
-        grid-template-columns: repeat(2, 1fr);
-        padding-left: 1rem;
-        gap: 4%;
+        grid-template-columns: repeat(3, 1fr);
     }
     .list_header{
-        position: relative;
-        top: 0rem;
-
         & .page_title{
-            font-size: 1.3rem;
+            font-size: 1.5rem;
         }
 
         & .searchbar{
-            width: 7em;
-            font-size: 1.3rem;
-
+            font-size: 1.2rem;
             & input {
-                font-size: 1.3rem;
+                font-size: 1.2rem;
             }
         }
     }
 
     .list{
-        position: relative;
-        top:1rem;
-        height: 10rem;
-        padding-top: 2rem;
-        padding-bottom: 1.2rem;
-
+        height: 90%;
+        width: 90%;
+        margin: 0.3rem;
+        margin-left: 0.5rem;
         & .list_content{
-            height: 100%;
-            width: 43vw;
-            margin: 0;
-
             & p{
-                padding-left:15%; ;
                 font-size: 1rem;
             }
         }
         & .list_buttons{
-            position: absolute;
-            left: 50%;
-            top: 0em;
+            height: 5%;
             & span{
-                font-size: 2rem;
+                font-size: 1.8rem;
             }
-            
-        }
-    }
-}
-
-@media (min-width:425px) and (max-width:1180px){
-    .main_content{
-    position: relative;
-    top: 4rem;
-    left: 0;
-    }
-    .list_container{
-        height:100%;
-        display: grid;
-        grid-template-columns: repeat(3, 1fr);
-        padding-left: 2rem;
-    }
-    .list_header{
-        position: relative;
-        top: 2rem;
-
-        & .page_title{
-            font-size: 2rem;
-        }
-
-        & .searchbar{
-            width: 20rem;
-            font-size: 1.3em;
-
-            & input {
-                font-size: 2rem;
-            }
-        }
-    }
-
-    .list{
-        position: relative;
-        top:1rem;
-        height: 15rem;
-        padding-bottom: 2rem;
-        padding-top: 2rem;
-
-        & .list_content{
-            height: 100%;
-            width: 30vw;
-            margin: 0;
-
-            & p{
-                padding-left:15%; ;
-                font-size: 1.5rem;
-            }
-        }
-        & .list_buttons{
-            position: absolute;
-            left: 60%;
-            top: 0em;
-            & span{
-                font-size: 2rem;
-            }
-            
         }
     }
 }

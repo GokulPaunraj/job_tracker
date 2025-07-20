@@ -33,7 +33,7 @@ const Sidebar = ({ setdata, sidebar, setsidebar, siderbarRef }) => {
   };
 
   return (
-    <aside className={`sidebar ${sidebar ? "active" : ""}`} ref={siderbarRef}>
+    <aside className={`sidebar ${sidebar ? "active" : "inactive"}`} ref={siderbarRef}>
       <section className="sidebar_content">
         <nav onClick={jobs_applied}>Jobs Applied</nav>
         <nav onClick={jobs_interviewing}>Upcoming Interviews</nav>

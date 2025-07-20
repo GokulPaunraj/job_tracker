@@ -1,8 +1,13 @@
-.sidebar{
+.active{
+    display:block;
+    z-index:1000;
+}
+.inactive{
     display:none;
+}
+.sidebar{
     height:calc(100vh - 12vh);
     width: 240px;
-    z-index:0;
     position: fixed;
     top: 12vh;
     overflow-y: hidden;
@@ -10,26 +15,20 @@
     background-color: rgb(4, 4, 76);
     color: white;
 }
-.active{
-    display:block;
-    z-index:1000;
+.sidebar_content{
+    height: 100%;
+    display: flex;
+    flex-flow: column;
+    padding: clamp(0.5rem,1.5vw,1rem);
+    & nav{
+        padding: clamp(0.5rem,1.5vw,1rem);
+        border-bottom: 0.01px rgba(255, 255, 255, 0.250) solid;
+        opacity: 0.5;
+        font-size: 1.2rem;
+    }
 }
 
-.sidebar_content{
-        height: 100%;
-        display: flex;
-        flex-flow: column;
-        padding: clamp(0.5rem,1.5vw,1rem);
-
-        & nav{
-            padding: clamp(0.5rem,1.5vw,1rem);
-            border-bottom: 0.01px rgba(255, 255, 255, 0.250) solid;
-            opacity: 0.5;
-            font-size: 1.2rem;
-        }
-    }
-
-@media (min-width:769px){
+@media (min-width:768px){
     .sidebar{
         display: block;
     }
