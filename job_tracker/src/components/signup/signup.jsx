@@ -1,36 +1,43 @@
+import { useState } from "react";
 import "./signup.css";
 import axios from "axios";
 
 const Signup = ({userName, password, setuserName, setpassword, email, setemail, setis_signin, signupRef, setis_signup}) => {
 
-  async function handleSubmit(e) {
+  let [user,setuser] = useState('')
+
+  function handleSubmit(e) {
     e.preventDefault();
 
     let jobs_list = []
     let jobs_history = []
 
     try {
-      await axios.post("http://localhost:5000/new_user/signup/",{ userName, password, email, jobs_list,jobs_history})
+      axios.post("http://localhost:5000/new_user/signup/",{ user, password, email, jobs_list,jobs_history})
                  .then((res)=>{
                     if(res.data === "success"){
                       alert("Hurray! You have successfully signed up")
-                      localStorage.setItem("userName",userName)
+                      localStorage.setItem("userName",user)
+                      setuserName(user)
                       setis_signup(false)
                     }
                     else if (res.data === "exist"){
                       alert("Username exist. Try a different one")
                     }
                  })
-                 .catch((err)=>{alert(err + "--signup")})
+                 .catch((err)=>{
+                  console.log(err);
+                  alert(err)
+                })
     } 
     catch (err) {
       console.log(err);
     }
 
     setuserName("");
+    setuser('')
     setpassword("");
-    setemail("");
-    
+    setemail("");    
   }
   return (
     <section className="signup_popup" ref={signupRef}>
@@ -43,10 +50,11 @@ const Signup = ({userName, password, setuserName, setpassword, email, setemail, 
             <input
               id="userName"
               placeholder="eg : pikachu007"
-              value={userName}
+              value={user}
               onChange={(e) => {
-                setuserName(e.target.value);
+                setuser(e.target.value);
               }}
+              autoComplete="username"
               required
             />
           </span>
@@ -56,7 +64,7 @@ const Signup = ({userName, password, setuserName, setpassword, email, setemail, 
               id="password"
               type="password"
               placeholder="eg : Wifi-87654321"
-              autoComplete="current-password"
+              autoComplete="new-password"
               value={password}
               onChange={(e) => {
                 setpassword(e.target.value);
@@ -74,6 +82,7 @@ const Signup = ({userName, password, setuserName, setpassword, email, setemail, 
               onChange={(e) => {
                 setemail(e.target.value);
               }}
+              autoComplete="email"
               required
             />
           </span>

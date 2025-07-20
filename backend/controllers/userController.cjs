@@ -5,7 +5,27 @@ const getUserData = async (req,res)=>{
         const {userName} = req.body
         const userData = await userModel.findOne({username:userName})
         if(userData){
-            res.send({data:userData})
+                res.send({data:userData})
+        }
+        else{
+            res.json("User not found!")
+        }
+    }
+    catch(err){
+        res.json(err)
+    }
+}
+const signinUser = async (req,res)=>{
+    try{
+        const {usernameInput,passwordInput} = req.body
+        const userData = await userModel.findOne({username:usernameInput})
+        if(userData){
+            if(userData.password === passwordInput){
+                res.send({data:userData})
+            }
+            else{
+                res.json("wrong password")
+            }
         }
         else{
             res.json("User not found!")
@@ -17,16 +37,16 @@ const getUserData = async (req,res)=>{
 }
 
 const createUserData = async (req,res)=>{
-    const {userName, password, email, jobs_list, jobs_history} = req.body
+    const {user, password, email, jobs_list, jobs_history} = req.body
     const data = {
-        username:userName,
+        username:user,
         password:password,
         email:email,
         jobs_list:jobs_list,
         jobs_history : jobs_history
     }
     try{
-        const checkerFlag = await userModel.findOne({username:userName})
+        const checkerFlag = await userModel.findOne({username:user})
         if(checkerFlag){
             res.json("exist");
         }
@@ -37,6 +57,7 @@ const createUserData = async (req,res)=>{
     }
     catch(err){
         console.log("Something went wrong")
+        console.log(err)
     }
 }
 
@@ -61,4 +82,4 @@ const updateJobsHistory = async (req,res)=>{
     }
 }
 
-module.exports = {getUserData, createUserData, updateJobsList, updateJobsHistory}
+module.exports = {getUserData, createUserData, signinUser, updateJobsList, updateJobsHistory}

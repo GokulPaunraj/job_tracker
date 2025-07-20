@@ -52,6 +52,21 @@
         border-radius: 0.3em;
         border-color: rgba(0, 0, 0, 0.200);
         border-width: 0.1em;
+        flex-grow: 1;
+    }
+    & .forgot_password{
+        font-size: 0.9rem;
+        margin: 2% 0;
+        color: blueviolet;
+    }
+    & .password_field{
+        display: flex;
+        gap: 2%;
+        width: 100%;
+        & svg{
+            font-size: 1.7rem;
+            margin: 0;
+        }
     }
 }
 .bottom{
@@ -81,6 +96,14 @@
         & input, select{
             font-size: 1.5rem;
         }
+        & .forgot_password{
+            font-size: 1.2rem;
+        }
+        & .password_field{
+            & svg{
+                font-size: 2.2rem;
+            }
+        }
     }
     .bottom{
         font-size: 1.3rem;
@@ -107,6 +130,14 @@
         }
         & input, select{
             font-size: 1.1rem;
+        }
+        & .forgot_password{
+            font-size: 0.9rem;
+        }
+        & .password_field{
+            & svg{
+                font-size: 1.7rem;
+            }
         }
     }
 }

@@ -24,8 +24,8 @@ function App() {
   const newEntryRef = useRef();
   const siderbarRef = useRef();
 
-  const [userName, setuserName] = useState(localStorage.getItem("userName"));
-  const [password, setpassword] = useState(0);
+  const [userName, setuserName] = useState(localStorage.getItem('userName'));
+  const [password, setpassword] = useState('');
   const [email, setemail] = useState("");
 
   const navigate = useNavigate();
@@ -39,8 +39,8 @@ function App() {
             if (res.data !== "User not found!") {
               setdata(res.data.data);
             } else {
-              alert("User not found - home");
               localStorage.removeItem("userName");
+              console.log("found it")
               setis_signup(true);
             }
           })
