@@ -24,18 +24,24 @@ nav{
 }
 
 button{
-  width: 6rem;
-  height: 2rem;
   color: whitesmoke;
   background-color: var(--default_color);
   border-radius: 0.5em;
   border: none;
+  height: 2.3rem;
+  width: 5rem;
+  margin-bottom: 10%;
 }
-
-@media (max-widht:425px){
+@media (min-width:768px){
   button{
-    width: 16rem;
-    height: 4rem;
-    border-radius: 0.5em;
+    height: 3rem;
+    width: 7rem;
+    font-size: 1rem;
+  }
+}
+@media (min-width:1024px){
+  button{
+    height: 2rem;
+    width: 5rem;
   }
 }

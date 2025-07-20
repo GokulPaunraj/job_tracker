@@ -50,7 +50,7 @@ const Signin = ({ password, setuserName, setpassword, signinRef, setis_signin, s
         </form>
         <span className="bottom">
         <div>Continue with Google</div>
-        <div style={{ fontSize: "0.7em", margin: "1em" }}>
+        <span>
           Don't have an account?{" "}
           <span
             style={{ color: "var(--default_color)", cursor: "pointer" }}
@@ -61,7 +61,7 @@ const Signin = ({ password, setuserName, setpassword, signinRef, setis_signin, s
           >
             Sign Up
           </span>
-        </div>
+        </span>
         </span>
       </div>
     </section>
