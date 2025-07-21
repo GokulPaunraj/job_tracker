@@ -29,6 +29,7 @@ function App() {
   const signupRef = useRef();
   const newEntryRef = useRef();
   const siderbarRef = useRef();
+  const hamburgerMenuRef = useRef();
   const otpRef = useRef();
   const passwordResetRef = useRef();
 
@@ -143,7 +144,7 @@ function App() {
 
   useEffect(() => {
     const handleClick = (e) => {
-      if (!siderbarRef.current.contains(e.target)) {
+      if (!siderbarRef.current.contains(e.target) && !hamburgerMenuRef.current.contains(e.target)) {
         setsidebar(false);
       }
     };
@@ -158,7 +159,7 @@ function App() {
 
   return (
     <div className="App">
-      <Header setis_signin={setis_signin} setnewEntry={setnewEntry} sidebar={sidebar} setsidebar={setsidebar} />
+      <Header setis_signin={setis_signin} setnewEntry={setnewEntry} sidebar={sidebar} setsidebar={setsidebar} hamburgerMenuRef={hamburgerMenuRef}/>
       <Sidebar setdata={setdata} sidebar={sidebar} setsidebar={setsidebar} siderbarRef = {siderbarRef} />
       {/* {POP UP} */}
       {newEntry && (
