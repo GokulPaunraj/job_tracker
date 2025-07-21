@@ -1,8 +1,6 @@
 import './Home.css'
 
 //importing sections of the page
-import Header from "../header/header";
-import Sidebar from "../sidebar/sidebar";
 import Card from "../card/card";
 
 import { defaults } from "chart.js/auto";
@@ -19,7 +17,7 @@ defaults.plugins.title.font.size = 20;
 defaults.plugins.title.align = "center";
 defaults.plugins.title.color = "black";
 
-const Home = ({ data, setdata, setis_signin, setnewEntry, sidebar, setsidebar, siderbarRef }) => {
+const Home = ({ data }) => {
   let graph_data = {1: 0,2: 0,3: 0,4: 0,5: 0,6: 0,7: 0,8: 0,9: 0,10: 0,11: 0,12: 0,13: 0,14: 0,15: 0,16: 0,17: 0,18: 0,19: 0,20: 0,21: 0,22: 0,23: 0,24: 0,25: 0,26: 0,27: 0,28: 0,29: 0,30: 0,};
 
   const navigate = useNavigate();
@@ -132,8 +130,6 @@ const Home = ({ data, setdata, setis_signin, setnewEntry, sidebar, setsidebar, s
 
   return (
     <div>
-      <Header setis_signin={setis_signin} setnewEntry={setnewEntry} sidebar={sidebar} setsidebar={setsidebar} />
-      <Sidebar setdata={setdata} sidebar={sidebar} setsidebar={setsidebar} siderbarRef = {siderbarRef} />
       <div className="main_content">
         {/* Cards section */}
         <section className="card_container">

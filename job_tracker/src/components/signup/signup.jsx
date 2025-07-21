@@ -11,9 +11,11 @@ const Signup = ({userName, password, setuserName, setpassword, email, setemail, 
 
     let jobs_list = []
     let jobs_history = []
+    let passwordResetOtp = 987956
+    let passwordResetOtpExpiry = new Date()
 
     try {
-      axios.post("http://localhost:5000/new_user/signup/",{ user, password, email, jobs_list,jobs_history})
+      axios.post("http://localhost:5000/new_user/signup/",{ user, password, email, jobs_list,jobs_history,passwordResetOtp,passwordResetOtpExpiry})
                  .then((res)=>{
                     if(res.data === "success"){
                       alert("Hurray! You have successfully signed up")

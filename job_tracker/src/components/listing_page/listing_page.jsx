@@ -1,7 +1,5 @@
 import "./listing_page.css";
 
-import Header from "../header/header";
-import Sidebar from "../sidebar/sidebar";
 import EditEentry  from "./edit_entry";
 import axios from "axios"
 
@@ -13,7 +11,7 @@ import {gsap} from "gsap"
 import { useEffect, useRef, useState } from "react";
 import { useLocation } from "react-router-dom";
 
-const Listing_page = ({ data, setdata,setis_signin, setnewEntry, sidebar, setsidebar, siderbarRef }) => {
+const Listing_page = ({ data, setdata }) => {
   let [page, setpage] = useState("");
   let [search, setsearch] = useState("");
   let [edit_entry,setedit_entry] = useState([])
@@ -103,8 +101,6 @@ const Listing_page = ({ data, setdata,setis_signin, setnewEntry, sidebar, setsid
 
   return (
     <div>
-      <Header setis_signin={setis_signin} setnewEntry={setnewEntry} sidebar={sidebar} setsidebar={setsidebar} />
-      <Sidebar setdata={setdata} sidebar={sidebar} setsidebar={setsidebar} siderbarRef = {siderbarRef} />
       <div className="list_main_content">
         {/* Cards section */}
         <div className="list_header">

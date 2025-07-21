@@ -37,13 +37,15 @@ const signinUser = async (req,res)=>{
 }
 
 const createUserData = async (req,res)=>{
-    const {user, password, email, jobs_list, jobs_history} = req.body
+    const {user, password, email, jobs_list, jobs_history, passwordResetOtp, passwordResetOtpExpiry} = req.body
     const data = {
         username:user,
         password:password,
         email:email,
         jobs_list:jobs_list,
-        jobs_history : jobs_history
+        jobs_history : jobs_history,
+        passwordResetOtp : passwordResetOtp,
+        passwordResetOtpExpiry : passwordResetOtpExpiry
     }
     try{
         const checkerFlag = await userModel.findOne({username:user})

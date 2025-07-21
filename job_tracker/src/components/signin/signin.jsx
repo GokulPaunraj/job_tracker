@@ -6,7 +6,7 @@ import { VscEyeClosed } from "react-icons/vsc";
 
 import axios from 'axios'
 
-const Signin = ({ setdata, password, setuserName, setpassword, signinRef, setis_signin, setis_signup }) => {
+const Signin = ({ setdata, password, setuserName, setpassword, signinRef, setis_signin, setis_signup, setotpWindow }) => {
 
   let [usernameInput,setusernameInput] = useState("")
   let [passwordInput,setpasswordInput] = useState("")
@@ -52,6 +52,11 @@ const Signin = ({ setdata, password, setuserName, setpassword, signinRef, setis_
     }
   } 
 
+  function handleForgotPassword(){
+    setotpWindow(true)
+    setis_signin(false)
+  }
+
   return (
     <section className="signin_popup" ref={signinRef}>
       <div className="signin_content card">
@@ -87,7 +92,7 @@ const Signin = ({ setdata, password, setuserName, setpassword, signinRef, setis_
               />
               {show_password ? <VscEye onClick={()=>{setshow_password(false)}}/> : <VscEyeClosed onClick={()=>{setshow_password(true)}}/>}
             </div>
-            <label htmlFor="password" className="forgot_password">Forgot Password ?</label>
+            <label htmlFor="password" className="forgot_password" onClick={()=>{handleForgotPassword()}}>Forgot Password ?</label>
           </span>
           <span style={{ display: "flex", justifyContent: "center" }}>
             <button className="btn" type="submit">SignIn</button>

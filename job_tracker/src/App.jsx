@@ -5,10 +5,14 @@ import axios from "axios";
 
 import Home from "./components/home/Home";
 import ListingPage from "./components/listing_page/listing_page";
+import Header from "./components/header/header";
+import Sidebar from "./components/sidebar/sidebar";
 
 //importing packages
 import { Routes, Route, useNavigate } from "react-router-dom";
 import Signin from "./components/signin/signin";
+import OtpWindow from "./components/signin/auth/OtpWindow";
+import ResetPasswordWindow from "./components/signin/auth/ResetPasswordWindow";
 import Signup from "./components/signup/signup";
 import NewEntry from "./components/newEntry/newEntry";
 
@@ -18,11 +22,15 @@ function App() {
   const [newEntry, setnewEntry] = useState(false);
   let [sidebar,setsidebar] = useState(false)
   const [data, setdata] = useState(null);
+  const [otpWindow, setotpWindow] = useState(false);
+  const [passwordResetWindow, setpasswordResetWindow] = useState(false);
 
   const signinRef = useRef();
   const signupRef = useRef();
   const newEntryRef = useRef();
   const siderbarRef = useRef();
+  const otpRef = useRef();
+  const passwordResetRef = useRef();
 
   const [userName, setuserName] = useState(localStorage.getItem('userName'));
   const [password, setpassword] = useState('');
@@ -77,6 +85,34 @@ function App() {
 
   useEffect(() => {
     const handleClick = (e) => {
+      if (!otpRef.current.contains(e.target)) {
+        setotpWindow(false);
+      }
+    };
+    if (otpWindow) {
+      document.addEventListener("mousedown", handleClick);
+    }
+    return () => {
+      document.removeEventListener("mousedown", handleClick);
+    };
+  }, [otpWindow]);
+
+  useEffect(() => {
+    const handleClick = (e) => {
+      if (!otpRef.current.contains(e.target)) {
+        setotpWindow(false);
+      }
+    };
+    if (otpWindow) {
+      document.addEventListener("mousedown", handleClick);
+    }
+    return () => {
+      document.removeEventListener("mousedown", handleClick);
+    };
+  }, [otpWindow]);
+
+  useEffect(() => {
+    const handleClick = (e) => {
       if (!signupRef.current.contains(e.target)) {
         setis_signup(false);
       }
@@ -122,6 +158,8 @@ function App() {
 
   return (
     <div className="App">
+      <Header setis_signin={setis_signin} setnewEntry={setnewEntry} sidebar={sidebar} setsidebar={setsidebar} />
+      <Sidebar setdata={setdata} sidebar={sidebar} setsidebar={setsidebar} siderbarRef = {siderbarRef} />
       {/* {POP UP} */}
       {newEntry && (
         <NewEntry
@@ -140,6 +178,24 @@ function App() {
           signinRef={signinRef}
           setis_signin={setis_signin}
           setis_signup={setis_signup}
+          setotpWindow={setotpWindow}
+        />
+      )}
+      {otpWindow && (
+        <OtpWindow
+          userName={userName}
+          setis_signin={setis_signin}
+          setotpWindow={setotpWindow}
+          otpRef={otpRef}
+          setpasswordResetWindow={setpasswordResetWindow}
+        />
+      )}
+      {passwordResetWindow && (
+        <ResetPasswordWindow
+          userName={userName}
+          setis_signin={setis_signin}
+          setpasswordResetWindow={setpasswordResetWindow}
+          passwordResetRef={passwordResetRef}
         />
       )}
       {is_signup && (
