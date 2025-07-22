@@ -12,7 +12,6 @@ import Sidebar from "./components/sidebar/sidebar";
 import { Routes, Route, useNavigate } from "react-router-dom";
 import Signin from "./components/signin/signin";
 import OtpWindow from "./components/signin/auth/OtpWindow";
-import ResetPasswordWindow from "./components/signin/auth/ResetPasswordWindow";
 import Signup from "./components/signup/signup";
 import NewEntry from "./components/newEntry/newEntry";
 
@@ -20,18 +19,15 @@ function App() {
   const [is_signin, setis_signin] = useState(false);
   const [is_signup, setis_signup] = useState(false);
   const [newEntry, setnewEntry] = useState(false);
-  let [sidebar,setsidebar] = useState(false)
+  const [sidebar,setsidebar] = useState(false)
   const [data, setdata] = useState(null);
-  const [otpWindow, setotpWindow] = useState(false);
-  const [passwordResetWindow, setpasswordResetWindow] = useState(false);
+  let [otpWindow, setotpWindow] = useState(false);
 
   const signinRef = useRef();
   const signupRef = useRef();
   const newEntryRef = useRef();
   const siderbarRef = useRef();
   const hamburgerMenuRef = useRef();
-  const otpRef = useRef();
-  const passwordResetRef = useRef();
 
   const [userName, setuserName] = useState(localStorage.getItem('userName'));
   const [password, setpassword] = useState('');
@@ -156,22 +152,12 @@ function App() {
       )}
       {otpWindow && (
         <OtpWindow
-          userName={userName}
           setis_signin={setis_signin}
           setotpWindow={setotpWindow}
-          otpRef={otpRef}
-          setpasswordResetWindow={setpasswordResetWindow}
+          otpWindow={otpWindow}
         />
       )}
-      {passwordResetWindow && (
-        <ResetPasswordWindow
-          userName={userName}
-          setis_signin={setis_signin}
-          setotpWindow={setotpWindow}
-          setpasswordResetWindow={setpasswordResetWindow}
-          passwordResetRef={passwordResetRef}
-        />
-      )}
+      
       {is_signup && (
         <Signup
           signupRef={signupRef}

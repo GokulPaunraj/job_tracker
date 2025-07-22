@@ -10,5 +10,6 @@ router.post("/jobs_list", userController.updateJobsList)
 router.post("/jobs_history", userController.updateJobsHistory)
 router.post("/otp", authController.sendMail)
 router.post("/reset_otp", authController.verifyOtp)
+router.post("/newpassword", authController.resetPassword)
 
 module.exports = router

@@ -1,4 +1,6 @@
 const userModel = require('../models/userModel.cjs')
+const bcrypt = require('bcrypt')
+const saltRounds = 10
 
 const getUserData = async (req,res)=>{
     try{
@@ -20,7 +22,8 @@ const signinUser = async (req,res)=>{
         const {usernameInput,passwordInput} = req.body
         const userData = await userModel.findOne({username:usernameInput})
         if(userData){
-            if(userData.password === passwordInput){
+            let match = await bcrypt.compare(passwordInput,userData.password)
+            if(match){
                 res.send({data:userData})
             }
             else{
@@ -38,9 +41,10 @@ const signinUser = async (req,res)=>{
 
 const createUserData = async (req,res)=>{
     const {user, password, email, jobs_list, jobs_history, passwordResetOtp, passwordResetOtpExpiry} = req.body
+    let hashedPassword = await bcrypt.hash(password,saltRounds)
     const data = {
         username:user,
-        password:password,
+        password:hashedPassword,
         email:email,
         jobs_list:jobs_list,
         jobs_history : jobs_history,

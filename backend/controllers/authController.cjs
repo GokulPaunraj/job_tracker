@@ -1,24 +1,25 @@
 const {Resend} = require("resend")
 const crypto = require('crypto')
+const bcrypt = require('bcrypt')
+const saltRounds = 10
 const dotenv = require('dotenv')
 const userModel = require('../models/userModel.cjs')
 dotenv.config()
 
 const sendMail = async (req,res)=>{
-    let resetOTP = crypto.randomBytes(2).toString("hex");
-    let expiry = new Date(Date.now() + 5 * 60 * 1000)
     const {userNameOTP} = req.body
     try{
         let userData = await userModel.findOne({username:userNameOTP})
         let prev_expiry = userData.passwordResetOtpExpiry
-        await userModel.updateOne({username:userNameOTP},{$set:{passwordResetOtp:resetOTP,passwordResetOtpExpiry:expiry}})
         if(new Date() < new Date(prev_expiry)){
-            res.json("you can use your last OTP")
+            res.send({expiry:prev_expiry,text:'You can use your last OTP'});
         }
         else{
+            let resetOTP = crypto.randomBytes(2).toString("hex");
+            let expiry = new Date(Date.now() + 3 * 60 * 1000)
+            await userModel.updateOne({username:userNameOTP},{$set:{passwordResetOtp:resetOTP,passwordResetOtpExpiry:expiry}})
             if (userData){
                 let email = userData.email
-    
                 const resend = new Resend(process.env.RESEND_AIP_KEY);
                 const {data, error} = await resend.emails.send({
                     from: 'onboarding@resend.dev',
@@ -27,7 +28,7 @@ const sendMail = async (req,res)=>{
                     html: `<p><strong>${resetOTP}</strong> is your otp!</p>`
                 })
                 if (data){
-                    res.json(`OTP sent to ${email}`);
+                    res.send({expiry:expiry,text:`OTP sent to ${email}`});
                 }
                 if(error){
                     res.json('something went wrong! Try again')
@@ -72,4 +73,17 @@ const verifyOtp = async(req,res)=>{
 
 }
 
-module.exports = {sendMail, verifyOtp}
+const resetPassword = async (req,res)=>{
+    let {userNameOTP,newPassword} = req.body
+    try{
+        let hashedPassword = await bcrypt.hash(newPassword,saltRounds)
+        await userModel.updateOne({username:userNameOTP},{$set:{password:hashedPassword,passwordResetOtp:'',passwordResetOtpExpiry:''}})
+        res.json('New password updated!')
+    }
+    catch(err){
+        res.json('Something went wrong. Try again!')
+        console.log(err)
+    }
+}
+
+module.exports = {sendMail, verifyOtp, resetPassword}
