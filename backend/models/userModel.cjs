@@ -6,8 +6,8 @@ const userModel = new mongoose.Schema({
     email: { type: String, required: true },
     jobs_list: { type: [{ id: Number, companyName: String, role: String, ctc: Number, date: String, status: String }], required: true },
     jobs_history: { type: [{ id: Number, companyName: String, role: String, ctc: Number, date: String, status: String }], required: true },
-    passwordResetOtp : {type: Number},
-    PasswordResetOtpExpiry : {type:String}
+    passwordResetOtp : {type: String},
+    passwordResetOtpExpiry : {type:String}
 })
 
 module.exports = mongoose.model("allData", userModel)

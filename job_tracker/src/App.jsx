@@ -86,34 +86,6 @@ function App() {
 
   useEffect(() => {
     const handleClick = (e) => {
-      if (!otpRef.current.contains(e.target)) {
-        setotpWindow(false);
-      }
-    };
-    if (otpWindow) {
-      document.addEventListener("mousedown", handleClick);
-    }
-    return () => {
-      document.removeEventListener("mousedown", handleClick);
-    };
-  }, [otpWindow]);
-
-  useEffect(() => {
-    const handleClick = (e) => {
-      if (!otpRef.current.contains(e.target)) {
-        setotpWindow(false);
-      }
-    };
-    if (otpWindow) {
-      document.addEventListener("mousedown", handleClick);
-    }
-    return () => {
-      document.removeEventListener("mousedown", handleClick);
-    };
-  }, [otpWindow]);
-
-  useEffect(() => {
-    const handleClick = (e) => {
       if (!signupRef.current.contains(e.target)) {
         setis_signup(false);
       }
@@ -195,6 +167,7 @@ function App() {
         <ResetPasswordWindow
           userName={userName}
           setis_signin={setis_signin}
+          setotpWindow={setotpWindow}
           setpasswordResetWindow={setpasswordResetWindow}
           passwordResetRef={passwordResetRef}
         />

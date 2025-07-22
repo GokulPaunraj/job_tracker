@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import './resetPasswordWindow.css'
 
-const ResetPasswordWindow = ({setpasswordResetWindow,passwordResetRef,setis_signin,userName}) => {
+const ResetPasswordWindow = ({setpasswordResetWindow,passwordResetRef,setis_signin,setotpWindow,userName}) => {
   const [newPassword,setnewPassword] = useState("")
   const [reEnterNewPassword,setreEnterNewPassword] = useState("")
  
@@ -11,6 +11,7 @@ const ResetPasswordWindow = ({setpasswordResetWindow,passwordResetRef,setis_sign
 
      function handleCancel(){
          setpasswordResetWindow(false)
+         setotpWindow(false)
          setis_signin(true)
      }
  
