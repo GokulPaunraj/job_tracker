@@ -70,7 +70,7 @@ const Home = ({ data }) => {
         min = ctc_list[i];
       }
     }
-    return min;
+    return min?min:0;
   }
   function find_high_ctc() {
     let max = ctc_list[0];
@@ -79,7 +79,7 @@ const Home = ({ data }) => {
         max = ctc_list[i];
       }
     }
-    return max;
+    return max?max:0;
   }
 
   let low_ctc = find_low_ctc();

@@ -22,21 +22,22 @@ const Signin = ({ setdata, password, setuserName, setpassword, signinRef, setis_
           .then((res) => {
             if (res.data === "User not found!") {
               alert(res.data);
-              localStorage.removeItem("userName");
+              localStorage.removeItem("jwtToken");
               setpassword("")
               setuserName("")
               setis_signup(true);
             } 
             else if(res.data === "wrong password") {
               alert(res.data);
-              localStorage.removeItem("userName");
+              localStorage.removeItem("jwtToken");
               setpassword("")
             }
             else{
               setdata(res.data.data);
+              console.log(res.data.data)
               setuserName(usernameInput)
               setpassword(passwordInput)
-              localStorage.setItem("userName",usernameInput)
+              localStorage.setItem('jwtToken',res.data.token)
               setis_signin(false)
             }
           })

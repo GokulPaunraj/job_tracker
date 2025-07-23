@@ -14,7 +14,7 @@ const NewEntry = ({ data, newEntryRef, setnewEntry }) => {
 
     try {
       
-      let username = data ? data["username"] : localStorage.getItem("userName");
+      const token = localStorage.getItem('jwtToken')
       let new_entry = {
         id: (data ? data["jobs_list"].length : 0),
         companyName: companyName,
@@ -27,10 +27,7 @@ const NewEntry = ({ data, newEntryRef, setnewEntry }) => {
       let new_history_list = data ? [...data["jobs_history"],new_entry] : [new_entry]
 
       await  axios
-          .post("http://localhost:5000/update/jobs_list", {
-            username,
-            new_list,
-          })
+          .post("http://localhost:5000/update/jobs_list", {new_list},{headers:{Authorization:`Bearer ${token}`}})
           .then((res) => {
             if (res.data === "success") {
               console.log("success");
@@ -44,7 +41,7 @@ const NewEntry = ({ data, newEntryRef, setnewEntry }) => {
 
       await axios
           .post("http://localhost:5000/update/jobs_history", {
-            username,
+            headers:{Authorization:`Bearer ${token}`},
             new_history_list,
           })
           .then((res) => {

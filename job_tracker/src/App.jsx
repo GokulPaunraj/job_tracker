@@ -38,30 +38,44 @@ function App() {
   useEffect(() => {
     const fetch = async () => {
       try {
+        const token = await localStorage.getItem('jwtToken')
         await axios
-          .post("http://localhost:5000/", { userName })
+          .post("http://localhost:5000/",{},{headers:{Authorization:`Bearer ${token}`}})
           .then((res) => {
-            if (res.data !== "User not found!") {
-              setdata(res.data.data);
-            } else {
-              localStorage.removeItem("userName");
-              console.log("found it")
+            if (res.data === "User not found!") {
+              alert(res.data)
+              localStorage.removeItem("jwtToken");
               setis_signup(true);
+            } 
+            else if(res.data === "Server error! Try again later"){
+              alert(res.data)
+              localStorage.removeItem("jwtToken");
+              setis_signin(true);
+            }
+            else {
+              setdata(res.data.data);
             }
           })
           .catch((err) => {
-            alert(err);
+            if(err.response.status === 403){
+              alert("Token expired");
+              localStorage.removeItem("jwtToken");
+              setis_signin(true);
+            }
+            else{
+              alert(err);
+            }
           });
       } catch (err) {
         alert(err);
       }
     };
-    if (userName && !data) {
+    if (!data) {
       fetch();
-    } else if (!localStorage.getItem("userName")) {
+    } else if (!localStorage.getItem("jwtToken")) {
       setis_signin(true);
     }
-  }, [userName, navigate, data, setdata]);
+  }, [navigate, data, setdata]);
 
   useEffect(() => {
     const handleClick = (e) => {

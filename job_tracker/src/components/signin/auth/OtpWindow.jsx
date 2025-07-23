@@ -82,7 +82,7 @@ const OtpWindow = ({ setotpWindow, setis_signin }) => {
   function handleCancelOTP() {
     setotpWindow(false);
     setis_signin(true);
-    setenterOTP("");
+    setenterOTP(false);
   }
 
   function handleSubmitNewPassword(e) {

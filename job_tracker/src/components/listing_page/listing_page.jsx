@@ -60,16 +60,13 @@ const Listing_page = ({ data, setdata }) => {
 
     try {
       if (data){
-          let username = data["username"];
+          const token = localStorage.getItem('jwtToken')
           let other_entries = (data["jobs_list"].length) ? data["jobs_list"].filter((datum)=>(datum["id"] !== id)):[]
     
           let new_list = [...other_entries]
 
             axios
-              .post("http://localhost:5000/update/jobs_list", {
-                username,
-                new_list,
-              })
+              .post("http://localhost:5000/update/jobs_list", {new_list},{headers:{Authorization:`Bearer ${token}`}})
               .then((res) => {
                 if (res.data === "success") {
                   console.log(res.data);

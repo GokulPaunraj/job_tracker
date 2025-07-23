@@ -28,7 +28,7 @@ const Sidebar = ({ setdata, sidebar, setsidebar, siderbarRef }) => {
 
   const handleLogout = () => {
     setdata(null);
-    localStorage.removeItem("userName");
+    localStorage.removeItem("jwtToken");
     window.location.reload();
   };
 

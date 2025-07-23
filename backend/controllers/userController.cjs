@@ -1,4 +1,5 @@
 const userModel = require('../models/userModel.cjs')
+const signupAuthModel = require('../models/signupAuthModel.cjs')
 const bcrypt = require('bcrypt')
 const { text } = require('body-parser')
 const jwt = require('jsonwebtoken')
@@ -64,6 +65,7 @@ const createUserData = async (req,res)=>{
         else{
             await userModel.insertMany([data])
             const token = jwt.sign({userName:user}, process.env.SECRET_KEY, {expiresIn:'30d'})
+            await signupAuthModel.findOneAndDelete({username:user})
             res.send({token:token,text:'success'})
         }
     }

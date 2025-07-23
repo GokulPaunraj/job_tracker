@@ -23,8 +23,7 @@ const EditEntry = ({data,setdata, edit_entry,editRef,setediting}) => {
 
     try {
       if (data){
-
-          let username = data["username"];
+          const token = localStorage.getItem('jwtToken')
           let new_entry = {
             id: edit_entry[0].id,
             companyName: companyName,
@@ -38,10 +37,7 @@ const EditEntry = ({data,setdata, edit_entry,editRef,setediting}) => {
           let new_list = [...other_entries,new_entry]
 
             axios
-              .post("http://localhost:5000/update/jobs_list", {
-                username,
-                new_list,
-              })
+              .post("http://localhost:5000/update/jobs_list", {new_list},{headers:{Authorization:`Bearer ${token}`}})
               .then((res) => {
                 if (res.data === "success") {
                   console.log(res.data);
