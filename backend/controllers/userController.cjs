@@ -1,10 +1,14 @@
 const userModel = require('../models/userModel.cjs')
 const bcrypt = require('bcrypt')
+const { text } = require('body-parser')
+const jwt = require('jsonwebtoken')
 const saltRounds = 10
+
+require('dotenv').config()
 
 const getUserData = async (req,res)=>{
     try{
-        const {userName} = req.body
+        const userName = req.userName
         const userData = await userModel.findOne({username:userName})
         if(userData){
                 res.send({data:userData})
@@ -14,7 +18,7 @@ const getUserData = async (req,res)=>{
         }
     }
     catch(err){
-        res.json(err)
+        res.json("Server error! Try again later")
     }
 }
 const signinUser = async (req,res)=>{
@@ -24,7 +28,8 @@ const signinUser = async (req,res)=>{
         if(userData){
             let match = await bcrypt.compare(passwordInput,userData.password)
             if(match){
-                res.send({data:userData})
+                const token = jwt.sign({userName:usernameInput}, process.env.SECRET_KEY, {expiresIn:'30d'})
+                res.send({data:userData,token:token})
             }
             else{
                 res.json("wrong password")
@@ -58,7 +63,8 @@ const createUserData = async (req,res)=>{
         }
         else{
             await userModel.insertMany([data])
-            res.json("success")
+            const token = jwt.sign({userName:user}, process.env.SECRET_KEY, {expiresIn:'30d'})
+            res.send({token:token,text:'success'})
         }
     }
     catch(err){
@@ -68,9 +74,10 @@ const createUserData = async (req,res)=>{
 }
 
 const updateJobsList = async (req,res)=>{
-    const {username, new_list} = req.body
+    const {new_list} = req.body
+    const userName = req.userName
     try{
-        await userModel.updateOne({username:username},{$set:{jobs_list:new_list}})
+        await userModel.updateOne({username:userName},{$set:{jobs_list:new_list}})
         res.json("success")
     }
     catch(err){
@@ -78,9 +85,10 @@ const updateJobsList = async (req,res)=>{
     }
 }
 const updateJobsHistory = async (req,res)=>{
-    const {username, new_history_list} = req.body
+    const {new_history_list} = req.body
+    const userName = req.userName
     try{
-        await userModel.updateOne({username:username},{$set:{jobs_history:new_history_list}})
+        await userModel.updateOne({username:userName},{$set:{jobs_history:new_history_list}})
         res.json("success")
     }
     catch(err){
