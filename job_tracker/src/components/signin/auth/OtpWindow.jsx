@@ -6,16 +6,16 @@ import axios from "axios";
 const OtpWindow = ({ setotpWindow, setis_signin }) => {
   const [passwordResetWindow, setpasswordResetWindow] = useState(false);
   const [otp, setotp] = useState("");
-  const [userNameOTP, setuserNameOTP] = useState("");
+  const [emailOTP, setemailOTP] = useState("");
   const [enterOTP, setenterOTP] = useState(false);
-  const [usernameWindow, setusernameWindow] = useState(true);
+  const [emailWindow, setemailWindow] = useState(true);
   const [timeLeft, settimeLeft] = useState("");
   const [newPassword, setnewPassword] = useState("");
   const [reEnterNewPassword, setreEnterNewPassword] = useState("");
 
   function SendOTP() {
     axios
-      .post("http://localhost:5000/send/otp", { userNameOTP })
+      .post("http://localhost:5000/send/otp", { emailOTP })
       .then((res) => {
         if (res.data === "something went wrong! Try again") {
           alert(res.data);
@@ -24,7 +24,7 @@ const OtpWindow = ({ setotpWindow, setis_signin }) => {
         } else {
           alert(res.data.text);
           setenterOTP(true);
-          setusernameWindow(false);
+          setemailWindow(false);
           const interval = setInterval(() => {
             let timeLeft = Math.max(
               0,
@@ -53,13 +53,13 @@ const OtpWindow = ({ setotpWindow, setis_signin }) => {
   function handleCancel() {
     setotpWindow(false);
     setis_signin(true);
-    setuserNameOTP("");
+    setemailOTP("");
   }
 
   function handleSubmitOTP(e) {
     e.preventDefault();
     axios
-      .post("http://localhost:5000/verify/reset_otp", { userNameOTP, otp })
+      .post("http://localhost:5000/verify/reset_otp", { emailOTP, otp })
       .then((res) => {
         if (res.data === "success") {
           alert("Verified");
@@ -90,7 +90,7 @@ const OtpWindow = ({ setotpWindow, setis_signin }) => {
     if (newPassword === reEnterNewPassword) {
       axios
         .post("http://localhost:5000/reset/newpassword", {
-          userNameOTP,
+          emailOTP,
           newPassword,
         })
         .then((res) => {
@@ -119,18 +119,19 @@ const OtpWindow = ({ setotpWindow, setis_signin }) => {
 
   return (
     <section className="otpWindow_popup">
-      {usernameWindow && (
+      {emailWindow && (
         <div className="otpWindow_content card">
           <h1>Verify Email</h1>
           <p>Job Tracker</p>
           <form className="otpForm" onSubmit={(e) => handleSubmit(e)}>
             <span className="formField">
-              <label htmlFor="otp">Enter Username</label>
+              <label htmlFor="otp">Enter Email</label>
               <input
-                id="userNameOTP"
-                value={userNameOTP}
+                id="emailOTP"
+                type="email"
+                value={emailOTP}
                 onChange={(e) => {
-                  setuserNameOTP(e.target.value);
+                  setemailOTP(e.target.value);
                 }}
                 autoComplete="otp"
                 required

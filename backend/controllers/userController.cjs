@@ -9,8 +9,8 @@ require('dotenv').config()
 
 const getUserData = async (req,res)=>{
     try{
-        const userName = req.userName
-        const userData = await userModel.findOne({username:userName})
+        const email = req.email
+        const userData = await userModel.findOne({email:email})
         if(userData){
                 res.send({data:userData})
         }
@@ -24,12 +24,33 @@ const getUserData = async (req,res)=>{
 }
 const signinUser = async (req,res)=>{
     try{
-        const {usernameInput,passwordInput} = req.body
-        const userData = await userModel.findOne({username:usernameInput})
+        const {emailInput,passwordInput} = req.body
+        const userData = await userModel.findOne({email:emailInput})
         if(userData){
             let match = await bcrypt.compare(passwordInput,userData.password)
             if(match){
-                const token = jwt.sign({userName:usernameInput}, process.env.SECRET_KEY, {expiresIn:'30d'})
+                const token = jwt.sign({email:emailInput}, process.env.SECRET_KEY, {expiresIn:'30d'})
+                res.send({data:userData,token:token})
+            }
+            else{
+                res.json("wrong password")
+            }
+        }
+        else{
+            res.json("User not found!")
+        }
+    }
+    catch(err){
+        res.json(err)
+    }
+}
+const signinGoogleUser = async (req,res)=>{
+    try{
+        const {googleEmail} = req.body
+        const userData = await userModel.findOne({email:googleEmail})
+        if(userData){
+            if(true){
+                const token = jwt.sign({email:googleEmail}, process.env.SECRET_KEY, {expiresIn:'30d'})
                 res.send({data:userData,token:token})
             }
             else{
@@ -46,10 +67,10 @@ const signinUser = async (req,res)=>{
 }
 
 const createUserData = async (req,res)=>{
-    const {user, password, email, jobs_list, jobs_history, passwordResetOtp, passwordResetOtpExpiry} = req.body
-    let hashedPassword = await bcrypt.hash(password,saltRounds)
+    const {username, password, email, jobs_list, jobs_history, passwordResetOtp, passwordResetOtpExpiry} = req.body
+    let hashedPassword = password === '' ? null : await bcrypt.hash(password,saltRounds)
     const data = {
-        username:user,
+        username:username,
         password:hashedPassword,
         email:email,
         jobs_list:jobs_list,
@@ -58,14 +79,14 @@ const createUserData = async (req,res)=>{
         passwordResetOtpExpiry : passwordResetOtpExpiry
     }
     try{
-        const checkerFlag = await userModel.findOne({username:user})
-        if(checkerFlag){
-            res.json("exist");
+        const checkEmail = await userModel.findOne({email:email})
+        if(checkEmail){
+            res.json("Email already exist");
         }
         else{
             await userModel.insertMany([data])
-            const token = jwt.sign({userName:user}, process.env.SECRET_KEY, {expiresIn:'30d'})
-            await signupAuthModel.findOneAndDelete({username:user})
+            const token = jwt.sign({email:email}, process.env.SECRET_KEY, {expiresIn:'30d'})
+            await signupAuthModel.findOneAndDelete({email:email})
             res.send({token:token,text:'success'})
         }
     }
@@ -77,9 +98,9 @@ const createUserData = async (req,res)=>{
 
 const updateJobsList = async (req,res)=>{
     const {new_list} = req.body
-    const userName = req.userName
+    const email = req.email
     try{
-        await userModel.updateOne({username:userName},{$set:{jobs_list:new_list}})
+        await userModel.updateOne({email:email},{$set:{jobs_list:new_list}})
         res.json("success")
     }
     catch(err){
@@ -88,9 +109,9 @@ const updateJobsList = async (req,res)=>{
 }
 const updateJobsHistory = async (req,res)=>{
     const {new_history_list} = req.body
-    const userName = req.userName
+    const email = req.email
     try{
-        await userModel.updateOne({username:userName},{$set:{jobs_history:new_history_list}})
+        await userModel.updateOne({email:email},{$set:{jobs_history:new_history_list}})
         res.json("success")
     }
     catch(err){
@@ -98,4 +119,4 @@ const updateJobsHistory = async (req,res)=>{
     }
 }
 
-module.exports = {getUserData, createUserData, signinUser, updateJobsList, updateJobsHistory}
+module.exports = {getUserData, createUserData, signinUser, signinGoogleUser, updateJobsList, updateJobsHistory}

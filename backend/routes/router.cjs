@@ -10,6 +10,7 @@ router.post("/jobs_history", jwtMiddleware.verifyToken, userController.updateJob
 
 router.post("/signup", userController.createUserData)
 router.post("/signin", userController.signinUser)
+router.post("/google_signin", userController.signinGoogleUser)
 router.post("/otp_signup", authController.verifySignupOTP)
 router.post("/signup_otp", authController.sendSignupOTP)
 router.post("/otp", authController.sendMail)

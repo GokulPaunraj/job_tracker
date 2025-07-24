@@ -2,7 +2,7 @@ import { useState } from "react";
 import "./newEntry.css";
 import axios from "axios";
 
-const NewEntry = ({ data, newEntryRef, setnewEntry }) => {
+const NewEntry = ({ data, newEntryRef }) => {
   const [companyName, setcompanyName] = useState("");
   const [role, setrole] = useState("");
   const [ctc, setctc] = useState("");
@@ -13,7 +13,7 @@ const NewEntry = ({ data, newEntryRef, setnewEntry }) => {
     e.preventDefault();
 
     try {
-      
+      console.log(status)
       const token = localStorage.getItem('jwtToken')
       let new_entry = {
         id: (data ? data["jobs_list"].length : 0),
@@ -40,10 +40,7 @@ const NewEntry = ({ data, newEntryRef, setnewEntry }) => {
           });
 
       await axios
-          .post("http://localhost:5000/update/jobs_history", {
-            headers:{Authorization:`Bearer ${token}`},
-            new_history_list,
-          })
+          .post("http://localhost:5000/update/jobs_history",{new_history_list}, {headers:{Authorization:`Bearer ${token}`}})
           .then((res) => {
             if (res.data === "success") {
               console.log("success--history");

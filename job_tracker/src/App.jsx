@@ -31,7 +31,7 @@ function App() {
 
   const [userName, setuserName] = useState(localStorage.getItem('userName'));
   const [password, setpassword] = useState('');
-  const [email, setemail] = useState("");
+  const [Email, setEmail] = useState("");
 
   const navigate = useNavigate();
 
@@ -162,6 +162,7 @@ function App() {
           setis_signin={setis_signin}
           setis_signup={setis_signup}
           setotpWindow={setotpWindow}
+          setEmail={setEmail}
         />
       )}
       {otpWindow && (
@@ -180,10 +181,10 @@ function App() {
           data={data}
           userName={userName}
           password={password}
-          email={email}
+          Email={Email}
           setuserName={setuserName}
           setpassword={setpassword}
-          setemail={setemail}
+          setEmail={setEmail}
         />
       )}
       {/* Creating Routes */}

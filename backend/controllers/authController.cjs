@@ -9,56 +9,19 @@ const signupAuthModel = require('../models/signupAuthModel.cjs')
 dotenv.config()
 
 const sendMail = async (req, res) => {
-    const { userNameOTP } = req.body
+    const { emailOTP } = req.body
     try {
-        let userData = await userModel.findOne({ username: userNameOTP })
-        let prev_expiry = userData.passwordResetOtpExpiry
-        if (new Date() < new Date(prev_expiry)) {
-            res.send({ expiry: prev_expiry, text: 'You can use your last OTP' });
-        }
-        else {
-            let resetOTP = crypto.randomBytes(2).toString("hex");
-            let expiry = new Date(Date.now() + 3 * 60 * 1000)
-            await userModel.updateOne({ username: userNameOTP }, { $set: { passwordResetOtp: resetOTP, passwordResetOtpExpiry: expiry } })
-            if (userData) {
-                let email = userData.email
-                const resend = new Resend(process.env.RESEND_AIP_KEY);
-                const { data, error } = await resend.emails.send({
-                    from: 'onboarding@resend.dev',
-                    to: email,
-                    subject: 'Password Rest OTP',
-                    html: `<p><strong>${resetOTP}</strong> is your otp!</p>`
-                })
-                if (data) {
-                    res.send({ expiry: expiry, text: `OTP sent to ${email}` });
-                }
-                if (error) {
-                    res.json('something went wrong! Try again')
-                }
-            }
-            else {
-                res.json('user not found!')
-            }
-        }
-    }
-    catch (err) {
-        res.json('something went wrong! Try again')
-    }
-}
-const sendSignupOTP = async (req, res) => {
-    const { user, email } = req.body
-    try {
-        let userData = await signupAuthModel.findOne({ username: user })
+        let userData = await userModel.findOne({ email: emailOTP })
         if (userData) {
-            let prev_expiry = userData.signupOtpExpiry
+            let prev_expiry = userData.passwordResetOtpExpiry
             if (new Date() < new Date(prev_expiry)) {
                 res.send({ expiry: prev_expiry, text: 'You can use your last OTP' });
             }
             else {
                 let resetOTP = crypto.randomBytes(2).toString("hex");
                 let expiry = new Date(Date.now() + 3 * 60 * 1000)
-                await signupAuthModel.updateOne({ username: user }, { $set: { signupOtp: resetOTP, signupOtpExpiry: expiry } })
-                if (userData) {
+                await userModel.updateOne({ email: emailOTP }, { $set: { passwordResetOtp: resetOTP, passwordResetOtpExpiry: expiry } })
+            
                     let email = userData.email
                     const resend = new Resend(process.env.RESEND_AIP_KEY);
                     const { data, error } = await resend.emails.send({
@@ -71,34 +34,79 @@ const sendSignupOTP = async (req, res) => {
                         res.send({ expiry: expiry, text: `OTP sent to ${email}` });
                     }
                     if (error) {
-                        console.log("error data")
-                        console.log(error)
                         res.json('something went wrong! Try again')
+                        console.log('error')
                     }
-                }
-                else {
-                    res.json('user not found!')
-                }
             }
         }
         else {
-            let resetOTP = crypto.randomBytes(2).toString("hex");
-            let expiry = new Date(Date.now() + 3 * 60 * 1000)
-            await signupAuthModel.insertMany({ username: user, email: email, signupOtp: resetOTP, signupOtpExpiry: expiry })
-            const resend = new Resend(process.env.RESEND_AIP_KEY);
-            const { data, error } = await resend.emails.send({
-                from: 'onboarding@resend.dev',
-                to: email,
-                subject: 'Password Rest OTP',
-                html: `<p><strong>${resetOTP}</strong> is your otp!</p>`
-            })
-            if (data) {
-                res.send({ expiry: expiry, text: `OTP sent to ${email}` });
+            res.json('user not found!')
+        }
+    }
+    catch (err) {
+        res.json('something went wrong! Try again')
+    }
+}
+const sendSignupOTP = async (req, res) => {
+    const { email } = req.body
+    try {
+        let checkUserExist = await userModel.findOne({email:email})
+        if(checkUserExist){
+            res.json('User already exist!')
+        }
+        else{
+            let userData = await signupAuthModel.findOne({ email: email })
+            if (userData) {
+                let prev_expiry = userData.signupOtpExpiry
+                if (new Date() < new Date(prev_expiry)) {
+                    res.send({ expiry: prev_expiry, text: 'You can use your last OTP' });
+                }
+                else {
+                    let resetOTP = crypto.randomBytes(2).toString("hex");
+                    let expiry = new Date(Date.now() + 3 * 60 * 1000)
+                    await signupAuthModel.updateOne({ email: email }, { $set: { signupOtp: resetOTP, signupOtpExpiry: expiry } })
+                    if (userData) {
+                        let email = userData.email
+                        const resend = new Resend(process.env.RESEND_AIP_KEY);
+                        const { data, error } = await resend.emails.send({
+                            from: 'onboarding@resend.dev',
+                            to: email,
+                            subject: 'Password Rest OTP',
+                            html: `<p><strong>${resetOTP}</strong> is your otp!</p>`
+                        })
+                        if (data) {
+                            res.send({ expiry: expiry, text: `OTP sent to ${email}` });
+                        }
+                        if (error) {
+                            console.log("error data")
+                            console.log(error)
+                            res.json('something went wrong! Try again')
+                        }
+                    }
+                    else {
+                        res.json('user not found!')
+                    }
+                }
             }
-            if (error) {
-                console.log(error)
-                console.log("error")
-                res.json('something went wrong! Try again')
+            else {
+                let resetOTP = crypto.randomBytes(2).toString("hex");
+                let expiry = new Date(Date.now() + 3 * 60 * 1000)
+                await signupAuthModel.insertMany({ email: email, signupOtp: resetOTP, signupOtpExpiry: expiry })
+                const resend = new Resend(process.env.RESEND_AIP_KEY);
+                const { data, error } = await resend.emails.send({
+                    from: 'onboarding@resend.dev',
+                    to: email,
+                    subject: 'Password Rest OTP',
+                    html: `<p><strong>${resetOTP}</strong> is your otp!</p>`
+                })
+                if (data) {
+                    res.send({ expiry: expiry, text: `OTP sent to ${email}` });
+                }
+                if (error) {
+                    console.log(error)
+                    console.log("error")
+                    res.json('something went wrong! Try again')
+                }
             }
         }
     }
@@ -108,11 +116,12 @@ const sendSignupOTP = async (req, res) => {
         res.json('something went wrong! Try again')
     }
 }
+
 const verifySignupOTP = async (req, res) => {
-    let { user, otp } = req.body
+    let { email, otp } = req.body
 
     try {
-        let userData = await signupAuthModel.findOne({ username: user })
+        let userData = await signupAuthModel.findOne({ email: email })
         let expiry = userData.signupOtpExpiry
         if (userData) {
             if (new Date() < new Date(expiry)) {
@@ -137,10 +146,10 @@ const verifySignupOTP = async (req, res) => {
 
 }
 const verifyOtp = async (req, res) => {
-    let { userNameOTP, otp } = req.body
+    let { emailOTP, otp } = req.body
 
     try {
-        let userData = await userModel.findOne({ username: userNameOTP })
+        let userData = await userModel.findOne({ email: emailOTP })
         let expiry = userData.passwordResetOtpExpiry
         if (userData) {
             if (new Date() < new Date(expiry)) {
@@ -166,10 +175,10 @@ const verifyOtp = async (req, res) => {
 }
 
 const resetPassword = async (req, res) => {
-    let { userNameOTP, newPassword } = req.body
+    let { emailOTP, newPassword } = req.body
     try {
         let hashedPassword = await bcrypt.hash(newPassword, saltRounds)
-        await userModel.updateOne({ username: userNameOTP }, { $set: { password: hashedPassword, passwordResetOtp: '', passwordResetOtpExpiry: '' } })
+        await userModel.updateOne({ email: emailOTP }, { $set: { password: hashedPassword, passwordResetOtp: '', passwordResetOtpExpiry: '' } })
         res.json('New password updated!')
     }
     catch (err) {

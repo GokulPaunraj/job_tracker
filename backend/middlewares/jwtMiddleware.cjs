@@ -9,7 +9,7 @@ const verifyToken = (req,res,next)=>{
 
     try{
         const payload = jwt.verify(token,process.env.SECRET_KEY)
-        req.userName = payload.userName
+        req.email = payload.email
         next()
     }
     catch(err){

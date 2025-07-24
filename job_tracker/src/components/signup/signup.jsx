@@ -7,12 +7,15 @@ import { signInWithPopup } from "firebase/auth";
 
 import axios from "axios";
 
-const Signup = ({password, setuserName, setpassword, email, setemail, setis_signin, signupRef, setis_signup}) => {
+const Signup = ({password, setuserName, setpassword, Email, setEmail, setis_signin, signupRef, setis_signup}) => {
 
   let [user,setuser] = useState('')
   const [otp, setotp] = useState("");
   const [enterOTP, setenterOTP] = useState(false);
   const [timeLeft, settimeLeft] = useState("");
+
+  let googleUser = null
+  let googleEmail = null
 
   function handleSubmit(e) {
     e.preventDefault();
@@ -20,12 +23,13 @@ const Signup = ({password, setuserName, setpassword, email, setemail, setis_sign
   }
 
   function SendOTP(){
+    let email = Email
     axios
-      .post("http://localhost:5000/send/signup_otp", { user,email })
+      .post("http://localhost:5000/send/signup_otp", { email })
       .then((res) => {
         if (res.data === "something went wrong! Try again") {
           alert(res.data);
-        } else if (res.data === "user not found!") {
+        } else if (res.data === "user not found!" || res.data === "User already exist!") {
           alert(res.data);
         } else {
           alert(res.data.text);
@@ -54,8 +58,9 @@ const Signup = ({password, setuserName, setpassword, email, setemail, setis_sign
 
   function handleSubmitOTP(e) {
     e.preventDefault();
+    let email = Email
     axios
-      .post("http://localhost:5000/verify/otp_signup", {user,otp})
+      .post("http://localhost:5000/verify/otp_signup", {email,otp})
       .then((res) => {
         if (res.data === "success") {
           alert("Verified");
@@ -81,27 +86,31 @@ const Signup = ({password, setuserName, setpassword, email, setemail, setis_sign
   }
 
   function createUser(){
+    let username = googleUser ? googleUser : user;
+    let email = googleEmail ? googleEmail : Email;
     let jobs_list = []
     let jobs_history = []
     let passwordResetOtp = 987956
     let passwordResetOtpExpiry = new Date()
 
     try {
-        axios.post("http://localhost:5000/new_user/signup/",{ user, password, email, jobs_list,jobs_history,passwordResetOtp,passwordResetOtpExpiry})
+        axios.post("http://localhost:5000/new_user/signup/",{ username, password, email, jobs_list,jobs_history,passwordResetOtp,passwordResetOtpExpiry})
                  .then((res)=>{
                     if(res.data.text === "success"){
                       alert("Hurray! You have successfully signed up")
                       let token = res.data.token
                       localStorage.setItem('jwtToken',token)
                       setuserName(user)
+                      setEmail(email)
+                      googleUser = null
+                      googleEmail = null
                       setis_signup(false)
                     }
-                    else if (res.data === "exist"){
-                      alert("Username exist. Try a different one")
+                    else{
+                      alert(res.data)
                     }
                  })
                  .catch((err)=>{
-                  console.log(err);
                   alert(err)
                 })
     } 
@@ -109,17 +118,17 @@ const Signup = ({password, setuserName, setpassword, email, setemail, setis_sign
       console.log(err);
     }
 
-    setuserName("");
     setuser('')
     setpassword("");
-    setemail("");    
   }
 
-  async function loginWithGoogle(){
+  async function signupWithGoogle(){
     try{
       const result = await signInWithPopup(auth,googleAuthProvider)
-      const user = result.user
-      alert(`welcome ${user.displayName}`)
+      let user = result.user
+      googleUser = user.displayName
+      googleEmail = user.email
+      createUser()
     }
     catch(err){
       console.log(err)
@@ -167,9 +176,9 @@ const Signup = ({password, setuserName, setpassword, email, setemail, setis_sign
                 id="email"
                 type="email"
                 placeholder="eg : you@gmail.com"
-                value={email}
+                value={Email}
                 onChange={(e) => {
-                  setemail(e.target.value);
+                  setEmail(e.target.value);
                 }}
                 autoComplete="email"
                 required
@@ -180,7 +189,7 @@ const Signup = ({password, setuserName, setpassword, email, setemail, setis_sign
             </span>
           </form>
           <span className="bottom">
-          <div onClick={()=>{loginWithGoogle()}}>Continue with Google</div>
+          <div onClick={()=>{signupWithGoogle()}}>Continue with Google</div>
           <div style={{ fontSize: "0.7em", margin: "1em" }}>
             Already have an account?{" "}
             <span

@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
 
-const EditEntry = ({data,setdata, edit_entry,editRef,setediting}) => {
+const EditEntry = ({data,setdata, edit_entry,editRef}) => {
  const [companyName, setcompanyName] = useState("");
   const [role, setrole] = useState("");
   const [ctc, setctc] = useState("");

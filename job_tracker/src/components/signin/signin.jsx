@@ -1,14 +1,17 @@
 import { useState } from "react";
 import "./signin.css";
 
+import {auth, googleAuthProvider} from '../../firebase/firebaseConfig'
+import { signInWithPopup } from "firebase/auth";
+
 import { VscEye } from "react-icons/vsc";
 import { VscEyeClosed } from "react-icons/vsc";
 
 import axios from 'axios'
 
-const Signin = ({ setdata, password, setuserName, setpassword, signinRef, setis_signin, setis_signup, setotpWindow }) => {
+const Signin = ({ setdata, setuserName, setEmail, setpassword, signinRef, setis_signin, setis_signup, setotpWindow }) => {
 
-  let [usernameInput,setusernameInput] = useState("")
+  let [emailInput,setemailInput] = useState("")
   let [passwordInput,setpasswordInput] = useState("")
   let [show_password,setshow_password] = useState(false)
 
@@ -18,13 +21,14 @@ const Signin = ({ setdata, password, setuserName, setpassword, signinRef, setis_
     const fetch = () => {
       try {
         axios
-          .post("http://localhost:5000/user/signin", { usernameInput,passwordInput })
+          .post("http://localhost:5000/user/signin", { emailInput,passwordInput })
           .then((res) => {
             if (res.data === "User not found!") {
               alert(res.data);
               localStorage.removeItem("jwtToken");
               setpassword("")
               setuserName("")
+              setEmail("")
               setis_signup(true);
             } 
             else if(res.data === "wrong password") {
@@ -34,8 +38,8 @@ const Signin = ({ setdata, password, setuserName, setpassword, signinRef, setis_
             }
             else{
               setdata(res.data.data);
-              console.log(res.data.data)
-              setuserName(usernameInput)
+              setuserName(res.data.data.email)
+              setEmail(emailInput)
               setpassword(passwordInput)
               localStorage.setItem('jwtToken',res.data.token)
               setis_signin(false)
@@ -48,7 +52,7 @@ const Signin = ({ setdata, password, setuserName, setpassword, signinRef, setis_
         alert(err);
       }
     };
-    if (usernameInput) {
+    if (emailInput) {
       fetch();
     }
   } 
@@ -58,6 +62,40 @@ const Signin = ({ setdata, password, setuserName, setpassword, signinRef, setis_
     setis_signin(false)
   }
 
+  async function signinWithGoogle(){
+    try{
+      const result = await signInWithPopup(auth,googleAuthProvider)
+      let user = result.user
+      let googleEmail = user.email
+      await axios
+          .post("http://localhost:5000/user/google_signin", { googleEmail })
+          .then((res) => {
+            if (res.data === "User not found!") {
+              alert(res.data);
+              localStorage.removeItem("jwtToken");
+              setpassword("")
+              setuserName("")
+              setEmail("")
+              setis_signup(true);
+            } 
+            else{
+              alert("Signin successful!")
+              setdata(res.data.data);
+              setuserName(res.data.data.email)
+              setEmail(googleEmail)
+              localStorage.setItem('jwtToken',res.data.token)
+              setis_signin(false)
+            }
+          })
+          .catch((err) => {
+            alert(err);
+          });
+    }
+    catch(err){
+      console.log(err)
+    }
+  }
+
   return (
     <section className="signin_popup" ref={signinRef}>
       <div className="signin_content card">
@@ -65,15 +103,16 @@ const Signin = ({ setdata, password, setuserName, setpassword, signinRef, setis_
         <p>Job Tracker</p>
         <form className="signinForm" onSubmit={(e) => handleSubmit(e)}>
           <span className="formField">
-            <label htmlFor="userName">Username</label>
+            <label htmlFor="email">Email</label>
             <input
-              id="userName"
-              placeholder="eg : smileKiller123"
-              value={usernameInput}
+              id="email"
+              placeholder="eg : you@you.com"
+              type="email"
+              value={emailInput}
               onChange={(e) => {
-                setusernameInput(e.target.value);
+                setemailInput(e.target.value);
               }}
-              autoComplete="username"
+              autoComplete="email"
               required
             />
           </span>
@@ -100,7 +139,7 @@ const Signin = ({ setdata, password, setuserName, setpassword, signinRef, setis_
           </span>
         </form>
         <span className="bottom">
-        <div>Continue with Google</div>
+        <div onClick={()=>{signinWithGoogle()}}>Continue with Google</div>
         <span>
           Don't have an account?{" "}
           <span
