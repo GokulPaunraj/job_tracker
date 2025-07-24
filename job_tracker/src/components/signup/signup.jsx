@@ -108,6 +108,7 @@ const Signup = ({password, setuserName, setpassword, Email, setEmail, setis_sign
                     }
                     else{
                       alert(res.data)
+                      localStorage.removeItem('jwtToken')
                     }
                  })
                  .catch((err)=>{
@@ -120,6 +121,7 @@ const Signup = ({password, setuserName, setpassword, Email, setEmail, setis_sign
 
     setuser('')
     setpassword("");
+    window.location.reload()
   }
 
   async function signupWithGoogle(){

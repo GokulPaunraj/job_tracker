@@ -141,7 +141,7 @@ function App() {
 
   return (
     <div className="App">
-      <Header setis_signin={setis_signin} setnewEntry={setnewEntry} sidebar={sidebar} setsidebar={setsidebar} hamburgerMenuRef={hamburgerMenuRef}/>
+      <Header data={data} setis_signin={setis_signin} setnewEntry={setnewEntry} sidebar={sidebar} setsidebar={setsidebar} hamburgerMenuRef={hamburgerMenuRef}/>
       <Sidebar setdata={setdata} sidebar={sidebar} setsidebar={setsidebar} siderbarRef = {siderbarRef} />
       {/* {POP UP} */}
       {newEntry && (

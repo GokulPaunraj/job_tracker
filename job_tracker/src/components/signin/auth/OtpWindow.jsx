@@ -30,8 +30,8 @@ const OtpWindow = ({ setotpWindow, setis_signin }) => {
               0,
               Math.floor((new Date(res.data.expiry) - new Date()) / 1000)
             );
-            let minutes = Math.floor(timeLeft / 60);
-            let seconds = timeLeft % 60;
+            let minutes = '0'+ Math.floor(timeLeft / 60);
+            let seconds = (timeLeft % 60) < 10 ? '0'+(timeLeft % 60) : (timeLeft % 60);
             if (timeLeft <= 0) {
               settimeLeft("0:00");
               clearInterval(interval);
