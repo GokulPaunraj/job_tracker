@@ -37,7 +37,7 @@ const sendMail = async (req, res) => {
                     await transporter.sendMail(mail,(error,data)=>{
                         if (error){
                             res.json('something went wrong! Try again')
-                            console.log('error')
+                            console.log(error)
                         }
                         else{
                             res.send({ expiry: expiry, text: `OTP sent to ${email}` });
