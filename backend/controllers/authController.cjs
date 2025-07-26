@@ -1,4 +1,4 @@
-const { Resend } = require("resend")
+const {nodemailer} = require('nodemailer')
 const crypto = require('crypto')
 const bcrypt = require('bcrypt')
 const saltRounds = 10
@@ -7,6 +7,11 @@ const userModel = require('../models/userModel.cjs')
 const signupAuthModel = require('../models/signupAuthModel.cjs')
 
 dotenv.config()
+
+const transporter = nodemailer.createTransporter({
+    service : 'gmail',
+    auth : {user : process.env.EMAIL, pass : process.env.PASSWORD}
+})
 
 const sendMail = async (req, res) => {
     const { emailOTP } = req.body
@@ -23,20 +28,21 @@ const sendMail = async (req, res) => {
                 await userModel.updateOne({ email: emailOTP }, { $set: { passwordResetOtp: resetOTP, passwordResetOtpExpiry: expiry } })
             
                     let email = userData.email
-                    const resend = new Resend(process.env.RESEND_AIP_KEY);
-                    const { data, error } = await resend.emails.send({
-                        from: 'onboarding@resend.dev',
+                    const mail = {
+                        from: process.env.EMAIL,
                         to: email,
                         subject: 'Password Rest OTP',
                         html: `<p><strong>${resetOTP}</strong> is your otp!</p>`
+                    }
+                    await transporter.sendMail(mail,(error,data)=>{
+                        if (error){
+                            res.json('something went wrong! Try again')
+                            console.log('error')
+                        }
+                        else{
+                            res.send({ expiry: expiry, text: `OTP sent to ${email}` });
+                        }
                     })
-                    if (data) {
-                        res.send({ expiry: expiry, text: `OTP sent to ${email}` });
-                    }
-                    if (error) {
-                        res.json('something went wrong! Try again')
-                        console.log('error')
-                    }
             }
         }
         else {
@@ -67,21 +73,21 @@ const sendSignupOTP = async (req, res) => {
                     await signupAuthModel.updateOne({ email: email }, { $set: { signupOtp: resetOTP, signupOtpExpiry: expiry } })
                     if (userData) {
                         let email = userData.email
-                        const resend = new Resend(process.env.RESEND_AIP_KEY);
-                        const { data, error } = await resend.emails.send({
-                            from: 'onboarding@resend.dev',
-                            to: email,
-                            subject: 'Password Rest OTP',
-                            html: `<p><strong>${resetOTP}</strong> is your otp!</p>`
-                        })
-                        if (data) {
+                        const mail = {
+                        from: process.env.EMAIL,
+                        to: email,
+                        subject: 'Password Rest OTP',
+                        html: `<p><strong>${resetOTP}</strong> is your otp!</p>`
+                    }
+                    await transporter.sendMail(mail,(error,data)=>{
+                        if (error){
+                            res.json('something went wrong! Try again')
+                            console.log('error')
+                        }
+                        else{
                             res.send({ expiry: expiry, text: `OTP sent to ${email}` });
                         }
-                        if (error) {
-                            console.log("error data")
-                            console.log(error)
-                            res.json('something went wrong! Try again')
-                        }
+                    })
                     }
                     else {
                         res.json('user not found!')
@@ -92,21 +98,21 @@ const sendSignupOTP = async (req, res) => {
                 let resetOTP = crypto.randomBytes(2).toString("hex");
                 let expiry = new Date(Date.now() + 3 * 60 * 1000)
                 await signupAuthModel.insertMany({ email: email, signupOtp: resetOTP, signupOtpExpiry: expiry })
-                const resend = new Resend(process.env.RESEND_AIP_KEY);
-                const { data, error } = await resend.emails.send({
-                    from: 'onboarding@resend.dev',
+                const mail = {
+                    from: process.env.EMAIL,
                     to: email,
                     subject: 'Password Rest OTP',
                     html: `<p><strong>${resetOTP}</strong> is your otp!</p>`
+                }
+                await transporter.sendMail(mail,(error,data)=>{
+                    if (error){
+                        res.json('something went wrong! Try again')
+                        console.log('error')
+                    }
+                    else{
+                        res.send({ expiry: expiry, text: `OTP sent to ${email}` });
+                    }
                 })
-                if (data) {
-                    res.send({ expiry: expiry, text: `OTP sent to ${email}` });
-                }
-                if (error) {
-                    console.log(error)
-                    console.log("error")
-                    res.json('something went wrong! Try again')
-                }
             }
         }
     }
