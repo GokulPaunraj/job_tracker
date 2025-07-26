@@ -9,10 +9,12 @@ const signupAuthModel = require('../models/signupAuthModel.cjs')
 dotenv.config()
 
 const transporter = nodemailer.createTransport({
-    host : 'smtp.resend.com',
-    port : 587,
-    auth : {user : 'resend', pass : process.env.RESEND_AIP_KEY}
-})
+  service: "gmail",
+  auth: {
+    user: process.env.EMAIL,
+    pass: process.env.GOOGLE_APP_PASSWORD,
+  },
+});
 
 const sendMail = async (req, res) => {
     const { emailOTP } = req.body
