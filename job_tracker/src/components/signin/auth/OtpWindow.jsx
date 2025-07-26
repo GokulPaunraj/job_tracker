@@ -15,7 +15,7 @@ const OtpWindow = ({ setotpWindow, setis_signin }) => {
 
   function SendOTP() {
     axios
-      .post("http://localhost:3000/send/otp", { emailOTP })
+      .post("https://job-tracker-xnm0.onrender.com/send/otp", { emailOTP })
       .then((res) => {
         if (res.data === "something went wrong! Try again") {
           alert(res.data);
