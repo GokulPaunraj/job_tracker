@@ -1,4 +1,4 @@
-const {nodemailer} = require('nodemailer')
+const nodemailer = require('nodemailer')
 const crypto = require('crypto')
 const bcrypt = require('bcrypt')
 const saltRounds = 10
