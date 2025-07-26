@@ -8,7 +8,7 @@ const signupAuthModel = require('../models/signupAuthModel.cjs')
 
 dotenv.config()
 
-const transporter = nodemailer.createTransporter({
+const transporter = nodemailer.createTransport({
     service : 'gmail',
     auth : {user : process.env.EMAIL, pass : process.env.PASSWORD}
 })
