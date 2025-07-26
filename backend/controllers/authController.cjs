@@ -8,12 +8,6 @@ const signupAuthModel = require('../models/signupAuthModel.cjs')
 
 dotenv.config()
 
-const transporter = nodemailer.createTransport({
-    host : 'smtp.resend.com',
-    port : 587,
-    auth : {user : 'resend', pass : process.env.RESEND_AIP_KEY}
-})
-
 const sendMail = async (req, res) => {
     const { emailOTP } = req.body
     try {
@@ -29,13 +23,7 @@ const sendMail = async (req, res) => {
                 await userModel.updateOne({ email: emailOTP }, { $set: { passwordResetOtp: resetOTP, passwordResetOtpExpiry: expiry } })
             
                     let email = userData.email
-                    const mail = {
-                        from: process.env.EMAIL,
-                        to: email,
-                        subject: 'Password Rest OTP',
-                        html: `<p><strong>${resetOTP}</strong> is your otp!</p>`
-                    }
-                    await transporter.sendMail(mail)
+                    
                     res.send({ expiry: expiry, text: `OTP sent to ${email}` });
             }
         }
@@ -67,13 +55,7 @@ const sendSignupOTP = async (req, res) => {
                     await signupAuthModel.updateOne({ email: email }, { $set: { signupOtp: resetOTP, signupOtpExpiry: expiry } })
                     if (userData) {
                         let email = userData.email
-                        const mail = {
-                        from: process.env.EMAIL,
-                        to: email,
-                        subject: 'Password Rest OTP',
-                        html: `<p><strong>${resetOTP}</strong> is your otp!</p>`
-                    }
-                    await transporter.sendMail(mail)
+                        
                     res.send({ expiry: expiry, text: `OTP sent to ${email}` });
                     }
                     else {
@@ -85,13 +67,7 @@ const sendSignupOTP = async (req, res) => {
                 let resetOTP = crypto.randomBytes(2).toString("hex");
                 let expiry = new Date(Date.now() + 3 * 60 * 1000)
                 await signupAuthModel.insertMany({ email: email, signupOtp: resetOTP, signupOtpExpiry: expiry })
-                const mail = {
-                    from: process.env.EMAIL,
-                    to: email,
-                    subject: 'Password Rest OTP',
-                    html: `<p><strong>${resetOTP}</strong> is your otp!</p>`
-                }
-                await transporter.sendMail(mail)
+               
                 res.send({ expiry: expiry, text: `OTP sent to ${email}` });
             }
         }
