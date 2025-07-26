@@ -34,15 +34,8 @@ const sendMail = async (req, res) => {
                         subject: 'Password Rest OTP',
                         html: `<p><strong>${resetOTP}</strong> is your otp!</p>`
                     }
-                    await transporter.sendMail(mail,(error,data)=>{
-                        if (error){
-                            res.json('something went wrong! Try again')
-                            console.log(error)
-                        }
-                        else{
-                            res.send({ expiry: expiry, text: `OTP sent to ${email}` });
-                        }
-                    })
+                    await transporter.sendMail(mail)
+                    res.send({ expiry: expiry, text: `OTP sent to ${email}` });
             }
         }
         else {
@@ -79,15 +72,8 @@ const sendSignupOTP = async (req, res) => {
                         subject: 'Password Rest OTP',
                         html: `<p><strong>${resetOTP}</strong> is your otp!</p>`
                     }
-                    await transporter.sendMail(mail,(error,data)=>{
-                        if (error){
-                            res.json('something went wrong! Try again')
-                            console.log('error')
-                        }
-                        else{
-                            res.send({ expiry: expiry, text: `OTP sent to ${email}` });
-                        }
-                    })
+                    await transporter.sendMail(mail)
+                    res.send({ expiry: expiry, text: `OTP sent to ${email}` });
                     }
                     else {
                         res.json('user not found!')
@@ -104,15 +90,8 @@ const sendSignupOTP = async (req, res) => {
                     subject: 'Password Rest OTP',
                     html: `<p><strong>${resetOTP}</strong> is your otp!</p>`
                 }
-                await transporter.sendMail(mail,(error,data)=>{
-                    if (error){
-                        res.json('something went wrong! Try again')
-                        console.log('error')
-                    }
-                    else{
-                        res.send({ expiry: expiry, text: `OTP sent to ${email}` });
-                    }
-                })
+                await transporter.sendMail(mail)
+                res.send({ expiry: expiry, text: `OTP sent to ${email}` });
             }
         }
     }
