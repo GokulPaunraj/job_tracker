@@ -21,7 +21,7 @@ const Signin = ({ setdata, setuserName, setEmail, setpassword, signinRef, setis_
     const fetch = () => {
       try {
         axios
-          .post("http://localhost:5000/user/signin", { emailInput,passwordInput })
+          .post("https://job-tracker-xnm0.onrender.com/user/signin", { emailInput,passwordInput })
           .then((res) => {
             if (res.data === "User not found!") {
               alert(res.data);
@@ -68,7 +68,7 @@ const Signin = ({ setdata, setuserName, setEmail, setpassword, signinRef, setis_
       let user = result.user
       let googleEmail = user.email
       await axios
-          .post("http://localhost:5000/user/google_signin", { googleEmail })
+          .post("https://job-tracker-xnm0.onrender.com/user/google_signin", { googleEmail })
           .then((res) => {
             if (res.data === "User not found!") {
               alert(res.data);

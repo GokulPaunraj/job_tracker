@@ -15,7 +15,7 @@ const OtpWindow = ({ setotpWindow, setis_signin }) => {
 
   function SendOTP() {
     axios
-      .post("http://localhost:5000/send/otp", { emailOTP })
+      .post("https://job-tracker-xnm0.onrender.com/send/otp", { emailOTP })
       .then((res) => {
         if (res.data === "something went wrong! Try again") {
           alert(res.data);
@@ -59,7 +59,7 @@ const OtpWindow = ({ setotpWindow, setis_signin }) => {
   function handleSubmitOTP(e) {
     e.preventDefault();
     axios
-      .post("http://localhost:5000/verify/reset_otp", { emailOTP, otp })
+      .post("https://job-tracker-xnm0.onrender.com/verify/reset_otp", { emailOTP, otp })
       .then((res) => {
         if (res.data === "success") {
           alert("Verified");
@@ -89,7 +89,7 @@ const OtpWindow = ({ setotpWindow, setis_signin }) => {
     e.preventDefault();
     if (newPassword === reEnterNewPassword) {
       axios
-        .post("http://localhost:5000/reset/newpassword", {
+        .post("https://job-tracker-xnm0.onrender.com/reset/newpassword", {
           emailOTP,
           newPassword,
         })

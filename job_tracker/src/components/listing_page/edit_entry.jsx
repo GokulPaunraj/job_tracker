@@ -37,7 +37,7 @@ const EditEntry = ({data,setdata, edit_entry,editRef}) => {
           let new_list = [...other_entries,new_entry]
 
             axios
-              .post("http://localhost:5000/update/jobs_list", {new_list},{headers:{Authorization:`Bearer ${token}`}})
+              .post("https://job-tracker-xnm0.onrender.com/update/jobs_list", {new_list},{headers:{Authorization:`Bearer ${token}`}})
               .then((res) => {
                 if (res.data === "success") {
                   console.log(res.data);

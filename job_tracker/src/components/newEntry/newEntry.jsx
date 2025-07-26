@@ -27,7 +27,7 @@ const NewEntry = ({ data, newEntryRef }) => {
       let new_history_list = data ? [...data["jobs_history"],new_entry] : [new_entry]
 
       await  axios
-          .post("http://localhost:5000/update/jobs_list", {new_list},{headers:{Authorization:`Bearer ${token}`}})
+          .post("https://job-tracker-xnm0.onrender.com/update/jobs_list", {new_list},{headers:{Authorization:`Bearer ${token}`}})
           .then((res) => {
             if (res.data === "success") {
               console.log("success");
@@ -40,7 +40,7 @@ const NewEntry = ({ data, newEntryRef }) => {
           });
 
       await axios
-          .post("http://localhost:5000/update/jobs_history",{new_history_list}, {headers:{Authorization:`Bearer ${token}`}})
+          .post("https://job-tracker-xnm0.onrender.com/update/jobs_history",{new_history_list}, {headers:{Authorization:`Bearer ${token}`}})
           .then((res) => {
             if (res.data === "success") {
               console.log("success--history");

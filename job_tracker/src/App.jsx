@@ -40,7 +40,7 @@ function App() {
       try {
         const token = await localStorage.getItem('jwtToken')
         await axios
-          .post("http://localhost:5000/",{},{headers:{Authorization:`Bearer ${token}`}})
+          .post("https://job-tracker-xnm0.onrender.com/",{},{headers:{Authorization:`Bearer ${token}`}})
           .then((res) => {
             if (res.data === "User not found!") {
               alert(res.data)

@@ -25,7 +25,7 @@ const Signup = ({password, setuserName, setpassword, Email, setEmail, setis_sign
   function SendOTP(){
     let email = Email
     axios
-      .post("http://localhost:5000/send/signup_otp", { email })
+      .post("https://job-tracker-xnm0.onrender.com/send/signup_otp", { email })
       .then((res) => {
         if (res.data === "something went wrong! Try again") {
           alert(res.data);
@@ -60,7 +60,7 @@ const Signup = ({password, setuserName, setpassword, Email, setEmail, setis_sign
     e.preventDefault();
     let email = Email
     axios
-      .post("http://localhost:5000/verify/otp_signup", {email,otp})
+      .post("https://job-tracker-xnm0.onrender.com/verify/otp_signup", {email,otp})
       .then((res) => {
         if (res.data === "success") {
           alert("Verified");
@@ -94,7 +94,7 @@ const Signup = ({password, setuserName, setpassword, Email, setEmail, setis_sign
     let passwordResetOtpExpiry = new Date()
 
     try {
-        axios.post("http://localhost:5000/new_user/signup/",{ username, password, email, jobs_list,jobs_history,passwordResetOtp,passwordResetOtpExpiry})
+        axios.post("https://job-tracker-xnm0.onrender.com/new_user/signup/",{ username, password, email, jobs_list,jobs_history,passwordResetOtp,passwordResetOtpExpiry})
                  .then((res)=>{
                     if(res.data.text === "success"){
                       alert("Hurray! You have successfully signed up")
