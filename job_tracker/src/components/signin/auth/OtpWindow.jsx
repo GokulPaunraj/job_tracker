@@ -15,10 +15,10 @@ const OtpWindow = ({ setotpWindow, setis_signin }) => {
 
   function SendOTP() {
     axios
-      .post("https://job-tracker-xnm0.onrender.com/send/otp", { emailOTP })
+      .post("http://localhost:3000/send/otp", { emailOTP })
       .then((res) => {
-        if (res.data) {
-          console.log(res.data);
+        if (res.data === "something went wrong! Try again") {
+          alert(res.data);
         } else if (res.data === "user not found!") {
           alert(res.data);
         } else {
@@ -43,7 +43,7 @@ const OtpWindow = ({ setotpWindow, setis_signin }) => {
         }
       })
       .catch((err) => {
-        console.log(err);
+        alert("someting went wrong! Try again");
       });
   }
   function handleSubmit(e) {
