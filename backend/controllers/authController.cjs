@@ -46,7 +46,8 @@ const sendMail = async (req, res) => {
         }
     }
     catch (err) {
-        res.json('something went wrong! Try again')
+        res.send(err)
+        Console.log(err)
     }
 }
 const sendSignupOTP = async (req, res) => {
