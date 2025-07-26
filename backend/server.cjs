@@ -11,7 +11,7 @@ dotenv.config()
 app.use(cors({
     origin:'https://job-tracker-web-app.netlify.app',
 }))
-app.options('/(.*)/',cors())
+app.options(/(.*)/,cors())
 app.use(express.json())
 
 app.use(bodyParser.json({ limit: "10mb" }))
