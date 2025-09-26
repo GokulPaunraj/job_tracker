@@ -80,6 +80,9 @@ const Home = ({ data }) => {
   );
 
   console.log(dates)
+  console.log("data"+data)
+  console.log("applied"+ jobs_applied)
+  console.log("ad"+ applied_dates)
 
   let interviews_this_month = jobs_interviewing.filter((datum) =>
     datum
