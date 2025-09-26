@@ -72,40 +72,26 @@ const Home = ({ data }) => {
 
   let applied_dates = jobs_applied ? jobs_applied.map((job) => job.date) : [];
 
-  let dates = applied_dates.filter((date) =>
-    date
-      ? date.split("-")[1] ===
-        new Date().toISOString().split("T")[0].split("-")[1]
-      : []
+  let dates = applied_dates.filter(
+    (date) =>
+      date.split("-")[1] ===
+      new Date().toISOString().split("T")[0].split("-")[1]
   );
 
-  console.log(dates)
-  console.log("data")
-  console.log(data)
-  console.log("applied" )
-  console.log( jobs_applied)
-  console.log("ad")
-  console.log( applied_dates)
-
-  let interviews_this_month = jobs_interviewing.filter((datum) =>
-    datum
-      ? datum.date.split("-")[1] ===
-        new Date().toISOString().split("T")[0].split("-")[1]
-      : []
+  let interviews_this_month = jobs_interviewing.filter(
+    (datum) =>
+      datum.date.split("-")[1] ===
+      new Date().toISOString().split("T")[0].split("-")[1]
   );
 
   let jobs_this_month = 0;
   dates.map((date) => {
-    console.log(date)
-    if (date != null) {
-      jobs_this_month += 1;
-      return (graph_data[
-        date.split("-")[2].split("")[0] === "0"
-          ? date.split("-")[2].split("")[1]
-          : date.split("-")[2]
-      ] += 1);
-  }
-  return []
+    jobs_this_month += 1;
+    return (graph_data[
+      date.split("-")[2].split("")[0] === "0"
+        ? date.split("-")[2].split("")[1]
+        : date.split("-")[2]
+    ] += 1);
   });
 
   function find_low_ctc() {
