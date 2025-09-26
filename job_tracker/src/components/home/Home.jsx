@@ -88,12 +88,15 @@ const Home = ({ data }) => {
 
   let jobs_this_month = 0;
   dates.map((date) => {
-    jobs_this_month += 1;
-    return (graph_data[
-      date.split("-")[2].split("")[0] === "0"
-        ? date.split("-")[2].split("")[1]
-        : date.split("-")[2]
-    ] += 1);
+    if (date) {
+      jobs_this_month += 1;
+      return (graph_data[
+        date.split("-")[2].split("")[0] === "0"
+          ? date.split("-")[2].split("")[1]
+          : date.split("-")[2]
+      ] += 1);
+  }
+  return []
   });
 
   function find_low_ctc() {
