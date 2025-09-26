@@ -1,4 +1,4 @@
-import './Home.css'
+import "./Home.css";
 
 //importing sections of the page
 import Card from "../card/card";
@@ -7,7 +7,7 @@ import { defaults } from "chart.js/auto";
 import { Line } from "react-chartjs-2";
 import { useNavigate } from "react-router-dom";
 import { useEffect } from "react";
-import {gsap} from "gsap"
+import { gsap } from "gsap";
 
 defaults.maintainAspectRatio = false;
 defaults.responsive = true;
@@ -18,7 +18,38 @@ defaults.plugins.title.align = "center";
 defaults.plugins.title.color = "black";
 
 const Home = ({ data }) => {
-  let graph_data = {1: 0,2: 0,3: 0,4: 0,5: 0,6: 0,7: 0,8: 0,9: 0,10: 0,11: 0,12: 0,13: 0,14: 0,15: 0,16: 0,17: 0,18: 0,19: 0,20: 0,21: 0,22: 0,23: 0,24: 0,25: 0,26: 0,27: 0,28: 0,29: 0,30: 0,};
+  let graph_data = {
+    1: 0,
+    2: 0,
+    3: 0,
+    4: 0,
+    5: 0,
+    6: 0,
+    7: 0,
+    8: 0,
+    9: 0,
+    10: 0,
+    11: 0,
+    12: 0,
+    13: 0,
+    14: 0,
+    15: 0,
+    16: 0,
+    17: 0,
+    18: 0,
+    19: 0,
+    20: 0,
+    21: 0,
+    22: 0,
+    23: 0,
+    24: 0,
+    25: 0,
+    26: 0,
+    27: 0,
+    28: 0,
+    29: 0,
+    30: 0,
+  };
 
   const navigate = useNavigate();
 
@@ -41,16 +72,18 @@ const Home = ({ data }) => {
 
   let applied_dates = jobs_applied ? jobs_applied.map((job) => job.date) : [];
 
-  let dates = applied_dates.filter(
-    (date) =>
-      date.split("-")[1] ===
-      new Date().toISOString().split("T")[0].split("-")[1]
+  let dates = applied_dates.filter((date) =>
+    date
+      ? date.split("-")[1] ===
+        new Date().toISOString().split("T")[0].split("-")[1]
+      : []
   );
 
-  let interviews_this_month = jobs_interviewing.filter(
-    (datum) =>
-      datum.date.split("-")[1] ===
-      new Date().toISOString().split("T")[0].split("-")[1]
+  let interviews_this_month = jobs_interviewing.filter((datum) =>
+    datum
+      ? datum.date.split("-")[1] ===
+        new Date().toISOString().split("T")[0].split("-")[1]
+      : []
   );
 
   let jobs_this_month = 0;
@@ -70,7 +103,7 @@ const Home = ({ data }) => {
         min = ctc_list[i];
       }
     }
-    return min?min:0;
+    return min ? min : 0;
   }
   function find_high_ctc() {
     let max = ctc_list[0];
@@ -79,7 +112,7 @@ const Home = ({ data }) => {
         max = ctc_list[i];
       }
     }
-    return max?max:0;
+    return max ? max : 0;
   }
 
   let low_ctc = find_low_ctc();
@@ -98,35 +131,35 @@ const Home = ({ data }) => {
 
   let jobs_history_list = data ? data.jobs_history : [];
 
-  useEffect(()=>{
-      //sidebar
-      let sidebar = document.querySelector('.sidebar')
-      let sbtl = gsap.timeline()
-      sbtl.fromTo(sidebar,{x:-200},{x:0,duration:1},0)
-  
-      //card container
-      let cards = document.querySelectorAll('.cardAnim')
-      cards.forEach((card)=>{
-        let ctl = gsap.timeline()
-        ctl.fromTo(card,{scale:0},{scale:1,duration:0.7},0)
-      })
-  
-      //chart
-      let chart_container = document.querySelector('.chart_container')
-      let chtl = gsap.timeline()
-      chtl.fromTo(chart_container,{x:200},{x:0,duration:1},0)
-  
-      // bottom section
-      let card1 = document.querySelector(".b_card1")
-      let card2 = document.querySelector(".b_card2")
-      let card3 = document.querySelector(".b_card3")
-  
-      let btl = gsap.timeline()
-      btl.fromTo(card1,{y:100},{y:0,duration:0.7},0)
-         .fromTo(card2,{y:100},{y:0,duration:0.7},'-=0.6')
-         .fromTo(card3,{y:100},{y:0,duration:0.7},'-=0.6')
-    
-  },[navigate])
+  useEffect(() => {
+    //sidebar
+    let sidebar = document.querySelector(".sidebar");
+    let sbtl = gsap.timeline();
+    sbtl.fromTo(sidebar, { x: -200 }, { x: 0, duration: 1 }, 0);
+
+    //card container
+    let cards = document.querySelectorAll(".cardAnim");
+    cards.forEach((card) => {
+      let ctl = gsap.timeline();
+      ctl.fromTo(card, { scale: 0 }, { scale: 1, duration: 0.7 }, 0);
+    });
+
+    //chart
+    let chart_container = document.querySelector(".chart_container");
+    let chtl = gsap.timeline();
+    chtl.fromTo(chart_container, { x: 200 }, { x: 0, duration: 1 }, 0);
+
+    // bottom section
+    let card1 = document.querySelector(".b_card1");
+    let card2 = document.querySelector(".b_card2");
+    let card3 = document.querySelector(".b_card3");
+
+    let btl = gsap.timeline();
+    btl
+      .fromTo(card1, { y: 100 }, { y: 0, duration: 0.7 }, 0)
+      .fromTo(card2, { y: 100 }, { y: 0, duration: 0.7 }, "-=0.6")
+      .fromTo(card3, { y: 100 }, { y: 0, duration: 0.7 }, "-=0.6");
+  }, [navigate]);
 
   return (
     <div>
@@ -187,10 +220,7 @@ const Home = ({ data }) => {
             <p>Jobs applied(this month):</p>
           </section>
 
-          <section
-            className="b_card3"
-            onClick={interviews_this_month_nav}
-          >
+          <section className="b_card3" onClick={interviews_this_month_nav}>
             <p>Interviews this month:</p>
             {interviews_this_month.length
               ? interviews_this_month.map((datum) => (
@@ -201,7 +231,6 @@ const Home = ({ data }) => {
                 ))
               : "Nothing to show"}
           </section>
-
         </section>
       </div>
     </div>
