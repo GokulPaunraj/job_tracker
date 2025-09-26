@@ -79,6 +79,8 @@ const Home = ({ data }) => {
       : []
   );
 
+  console.log(dates)
+
   let interviews_this_month = jobs_interviewing.filter((datum) =>
     datum
       ? datum.date.split("-")[1] ===
@@ -87,15 +89,18 @@ const Home = ({ data }) => {
   );
 
   let jobs_this_month = 0;
-  if (dates.length !== 0) {
-    dates.map((date) => {
+  dates.map((date) => {
+    console.log(date)
+    if (date != null) {
       jobs_this_month += 1;
       return (graph_data[
         date.split("-")[2].split("")[0] === "0"
           ? date.split("-")[2].split("")[1]
           : date.split("-")[2]
       ] += 1);
-  })};
+  }
+  return []
+  });
 
   function find_low_ctc() {
     let min = ctc_list[0];
