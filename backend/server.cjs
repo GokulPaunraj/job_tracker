@@ -24,7 +24,7 @@ app.use(bodyParser.json({ limit: "10mb" }))
 app.use(bodyParser.urlencoded({ limit: '10mb', extended: true }))
 
 mongoose.connect(process.env.MONGOOSE_URL)
-    .then(() => { app.listen(5000, () => { console.log("server is up!") }) })
+    .then(() => { app.listen(process.env.PORT, () => { console.log("server is up!") }) })
     .catch((err) => { console.log(err) })
 
 app.use("/", router)
