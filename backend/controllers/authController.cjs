@@ -5,11 +5,12 @@ const saltRounds = 10
 const dotenv = require('dotenv')
 const userModel = require('../models/userModel.cjs')
 const signupAuthModel = require('../models/signupAuthModel.cjs')
+const { text } = require('body-parser')
 
 dotenv.config()
 
-const transporter = nodemailer.createTransport({
-    service: "gmail",
+var transporter = nodemailer.createTransport({
+    service: "Gmail",
     auth: {
         user: process.env.EMAIL,
         pass: process.env.GOOGLE_APP_PASSWORD,
@@ -42,7 +43,7 @@ const sendMail = async (req, res) => {
                     from: process.env.EMAIL,
                     to: email,
                     subject: 'Password Rest OTP',
-                    html: `<p><strong>${resetOTP}</strong> is your otp!</p>`
+                    text: `<p><strong>${resetOTP}</strong> is your otp!</p>`
                 }
                 await transporter.sendMail(mail)
                 res.send({ expiry: expiry, text: `OTP sent to ${email}` });
