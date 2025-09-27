@@ -9,11 +9,18 @@ const signupAuthModel = require('../models/signupAuthModel.cjs')
 dotenv.config()
 
 const transporter = nodemailer.createTransport({
-  service: "gmail",
-  auth: {
-    user: process.env.EMAIL,
-    pass: process.env.GOOGLE_APP_PASSWORD,
-  },
+    service: "gmail",
+    auth: {
+        user: process.env.EMAIL,
+        pass: process.env.GOOGLE_APP_PASSWORD,
+    },
+});
+transporter.verify((error, success) => {
+    if (error) {
+        console.log("SMTP Error:", error);
+    } else {
+        console.log("Server is ready to take messages");
+    }
 });
 
 const sendMail = async (req, res) => {
@@ -29,16 +36,16 @@ const sendMail = async (req, res) => {
                 let resetOTP = crypto.randomBytes(2).toString("hex");
                 let expiry = new Date(Date.now() + 3 * 60 * 1000)
                 await userModel.updateOne({ email: emailOTP }, { $set: { passwordResetOtp: resetOTP, passwordResetOtpExpiry: expiry } })
-            
-                    let email = userData.email
-                    const mail = {
-                        from: process.env.EMAIL,
-                        to: email,
-                        subject: 'Password Rest OTP',
-                        html: `<p><strong>${resetOTP}</strong> is your otp!</p>`
-                    }
-                    await transporter.sendMail(mail)
-                    res.send({ expiry: expiry, text: `OTP sent to ${email}` });
+
+                let email = userData.email
+                const mail = {
+                    from: process.env.EMAIL,
+                    to: email,
+                    subject: 'Password Rest OTP',
+                    html: `<p><strong>${resetOTP}</strong> is your otp!</p>`
+                }
+                await transporter.sendMail(mail)
+                res.send({ expiry: expiry, text: `OTP sent to ${email}` });
             }
         }
         else {
@@ -47,16 +54,17 @@ const sendMail = async (req, res) => {
     }
     catch (err) {
         res.json('something went wrong! Try again')
+        console.log(err)
     }
 }
 const sendSignupOTP = async (req, res) => {
     const { email } = req.body
     try {
-        let checkUserExist = await userModel.findOne({email:email})
-        if(checkUserExist){
+        let checkUserExist = await userModel.findOne({ email: email })
+        if (checkUserExist) {
             res.json('User already exist!')
         }
-        else{
+        else {
             let userData = await signupAuthModel.findOne({ email: email })
             if (userData) {
                 let prev_expiry = userData.signupOtpExpiry
@@ -70,13 +78,13 @@ const sendSignupOTP = async (req, res) => {
                     if (userData) {
                         let email = userData.email
                         const mail = {
-                        from: process.env.EMAIL,
-                        to: email,
-                        subject: 'Password Rest OTP',
-                        html: `<p><strong>${resetOTP}</strong> is your otp!</p>`
-                    }
-                    await transporter.sendMail(mail)
-                    res.send({ expiry: expiry, text: `OTP sent to ${email}` });
+                            from: process.env.EMAIL,
+                            to: email,
+                            subject: 'Signup OTP',
+                            html: `<p><strong>${resetOTP}</strong> is your otp!</p>`
+                        }
+                        await transporter.sendMail(mail)
+                        res.send({ expiry: expiry, text: `OTP sent to ${email}` });
                     }
                     else {
                         res.json('user not found!')
@@ -99,7 +107,7 @@ const sendSignupOTP = async (req, res) => {
         }
     }
     catch (err) {
-        console.log("catch")
+        console.log("signup otp")
         console.log(err)
         res.json('something went wrong! Try again')
     }
