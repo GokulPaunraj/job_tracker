@@ -8,10 +8,16 @@ const dotenv = require('dotenv')
 
 dotenv.config()
 
-app.use(cors({
-    origin:'https://job-tracker-web-app.netlify.app',
-}))
-app.options(/(.*)/,cors())
+const corsOptions = {
+  origin: "https://job-tracker-web-app.netlify.app",
+  methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+  allowedHeaders: ["Content-Type", "Authorization"],
+  credentials: true
+};
+
+app.use(cors(corsOptions));
+app.options("*", cors(corsOptions));
+
 app.use(express.json())
 
 app.use(bodyParser.json({ limit: "10mb" }))
