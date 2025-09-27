@@ -9,19 +9,14 @@ const { text } = require('body-parser')
 
 dotenv.config()
 
-var transporter = nodemailer.createTransport({
-    service: "Gmail",
-    auth: {
-        user: process.env.EMAIL,
-        pass: process.env.GOOGLE_APP_PASSWORD,
-    },
-});
-transporter.verify((error, success) => {
-    if (error) {
-        console.log("SMTP Error:", error);
-    } else {
-        console.log("Server is ready to take messages");
-    }
+const transporter = nodemailer.createTransport({
+  host: "smtp.ethereal.email",
+  port: 587,
+  secure: false, // true for 465, false for other ports
+  auth: {
+    user: process.env.EMAIL,
+    pass: process.env.GOOGLE_APP_PASSWORD,
+  },
 });
 
 const sendMail = async (req, res) => {
@@ -38,16 +33,17 @@ const sendMail = async (req, res) => {
                 let expiry = new Date(Date.now() + 3 * 60 * 1000)
                 await userModel.updateOne({ email: emailOTP }, { $set: { passwordResetOtp: resetOTP, passwordResetOtpExpiry: expiry } })
 
-                let email = userData.email
-                const mail = {
+                
+                const info = await transporter.sendMail({
                     from: process.env.EMAIL,
-                    to: email,
-                    subject: 'Password Rest OTP',
-                    text: 'hi!',
-                    html: `<p><strong>${resetOTP}</strong> is your otp!</p>`
-                }
-                let info = await transporter.sendMail(mail)
-                console.log(info)
+                    to: {emailOTP},
+                    subject: "OTP",
+                    text: "Hello world?",
+                    html: `<p>Your otp is ${resetOTP}</p>`, // HTML body
+                });
+
+                console.log("Message sent:", info.messageId);
+                
                 res.send({ expiry: expiry, text: `OTP sent to ${email}` });
             }
         }
