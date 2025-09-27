@@ -43,9 +43,11 @@ const sendMail = async (req, res) => {
                     from: process.env.EMAIL,
                     to: email,
                     subject: 'Password Rest OTP',
-                    text: `<p><strong>${resetOTP}</strong> is your otp!</p>`
+                    text: 'hi!',
+                    html: `<p><strong>${resetOTP}</strong> is your otp!</p>`
                 }
-                await transporter.sendMail(mail)
+                let info = await transporter.sendMail(mail)
+                console.log(info)
                 res.send({ expiry: expiry, text: `OTP sent to ${email}` });
             }
         }
