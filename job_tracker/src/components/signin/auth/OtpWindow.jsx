@@ -198,7 +198,6 @@ const OtpWindow = ({ setotpWindow, setis_signin }) => {
           </form>
         </div>
       )}
-      // PASSWORD RESET 
       {passwordResetWindow && (
         <div className="otpWindow_content card">
           <h1>Reset Password</h1>

@@ -10,9 +10,9 @@ const { text } = require('body-parser')
 dotenv.config()
 
 const transporter = nodemailer.createTransport({
-  host: "smtp.ethereal.email",
-  port: 587,
-  secure: false, // true for 465, false for other ports
+  host: "smtp.gmail.com",
+  port: 465,
+  secure: true, // true for 465, false for other ports
   auth: {
     user: process.env.EMAIL,
     pass: process.env.GOOGLE_APP_PASSWORD,
@@ -21,6 +21,7 @@ const transporter = nodemailer.createTransport({
 
 const sendMail = async (req, res) => {
     const { emailOTP } = req.body
+    console.log(emailOTP)
     try {
         let userData = await userModel.findOne({ email: emailOTP })
         if (userData) {
@@ -36,7 +37,7 @@ const sendMail = async (req, res) => {
                 
                 const info = await transporter.sendMail({
                     from: process.env.EMAIL,
-                    to: {emailOTP},
+                    to: emailOTP,
                     subject: "OTP",
                     text: "Hello world?",
                     html: `<p>Your otp is ${resetOTP}</p>`, // HTML body
@@ -72,7 +73,7 @@ const sendSignupOTP = async (req, res) => {
                 }
                 else {
                     let resetOTP = crypto.randomBytes(2).toString("hex");
-                    let expiry = new Date(Date.now() + 3 * 60 * 1000)
+                    let expiry = new Date(Date.now() + 0.5 * 60 * 1000)
                     await signupAuthModel.updateOne({ email: email }, { $set: { signupOtp: resetOTP, signupOtpExpiry: expiry } })
                     if (userData) {
                         let email = userData.email
