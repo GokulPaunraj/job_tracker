@@ -30,8 +30,9 @@ const OtpWindow = ({ setotpWindow, setis_signin }) => {
               0,
               Math.floor((new Date(res.data.expiry) - new Date()) / 1000)
             );
-            let minutes = '0'+ Math.floor(timeLeft / 60);
-            let seconds = (timeLeft % 60) < 10 ? '0'+(timeLeft % 60) : (timeLeft % 60);
+            let minutes = "0" + Math.floor(timeLeft / 60);
+            let seconds =
+              timeLeft % 60 < 10 ? "0" + (timeLeft % 60) : timeLeft % 60;
             if (timeLeft <= 0) {
               settimeLeft("0:00");
               clearInterval(interval);
@@ -96,8 +97,8 @@ const OtpWindow = ({ setotpWindow, setis_signin }) => {
         .then((res) => {
           if (res.data) {
             alert(res.data);
-            setis_signin(true)
-            setotpWindow(false)
+            setis_signin(true);
+            setotpWindow(false);
           }
         })
         .catch((err) => {
@@ -197,53 +198,54 @@ const OtpWindow = ({ setotpWindow, setis_signin }) => {
           </form>
         </div>
       )}
+      // PASSWORD RESET 
       {passwordResetWindow && (
-          <div className="otpWindow_content card">
-            <h1>Reset Password</h1>
-            <p>Job Tracker</p>
-            <form
-              className="otpForm"
-              onSubmit={(e) => handleSubmitNewPassword(e)}
-            >
-              <span className="formField">
-                <label htmlFor="newPassword">New Password</label>
-                <input
-                  id="newPassword"
-                  value={newPassword}
-                  onChange={(e) => {
-                    setnewPassword(e.target.value);
-                  }}
-                  autoComplete="otp"
-                  required
-                />
-              </span>
-              <span className="formField">
-                <label htmlFor="reEnterNewPassword">Re-enter Password</label>
-                <input
-                  id="reEnterNewPassword"
-                  value={reEnterNewPassword}
-                  onChange={(e) => {
-                    setreEnterNewPassword(e.target.value);
-                  }}
-                  autoComplete="otp"
-                  required
-                />
-              </span>
-              <span className="otp_btn">
-                <button className="btn" type="submit">
-                  Verify
-                </button>
-                <button
-                  className="btn"
-                  onClick={(e) => {
-                    handleCancelNewPassword(e);
-                  }}
-                >
-                  Cancel
-                </button>
-              </span>
-            </form>
-          </div>
+        <div className="otpWindow_content card">
+          <h1>Reset Password</h1>
+          <p>Job Tracker</p>
+          <form
+            className="otpForm"
+            onSubmit={(e) => handleSubmitNewPassword(e)}
+          >
+            <span className="formField">
+              <label htmlFor="newPassword">New Password</label>
+              <input
+                id="newPassword"
+                value={newPassword}
+                onChange={(e) => {
+                  setnewPassword(e.target.value);
+                }}
+                autoComplete="otp"
+                required
+              />
+            </span>
+            <span className="formField">
+              <label htmlFor="reEnterNewPassword">Re-enter Password</label>
+              <input
+                id="reEnterNewPassword"
+                value={reEnterNewPassword}
+                onChange={(e) => {
+                  setreEnterNewPassword(e.target.value);
+                }}
+                autoComplete="otp"
+                required
+              />
+            </span>
+            <span className="otp_btn">
+              <button className="btn" type="submit">
+                Verify
+              </button>
+              <button
+                className="btn"
+                onClick={(e) => {
+                  handleCancelNewPassword(e);
+                }}
+              >
+                Cancel
+              </button>
+            </span>
+          </form>
+        </div>
       )}
     </section>
   );
