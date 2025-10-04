@@ -9,19 +9,22 @@ const { text } = require('body-parser')
 
 dotenv.config()
 
-const transporter = nodemailer.createTransport({
+let transporter = nodemailer.createTransport({
   host: "smtp.gmail.com",
   port: 465,
-  secure: true, // true for 465, false for other ports
+  secure: true,
   auth: {
+    type: "OAuth2",
     user: process.env.EMAIL,
-    pass: process.env.GOOGLE_APP_PASSWORD,
+    clientId: process.env.CLIENT_ID,
+    clientSecret: process.env.CLIENT_SECRETE,
+    refreshToken: process.env.REFRESH_TOKEN,
+    accessToken: process.env.ACCESS_TOKEN,
   },
 });
 
 const sendMail = async (req, res) => {
     const { emailOTP } = req.body
-    console.log(emailOTP)
     try {
         let userData = await userModel.findOne({ email: emailOTP })
         if (userData) {
@@ -31,7 +34,7 @@ const sendMail = async (req, res) => {
             }
             else {
                 let resetOTP = crypto.randomBytes(2).toString("hex");
-                let expiry = new Date(Date.now() + 3 * 60 * 1000)
+                let expiry = new Date(Date.now() + 0.5 * 60 * 1000)
                 await userModel.updateOne({ email: emailOTP }, { $set: { passwordResetOtp: resetOTP, passwordResetOtpExpiry: expiry } })
 
                 
@@ -39,11 +42,8 @@ const sendMail = async (req, res) => {
                     from: process.env.EMAIL,
                     to: emailOTP,
                     subject: "OTP",
-                    text: "Hello world?",
                     html: `<p>Your otp is ${resetOTP}</p>`, // HTML body
                 });
-
-                console.log("Message sent:", info.messageId);
                 
                 res.send({ expiry: expiry, text: `OTP sent to ${email}` });
             }
