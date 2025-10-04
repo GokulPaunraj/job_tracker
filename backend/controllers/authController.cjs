@@ -11,13 +11,13 @@ const { google } = require("googleapis");
 dotenv.config()
 
 const OAuth2Client = new google.auth.OAuth2(process.env.CLIENT_ID, process.env.CLIENT_SECRETE, process.env.REDIRECT_URL)
+OAuth2Client.setCredentials({ refresh_token: process.env.REFRESH_TOKEN })
 
 const sendMail = async (req, res) => {
     const { emailOTP } = req.body
     console.log(emailOTP)
 
     let ACCESS_TOKEN = await OAuth2Client.getAccessToken();
-    OAuth2Client.setCredentials({ refresh_token: process.env.REFRESH_TOKEN })
 
 
     try {
