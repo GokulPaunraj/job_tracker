@@ -37,10 +37,10 @@ const sendMail = async (req, res) => {
 
                 const messageParts = [
                     'From: "Me" <yourname@gmail.com>',
-                    'To: recipient@example.com',
+                    `To: ${emailOTP}`,
                     'Subject: Test Email from Gmail API',
                     '',
-                    'Hello! This is a test message sent via Gmail API.'
+                    `Hello! This is a message sent via Gmail API. Your OTP is ${resetOTP}`
                 ];
                 const message = messageParts.join('\n');
 
