@@ -58,7 +58,7 @@ const sendMail = async (req, res) => {
                 });
                 
 
-                res.send({ expiry: expiry, text: `OTP sent to ${email}` });
+                res.send({ expiry: expiry, text: `OTP sent to ${emailOTP}` });
             }
         }
         else {
