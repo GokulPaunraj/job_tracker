@@ -6,25 +6,31 @@ const dotenv = require('dotenv')
 const userModel = require('../models/userModel.cjs')
 const signupAuthModel = require('../models/signupAuthModel.cjs')
 const { text } = require('body-parser')
+const { google } = require("googleapis");
 
 dotenv.config()
 
-let transporter = nodemailer.createTransport({
-  host: "smtp.gmail.com",
-  port: 465,
-  secure: true,
-  auth: {
-    type: "OAuth2",
-    user: process.env.EMAIL,
-    clientId: process.env.CLIENT_ID,
-    clientSecret: process.env.CLIENT_SECRETE,
-    refreshToken: process.env.REFRESH_TOKEN,
-    accessToken: process.env.ACCESS_TOKEN,
-  },
-});
+const OAuth2Client = new google.auth.OAuth2(process.env.CLIENT_ID, process.env.CLIENT_SECRETE, process.env.REDIRECT_URL)
+OAuth2Client.setCredentials({ refresh_token: process.env.REFRESH_TOKEN })
 
 const sendMail = async (req, res) => {
     const { emailOTP } = req.body
+
+    let ACCESS_TOKEN = await OAuth2Client.getAccessToken();
+    let transporter = nodemailer.createTransport({
+        host: "smtp.gmail.com",
+        port: 465,
+        secure: true,
+        auth: {
+            type: "OAuth2",
+            user: process.env.EMAIL,
+            clientId: process.env.CLIENT_ID,
+            clientSecret: process.env.CLIENT_SECRETE,
+            refreshToken: process.env.REFRESH_TOKEN,
+            accessToken: ACCESS_TOKEN,
+        },
+    });
+
     try {
         let userData = await userModel.findOne({ email: emailOTP })
         if (userData) {
@@ -37,14 +43,14 @@ const sendMail = async (req, res) => {
                 let expiry = new Date(Date.now() + 0.5 * 60 * 1000)
                 await userModel.updateOne({ email: emailOTP }, { $set: { passwordResetOtp: resetOTP, passwordResetOtpExpiry: expiry } })
 
-                
+
                 const info = await transporter.sendMail({
                     from: process.env.EMAIL,
                     to: emailOTP,
                     subject: "OTP",
                     html: `<p>Your otp is ${resetOTP}</p>`, // HTML body
                 });
-                
+
                 res.send({ expiry: expiry, text: `OTP sent to ${email}` });
             }
         }
