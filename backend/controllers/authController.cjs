@@ -11,23 +11,14 @@ const { google } = require("googleapis");
 dotenv.config()
 
 const OAuth2Client = new google.auth.OAuth2(process.env.CLIENT_ID, process.env.CLIENT_SECRETE, process.env.REDIRECT_URL)
-OAuth2Client.setCredentials({ refresh_token: process.env.REFRESH_TOKEN })
 
 const sendMail = async (req, res) => {
     const { emailOTP } = req.body
     console.log(emailOTP)
+
     let ACCESS_TOKEN = await OAuth2Client.getAccessToken();
-    let transporter = nodemailer.createTransport({
-        service:"gmail",
-        auth: {
-            type: "OAuth2",
-            user: process.env.EMAIL,
-            clientId: process.env.CLIENT_ID,
-            clientSecret: process.env.CLIENT_SECRETE,
-            refreshToken: process.env.REFRESH_TOKEN,
-            accessToken: ACCESS_TOKEN,
-        },
-    });
+    OAuth2Client.setCredentials({ refresh_token: process.env.REFRESH_TOKEN })
+
 
     try {
         let userData = await userModel.findOne({ email: emailOTP })
@@ -42,12 +33,30 @@ const sendMail = async (req, res) => {
                 await userModel.updateOne({ email: emailOTP }, { $set: { passwordResetOtp: resetOTP, passwordResetOtpExpiry: expiry } })
 
 
-                const info = await transporter.sendMail({
-                    from: process.env.EMAIL,
-                    to: emailOTP,
-                    subject: "OTP",
-                    html: `<p>Your otp is ${resetOTP}</p>`, // HTML body
+                const gmail = google.gmail({ version: "v1", auth: OAuth2Client });
+
+                const messageParts = [
+                    'From: "Me" <yourname@gmail.com>',
+                    'To: recipient@example.com',
+                    'Subject: Test Email from Gmail API',
+                    '',
+                    'Hello! This is a test message sent via Gmail API.'
+                ];
+                const message = messageParts.join('\n');
+
+                const encodedMessage = Buffer.from(message)
+                    .toString("base64")
+                    .replace(/\+/g, "-")
+                    .replace(/\//g, "_")
+                    .replace(/=+$/, "");
+
+                await gmail.users.messages.send({
+                    userId: "me",
+                    requestBody: {
+                        raw: encodedMessage,
+                    },
                 });
+                
 
                 res.send({ expiry: expiry, text: `OTP sent to ${email}` });
             }
