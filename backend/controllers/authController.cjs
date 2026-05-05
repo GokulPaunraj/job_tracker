@@ -36,9 +36,9 @@ const sendMail = async (req, res) => {
                 const gmail = google.gmail({ version: "v1", auth: OAuth2Client });
 
                 const messageParts = [
-                    'From: "Me" <yourname@gmail.com>',
+                    'From: 12ggokul@gmail.com',
                     `To: ${emailOTP}`,
-                    'Subject: Test Email from Gmail API',
+                    'Subject: New Password OTP',
                     '',
                     `Hello! This is a message sent via Gmail API. Your OTP is ${resetOTP}`
                 ];
@@ -56,7 +56,7 @@ const sendMail = async (req, res) => {
                         raw: encodedMessage,
                     },
                 });
-                
+
 
                 res.send({ expiry: expiry, text: `OTP sent to ${emailOTP}` });
             }
